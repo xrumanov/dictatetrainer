@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cz.muni.fi.dictatetrainer</groupId>
+        <artifactId>dictatetrainer-app</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>dictatetrainer-ear</artifactId>
+    <packaging>ear</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>cz.muni.fi.dictatetrainer</groupId>
+            <artifactId>dictatetrainer-model</artifactId>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>cz.muni.fi.dictatetrainer</groupId>
+            <artifactId>dictatetrainer-resource-war</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>cz.muni.fi.dictatetrainer</groupId>
+            <artifactId>dictatetrainer-resource-war</artifactId>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <!--where to place libraries-->
+                    <defaultLibBundleDir>lib/</defaultLibBundleDir>
+                    <!--war has no dependencies-->
+                    <skinnyWars>true</skinnyWars>
+                    <modules>
+                        <webModule>
+                            <groupId>cz.muni.fi.dictatetrainer</groupId>
+                            <artifactId>dictatetrainer-resource-war</artifactId>
+                            <!--url to access web app-->
+                            <contextRoot>/dictatetrainer</contextRoot>
+                        </webModule>
+                        <ejbModule>
+                            <groupId>cz.muni.fi.dictatetrainer</groupId>
+                            <artifactId>dictatetrainer-model</artifactId>
+                        </ejbModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
