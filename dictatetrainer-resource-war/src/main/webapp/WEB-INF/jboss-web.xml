@@ -1,0 +1,4 @@
+<jboss-web>
+    <!-- has to match the security domain in standalone-full.xml-->
+    <security-domain>dictatetrainer</security-domain>
+</jboss-web>
