@@ -29,14 +29,14 @@ public class DictateRepository extends GenericRepository<Dictate> {
         final Map<String, Object> queryParameters = new HashMap<>();
         if (dictateFilter.getUploaderId() != null) {
             clause.append(" AND e.user.id = :userId");
-            queryParameters.put("userId", "%" + dictateFilter.getUploaderId() + "%");
+            queryParameters.put("userId", dictateFilter.getUploaderId());
         }
         if (dictateFilter.getCategoryId() != null) {
             clause.append(" AND e.category.id = :categoryId");
             queryParameters.put("categoryId", dictateFilter.getCategoryId());
         }
 
-        return findByParameters(clause.toString(), dictateFilter.getPaginationData(), queryParameters, "title ASC");
+        return findByParameters(clause.toString(), dictateFilter.getPaginationData(), queryParameters, "filename ASC");
     }
 
 }

@@ -48,7 +48,7 @@ public class TrialRepository extends GenericRepository<Trial>{
             queryParameters.put("endDate", trialFilter.getEndDate());
         }
 
-        return findByParameters(clause.toString(), trialFilter.getPaginationData(), queryParameters, "createdAt Desc");
+        return findByParameters(clause.toString(), trialFilter.getPaginationData(), queryParameters, "performed DESC");
     }
 
 }
