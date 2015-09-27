@@ -42,7 +42,7 @@ public class TrialFilterExtractorFromUrl extends AbstractFilterExtractorFromUrl 
 
     @Override
     protected String getDefaultSortField() {
-        return "-createdAt";
+        return "-performed";
     }
 
 }

@@ -31,7 +31,7 @@ public class DictateFilterExtractorFromUrl extends AbstractFilterExtractorFromUr
 
     @Override
     protected String getDefaultSortField() {
-        return "title";
+        return "name";
     }
 
 }
