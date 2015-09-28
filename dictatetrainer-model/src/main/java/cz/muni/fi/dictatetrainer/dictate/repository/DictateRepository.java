@@ -5,11 +5,13 @@ import cz.muni.fi.dictatetrainer.common.repository.GenericRepository;
 import cz.muni.fi.dictatetrainer.dictate.model.Dictate;
 import cz.muni.fi.dictatetrainer.dictate.model.filter.DictateFilter;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
+@Stateless
 public class DictateRepository extends GenericRepository<Dictate> {
     @PersistenceContext
     EntityManager em;
