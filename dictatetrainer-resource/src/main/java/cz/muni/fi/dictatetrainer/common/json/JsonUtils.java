@@ -6,6 +6,8 @@ package cz.muni.fi.dictatetrainer.common.json;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
+import cz.muni.fi.dictatetrainer.user.model.User;
+import cz.muni.fi.dictatetrainer.user.resource.UserJsonConverter;
 
 public final class JsonUtils {
 
@@ -15,8 +17,15 @@ public final class JsonUtils {
     public static JsonElement getJsonElementWithId(final Long id) {
         final JsonObject idJson = new JsonObject();
         idJson.addProperty("id", id);
-
         return idJson;
+    }
+
+    public static JsonElement getJsonElementWithJWT(UserJsonConverter userJsonConverter, User user) {
+        final JsonObject jsonWithJWT = new JsonObject();
+        final String jwt = userJsonConverter.generateJWT(user);
+        jsonWithJWT.addProperty("id_token", jwt);
+
+        return jsonWithJWT;
     }
 
     public static <T> JsonElement getJsonElementWithPagingAndEntries(final PaginatedData<T> paginatedData,

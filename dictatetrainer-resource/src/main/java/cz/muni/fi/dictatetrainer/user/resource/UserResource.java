@@ -65,7 +65,8 @@ public class UserResource {
         OperationResult result;
         try {
             user = userServices.add(user);
-            result = OperationResult.success(JsonUtils.getJsonElementWithId(user.getId()));
+            //changed from returning id to returning jwt
+            result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, user));
         } catch (final FieldNotValidException e) {
             httpCode = HttpCode.VALIDATION_ERROR;
             logger.error("One of the fields of the user is not valid", e);
@@ -175,6 +176,29 @@ public class UserResource {
             final User user = userServices.findByEmailAndPassword(userWithEmailAndPassword.getEmail(),
                     userWithEmailAndPassword.getPassword());
             final OperationResult result = OperationResult.success(userJsonConverter.convertToJsonElement(user));
+            responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
+            logger.debug("User found by email/password: {}", user);
+        } catch (final UserNotFoundException e) {
+            logger.error("No user found for email/password");
+            responseBuilder = Response.status(HttpCode.NOT_FOUND.getCode());
+        }
+
+        return responseBuilder.build();
+    }
+
+    @POST
+    @Path("/authenticate/jwt")
+    @PermitAll
+    public Response findByEmailAndPasswordAndSendJWT(final String body) {
+        logger.debug("Find user by email and password");
+
+        ResponseBuilder responseBuilder;
+        try {
+            final User userWithEmailAndPassword = getUserWithEmailAndPasswordFromJson(body);
+            final User user = userServices.findByEmailAndPassword(userWithEmailAndPassword.getEmail(),
+                    userWithEmailAndPassword.getPassword());
+            final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, user));
+
             responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
             logger.debug("User found by email/password: {}", user);
         } catch (final UserNotFoundException e) {
