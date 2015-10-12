@@ -28,13 +28,13 @@ public class TrialServicesImpl implements TrialServices {
     TrialRepository trialRepository;
 
     @Inject
+    Validator validator;
+
+    @Inject
     UserServices userServices;
 
     @Inject
     DictateServices dictateServices;
-
-    @Inject
-    Validator validator;
 
     @Resource
     SessionContext sessionContext;
@@ -43,10 +43,10 @@ public class TrialServicesImpl implements TrialServices {
 
     @Override
     public Trial add(final Trial trial) {
+        ValidationUtils.validateEntityFields(validator, trial);
+
         checkStudentAndSetItOnTrial(trial);
         checkDictateAndSetItOnTrial(trial);
-
-        ValidationUtils.validateEntityFields(validator, trial);
 
         return trialRepository.add(trial);
     }
