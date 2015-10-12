@@ -36,11 +36,15 @@ public class Trial implements Serializable {
     @NotNull
     private Dictate dictate;
 
+    public Trial() {
+        this.performed = new Date();
+    }
+
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -83,13 +87,18 @@ public class Trial implements Serializable {
 
         Trial trial = (Trial) o;
 
-        return id.equals(trial.id);
+        if (!id.equals(trial.id)) return false;
+        if (!student.equals(trial.student)) return false;
+        return dictate.equals(trial.dictate);
 
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 
     @Override
