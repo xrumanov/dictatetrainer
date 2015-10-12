@@ -50,6 +50,11 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
+		<!--JSon Web Token-->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.5.1</version>
+		</dependency>
 	</dependencies>
-
 </project>
