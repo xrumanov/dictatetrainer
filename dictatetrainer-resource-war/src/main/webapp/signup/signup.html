@@ -1,23 +1,28 @@
 <div class="signup center-block jumbotron">
-  <form role="form">
-  <h1>Signup</h1>
+    <form role="form">
+        <h1>Signup</h1>
+
         <div class="form-group">
-    <label for="fullname">Full Name</label>
-    <input type="text" class="form-control" id="name" ng-model="user.name" ng-model-options="{ updateOn: 'blur' }" placeholder="Full Name">
-  </div>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="text" class="form-control" id="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" placeholder="Email">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" ng-model="user.password" ng-model-options="{ updateOn: 'blur' }" placeholder="Password">
-  </div>
-  <div class="form-group">
-    <label for="User Type">User Type</label>
-    <input type="text" class="form-control" id="type" ng-model="user.type" ng-model-options="{ updateOn: 'blur' }" placeholder="User Type">
-  </div>
-  <button type="submit" class="btn btn-default" ng-click="createUser()">Submit</button>
-</form>
-<a ui-sref="login()">Click here to Login</a>
+            <label for="fullname">Full Name</label>
+            <input type="text" class="form-control" id="name" ng-model="user.name"
+                   ng-model-options="{ updateOn: 'blur' }" placeholder="Full Name">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" ng-model="user.email"
+                   ng-model-options="{ updateOn: 'blur' }" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" ng-model="user.password"
+                   ng-model-options="{ updateOn: 'blur' }" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="User Type">User Type</label>
+            <input type="text" class="form-control" id="type" ng-model="user.type"
+                   ng-model-options="{ updateOn: 'blur' }" placeholder="User Type">
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="createUser()">Submit</button>
+    </form>
+    <a ui-sref="login()">Click here to Login</a>
 </div>
