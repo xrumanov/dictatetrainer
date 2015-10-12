@@ -12,15 +12,15 @@ import java.util.List;
 @Ignore
 public class CategoriesForTestRepository {
 
-    public static Category vybraneSlova() {
+    public static Category vybraneSlovaCat() {
         return new Category("Vybrane slova");
     }
 
-    public static Category velkeMalePismena() {
+    public static Category velkeMalePismenaCat() {
         return new Category("Velke a male pismena");
     }
 
-    public static Category interpunkcia() {
+    public static Category interpunkciaCat() {
         return new Category("Interpunkcia");
     }
 
@@ -30,6 +30,6 @@ public class CategoriesForTestRepository {
     }
 
     public static List<Category> allCategories() {
-        return Arrays.asList(vybraneSlova(), velkeMalePismena(), interpunkcia());
+        return Arrays.asList(vybraneSlovaCat(), velkeMalePismenaCat(), interpunkciaCat());
     }
 }

@@ -7,6 +7,7 @@ import cz.muni.fi.dictatetrainer.category.model.Category;
 import cz.muni.fi.dictatetrainer.commontests.category.CategoriesForTestRepository;
 import cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository;
 import cz.muni.fi.dictatetrainer.dictate.model.Dictate;
+import cz.muni.fi.dictatetrainer.user.model.Teacher;
 import org.junit.Ignore;
 
 import javax.persistence.EntityManager;
@@ -25,7 +26,7 @@ public class DictatesForTestRepository {
         final Dictate dictate = new Dictate();
         dictate.setName("Vybrane slova 1");
         dictate.setDescription("Diktat na precvicovanie vybranych slov po B");
-        dictate.setCategory(CategoriesForTestRepository.vybraneSlova());
+        dictate.setCategory(CategoriesForTestRepository.vybraneSlovaCat());
         dictate.setFilename("dictate1.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
         dictate.setUploader(UsersForTestRepository.admin());
@@ -37,7 +38,7 @@ public class DictatesForTestRepository {
         final Dictate dictate = new Dictate();
         dictate.setName("Vybrane slova 2");
         dictate.setDescription("Diktat na precvicovanie vybranych slov po S");
-        dictate.setCategory(CategoriesForTestRepository.vybraneSlova());
+        dictate.setCategory(CategoriesForTestRepository.vybraneSlovaCat());
         dictate.setFilename("dictate2.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
         dictate.setUploader(UsersForTestRepository.admin());
@@ -49,7 +50,7 @@ public class DictatesForTestRepository {
         final Dictate dictate = new Dictate();
         dictate.setName("Velke pismena");
         dictate.setDescription("Diktat na precvicovanie velkych pismen na zaciatkoch slov");
-        dictate.setCategory(CategoriesForTestRepository.velkeMalePismena());
+        dictate.setCategory(CategoriesForTestRepository.velkeMalePismenaCat());
         dictate.setFilename("dictate3.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
         dictate.setUploader(UsersForTestRepository.admin());
@@ -59,9 +60,9 @@ public class DictatesForTestRepository {
 
     public static Dictate interpunkcia() {
         final Dictate dictate = new Dictate();
-        dictate.setName("Vybrane slova 1");
+        dictate.setName("Interpunkcia");
         dictate.setDescription("Diktat na precvicovanie interpunkcie");
-        dictate.setCategory(CategoriesForTestRepository.vybraneSlova());
+        dictate.setCategory(CategoriesForTestRepository.interpunkciaCat());
         dictate.setFilename("dictate4.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
         dictate.setUploader(UsersForTestRepository.admin());
@@ -75,12 +76,12 @@ public class DictatesForTestRepository {
     }
 
     public static List<Dictate> allDictates() {
-        return Arrays.asList(vybraneSlova1(), vybraneSlova2(), interpunkcia(), velkePismena(), interpunkcia());
+        return Arrays.asList(vybraneSlova1(), vybraneSlova2(), velkePismena(), interpunkcia());
     }
 
     public static Dictate normalizeDependencies(final Dictate dictate, final EntityManager em) {
         dictate.setCategory(findByPropertyNameAndValue(em, Category.class, "name", dictate.getCategory().getName()));
-
+        dictate.setUploader(findByPropertyNameAndValue(em, Teacher.class, "email", dictate.getUploader().getEmail()));
         return dictate;
     }
 }

@@ -53,10 +53,8 @@ public class TrialsForTestRepository {
     }
 
     public static Trial normalizeDependencies(final Trial trial, final EntityManager em) {
-        trial.setStudent(findByPropertyNameAndValue(em, Student.class, "name", trial.getStudent()
-                .getName()));
-
-        trial.setDictate(findByPropertyNameAndValue(em, Dictate.class, "title", trial.getDictate().getFilename()));
+        trial.setStudent(findByPropertyNameAndValue(em, Student.class, "email", trial.getStudent().getEmail()));
+        trial.setDictate(findByPropertyNameAndValue(em, Dictate.class, "name", trial.getDictate().getName()));
 
         return trial;
     }
