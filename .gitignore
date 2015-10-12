@@ -1,4 +1,4 @@
 target/
 .idea/
 *.iml
-wildfly-9.0.1.Final/
+dictatetrainer-resource-war/src/main/webapp/vendor/
