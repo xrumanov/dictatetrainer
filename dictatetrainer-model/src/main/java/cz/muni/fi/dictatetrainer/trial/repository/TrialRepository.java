@@ -40,11 +40,11 @@ public class TrialRepository extends GenericRepository<Trial>{
             queryParameters.put("studentId", trialFilter.getStudentId());
         }
         if (trialFilter.getStartDate() != null) {
-            clause.append(" And e.createdAt >= :startDate");
+            clause.append(" And e.performed >= :startDate");
             queryParameters.put("startDate", trialFilter.getStartDate());
         }
         if (trialFilter.getEndDate() != null) {
-            clause.append(" And e.createdAt <= :endDate");
+            clause.append(" And e.performed <= :endDate");
             queryParameters.put("endDate", trialFilter.getEndDate());
         }
 
