@@ -1,0 +1,13 @@
+ <audio controls>
+<!--if mp3-->
+  <source src="path/{{dictate.filename}}" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+<br/>
+<div>
+    <textarea rows="10" cols="80" autofocus placeholder="Start writing dictate here" style="resize:none"></textarea>
+</div>
+<br/>
+<div>
+    <button type="submit" class="btn btn-default" ng-click="correctDictate()">Correct It!</button>
+</div>

@@ -1,33 +1,62 @@
-angular.module('sample', [
-    'sample.home',
-    'sample.login',
-    'sample.signup',
-    'angular-jwt',
-    'angular-storage'
-])
-    .config(function myAppConfig($urlRouterProvider, jwtInterceptorProvider, $httpProvider) {
-        $urlRouterProvider.otherwise('/');
-
-        jwtInterceptorProvider.tokenGetter = function (store) {
-            return store.get('jwt');
+angular.module('Dictatetrainer', ['ngRoute', 'ngMessages', 'satellizer'])
+  .config(function($routeProvider, $authProvider) {
+    $routeProvider
+      .when('/', {
+        templateUrl: 'views/home.html',
+        controller: 'HomeCtrl'
+      })
+      .when('/signup', {
+        templateUrl: 'views/signup.html',
+        controller: 'SignupCtrl'
+      })
+      .when('/dictates', {
+        templateUrl: 'views/dictates.html',
+        controller: 'DictatesCtrl',
+        access: {
+            requiresLogin: true
         }
+      })
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileCtrl',
+        access: {
+            requiresLogin: true
+        }
+      })
+      .when('/students', {
+        templateUrl: 'views/students.html',
+        controller: 'StudentsCtrl',
+        access: {
+            requiresLogin: true
+        }
+      })
+      .when('/upload', {
+        templateUrl: 'views/upload.html',
+        controller: 'UploadCtrl',
+        access: {
+            requiresLogin: true
+        }
+      })
+      .when('/trainer', {
+        templateUrl: 'views/trainer.html',
+            controller: 'TrainerCtrl',
+        access: {
+        requiresLogin: true
+        }
+      })
+      .otherwise('/');
 
-        $httpProvider.interceptors.push('jwtInterceptor');
-    })
-    .run(function ($rootScope, $state, store, jwtHelper) {
-        $rootScope.$on('$stateChangeStart', function (e, to) {
-            if (to.data && to.data.requiresLogin) {
-                if (!store.get('jwt') || jwtHelper.isTokenExpired(store.get('jwt'))) {
-                    e.preventDefault();
-                    $state.go('login');
-                }
-            }
-        });
-    })
-    .controller('AppCtrl', function AppCtrl($scope, $location) {
-        $scope.$on('$routeChangeSuccess', function (e, nextRoute) {
-            if (nextRoute.$$route && angular.isDefined(nextRoute.$$route.pageTitle)) {
-                $scope.pageTitle = nextRoute.$$route.pageTitle + ' | Dictate Trainer Beta';
-            }
-        });
+//    comment this out if deploy to server
+    $authProvider.loginUrl = '/api/users/authenticate/jwt';
+    $authProvider.signupUrl = '/api/users';
+    $authProvider.facebook({
+      clientId: '733955933328704',
+      url: '/api/users/authenticate/facebook'
     });
+    
+  })
+  .run(function($rootScope, $window, $auth) {
+    if ($auth.isAuthenticated()) {
+      $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
+    }
+  });
