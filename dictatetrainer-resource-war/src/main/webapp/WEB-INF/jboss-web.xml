@@ -1,4 +1,8 @@
 <jboss-web>
-    <!-- has to match the security domain in standalone-full.xml-->
+    <!-- has to match the security domain in standalone.xml-->
     <security-domain>dictatetrainer</security-domain>
+    <security-domain>jboss-web-policy</security-domain>
+    <valve>
+        <class-name>org.jboss.web.rewrite.RewriteValve</class-name>
+    </valve>
 </jboss-web>

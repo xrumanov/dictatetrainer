@@ -15,6 +15,17 @@
         <param-value>true</param-value>
     </context-param>
 
+    <!--use https to secure everything-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>dictatetrainer-resource-war-0.0.1-SNAPSHOT</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
     <!--no constraint regarding security on /api/users/*-->
     <security-constraint>
         <display-name>API New User</display-name>
