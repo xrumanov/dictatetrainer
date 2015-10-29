@@ -12,4 +12,4 @@ create table dt_dictate (id bigserial not null primary key,	name varchar(150) no
 
 create table dt_trial (id bigserial not null primary key,	performed_at timestamp not null,	trial_text text not null,	student_id bigint not null,	dictate_id bigint not null, constraint fk_trial_student foreign key(student_id) references dt_user(id),	constraint fk_error_dictate foreign key(dictate_id) references dt_dictate(id));
 
-create table dt_error (dt_trial_id bigint not null,	error_word varchar(0),	correct_word varchar(40),	description text not null,	type varchar(20) not null,	constraint fk_error_trial foreign key(dt_trial_id) references dt_trial(id));
+create table dt_error (id bigserial not null primary key,	word_position int not null, correct_word varchar(1),	written_word varchar(40),	error_priority int not null, description text not null,	student_id bigint not null,	dictate_id bigint not null, constraint fk_err_student foreign key(student_id) references dt_user(id),	constraint fk_err_dictate foreign key(dictate_id) references dt_dictate(id));
