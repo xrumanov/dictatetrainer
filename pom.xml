@@ -177,6 +177,7 @@
 	<modules>
 		<module>dictatetrainer-model</module>
 		<module>dictatetrainer-resource</module>
+		<module>dictatetrainer-corrector</module>
 		<module>dictatetrainer-int-tests</module>
 		<module>dictatetrainer-resource-war</module>
 		<module>dictatetrainer-ear</module>

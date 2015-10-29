@@ -28,12 +28,16 @@
         </plugins>
     </build>
 
-    <!--module with REST interfaces-->
+    <!--modules with REST interfaces-->
     <dependencies>
         <dependency>
             <groupId>cz.muni.fi.dictatetrainer</groupId>
             <artifactId>dictatetrainer-resource</artifactId>
         </dependency>
+        <dependency>
+        <groupId>cz.muni.fi.dictatetrainer</groupId>
+        <artifactId>dictatetrainer-corrector</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
     </dependencies>
-
 </project>

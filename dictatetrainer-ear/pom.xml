@@ -43,7 +43,7 @@
                             <groupId>cz.muni.fi.dictatetrainer</groupId>
                             <artifactId>dictatetrainer-resource-war</artifactId>
                             <!--url to access web app-->
-                            <contextRoot>/dictatetrainer</contextRoot>
+                            <contextRoot>/</contextRoot>
                         </webModule>
                         <ejbModule>
                             <groupId>cz.muni.fi.dictatetrainer</groupId>
