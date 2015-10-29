@@ -15,7 +15,7 @@ public class TrialArgumentMatcher extends ArgumentMatcher<Trial> {
 
     private Trial expected;
 
-    public static Trial orderEq(final Trial expected) {
+    public static Trial trialEq(final Trial expected) {
         return argThat(new TrialArgumentMatcher(expected));
     }
 
