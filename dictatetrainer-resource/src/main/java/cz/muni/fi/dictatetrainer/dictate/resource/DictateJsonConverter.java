@@ -56,7 +56,7 @@ public class DictateJsonConverter implements EntityJsonConverter<Dictate> {
         jsonObject.addProperty("transcript", dictate.getTranscript());
 
         jsonObject.add("category", categoryJsonConverter.convertToJsonElement(dictate.getCategory()));
-        jsonObject.add("authors", userJsonConverter.convertToJsonElement(dictate.getUploader()));
+        jsonObject.add("uploader", userJsonConverter.convertToJsonElement(dictate.getUploader()));
 
         return jsonObject;
     }
