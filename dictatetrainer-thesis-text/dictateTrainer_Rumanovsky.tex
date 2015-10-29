@@ -1,0 +1,253 @@
+\documentclass[12pt,oneside]{fithesis2}
+\usepackage[slovak]{babel}       % Multilingual support
+\usepackage[utf8]{inputenc}       % UTF-8 encoding
+\usepackage[T1]{fontenc}          % T1 font encoding
+\usepackage[                      % A sans serif font that blends well with Palatino
+  scaled=0.86
+]{berasans}
+\usepackage[                      % Clickable links
+  plainpages = false,               % We have multiple page numberings
+  pdfpagelabels                     % Generate pdf page labels
+]{hyperref}
+
+\thesislang{sk}                   % The language of the thesis
+\thesistitle{Portál pre písanie a vyhodnocovanie diktátov}       % The title of the thesis
+\thesissubtitle{Diplomová práca}  % The type of the thesis
+\thesisstudent{Bc. Jakub Rumanovský}          % Your name
+\thesiswoman{false}                % Your gender
+\thesisfaculty{fi}                % Your faculty
+\thesisyear{Jeseň \the\year}     % The academic term of your thesis defense
+\thesisadvisor{Mgr. Marek Grác, Ph.D.}   % Your advisor
+
+\begin{document}
+  \FrontMatter                    % The front matter
+    \ThesisTitlePage                % The title page
+    \begin{ThesisDeclaration}       % The declaration
+      \DeclarationText
+      \AdvisorName
+    \end{ThesisDeclaration}
+    \begin{ThesisThanks}            % The acknowledgements (optional)
+      Ďakujem vedúcemu práce Mgr. Marekovi Grácovi, Ph.D. za vedenie, trpezlivosť a rady pri písaní diplomovej práce a mojej rodine, kamarátom a priateľke za podporu.
+    \end{ThesisThanks}
+    \begin{ThesisAbstract}          % The abstract
+      Úlohou diplomovej práce je vytvorenie diktátového webového systému určeného predovšetkým žiakom základných a stredných škôl a ich učiteľom. Zahŕňa to taktiež vytvorenie samostatného modulu vrámci aplikácie, ktorý bude verejne prístupný skrz rozhranie. To bude zabezpečovať opravu diktátu a bude použiteľné aj pre prípadné iné systémy.
+    \end{ThesisAbstract}
+    \begin{ThesisAbstracten}          % The abstract
+
+      The aim of this Master thesis is to create a dictate web system, which can be used mainly by pupils of elementary school and high school and their teachers. It also contains creation of an independent module inside the app, that will be public and will correct the dictate based on the input text using proper endpoint. This module will also be reusable for other systems.
+    \end{ThesisAbstracten}
+    \begin{ThesisKeyWords}          % The keywords
+      Java EE, dictate, trainer, grammar correction, correction module
+    \end{ThesisKeyWords}
+    \tableofcontents                % The table of contents
+%   \listoftables                   % The list of tables (optional)
+%   \listoffigures                  % The list of figures (optional)
+  
+  \MainMatter                     % The main matter
+    \chapter{Úvod}          % Chapters
+  
+  Informačné technológie sa v súčasnosti dostávajú do stále väčšieho množstva odvetví ľudskej činnosti. Aj do takých, v akých by sme ich ešte pred pár rokmi nečakali. A v mnohých majú nepopierateľne obrovský potenciál rozvoja. Jedným z príkladov takéhoto odvetvia je e-learning, alebo slovensky vzdelávanie prostredníctvom informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju tejto oblasti. Prispeli k tomu nemalou mierou aj niektoré renomované univerzity \cite{crimson15}, ktoré poskytujú svoje kurzy zdarma alebo za menší poplatok. Celá táto evolúcia vzdelávania poskytuje doteraz netušené možnosti a to skutočne pre každého kto má záujem. Je dokonca možné absolvovať vopred vybrané kurzy a získať certifikát, ktorý si potom možno uviesť ako doplnkové vzdelanie v životopise a preukázať tak svoju kompetenciu v určitom odvetví alebo činnosti. Z horeuvedených príkladov je vidno, že e-learning v akejkoľvek forme má zmysel aj potenciál a prináša nesporné výhody pre žiakov, študentov aj vyučujúcich. 
+  K dôležitým schopnostiam každého človeka, či už v profesionálnom alebo súkromnom živote, patrí písomný prejav. Jeden z jeho najpodstatnejších aspektov je správna gramatika a pravopis. Tie sa žiaci učia na školách od najútlejšieho veku a osvojovanie gramatiky prebieha už niekoľko desaťročí rovnakým spôsobom. Ku klasickým nástrojom na trénovanie správneho pravopisu patrí písanie diktátov. Do tejto oblasti moderné technológie ešte celkom nestihli preniknúť. Diktát sa píše na papier a následne je opravovaný a hodnotený učiteľom. Samozrejme už v súčasnosti existujú viac či menej kvalitné alternatívy (viď kapitola 2). 
+  Kvôli neexistencii dostačujúcej aplikácie pre trénovanie diktátov za pomoci počítača, je v následujúcom texte navrhnutý webový portál, ktorý slúži ako alternatíva k testovaniu gramatiky v škole. Žiak sa môže kedykoľvek, či už na popud učiteľa alebo z vlastnej vôle, otestovať v písaní. Aplikácia si kladie za cieľ rozšíriť písanie a korekciu diktátov, ktorá sa momentálne píše žiakmi a opravuje učiteľmi, o výhody, ktoré ponúkajú informačné technológie. Konkrétne medzi ne patria rýchlejšia - a hlavne automatická - oprava chýb, možnosť ukladania a následného analyzovania chýb v širšom kontexte (či už v prípade konkrétneho študenta alebo prípadne celej triedy) a v neposlednom rade tiež zobrazenie týchto chýb v štatistike.
+  Portál má už v dobe písania tejto práce niekoľko záujemcov, ktorí sa podujmú na funkčnom testovaní. Jednak sú to vybrané základné školy a jednak sa bude systém využívať na Pedagogickej fakulte Masarykovej univerzity pri výuke budúcich pedagógov.
+    
+    \chapter{Analýza systému}
+       \section{Definícia problému}
+       \section{Existujúce riešenia}       
+       		\subsection{Štruktúra existujúcich riešení}
+       		\subsection{Problémy v existujúcich riešeniach}
+       		\subsection{Výhody a nevýhody existujúcich riešení}
+       \section{Navrhovaný systém}
+       		\subsection{Ciele navrhovaného systému}
+       		
+Úlohou tejto diplomovej práce je vytvorenie webového systému na komplexnú prácu s diktátmi, pričom je vopred určená vývojová platforma Java Enterprise Edition. Tento systém bude pozostávať z:
+
+\begin{enumerate}
+\item Administračnej časti pre vyučujúcich, ktorá bude obsahovať
+	\begin{itemize}
+	\item Možnosť nahrania vlastného diktátu a doplnenie anotácií k diktátu priamo v prostredí
+	\item Základné štatistiky o využívaní jednotlivých diktátov
+	\item Prácu so skupinami používateľov
+	\end{itemize}
+\item Používateľskej časti pre študentov, v ktorej bude možné
+	\begin{itemize}
+	\item Prihlásiť sa pomocou mailu alebo sociálnych sietí
+	\item Písať diktáty a nechať si ich po napísaní opraviť
+	\end{itemize}
+\item Samostatného modulu integrovaného s webovou aplikáciou, ktorá bude dostupná cez definované rozhranie a bude implementovať pravidlá nájdené počítačovými lingvistami. Tieto pravidlá detekujú a pridávajú zdôvodnenia pre vybrané jazykové javy v češtine.
+\end{enumerate}
+       		
+       		\subsection{Rozsah navrhovaného systému}
+       		\subsection{Výhody a nevýhody navrhovaného systému}
+    \chapter{Návrh systému}
+    
+    \par Webový systém bude rozdelený na dve úplne oddelené časti.
+
+\par Vrstvu prístupu k dátam, označovaná anglickým slovom backend, ktorá sa bude starať o ukladanie dát a navonok bude možné k nej pristupovať pomocou tzv. REST endpointov – známych adries, ktoré po prijatí dát v správnom formáte v JSON vrátia požadované údaje v definovanej forme. Rovnakým spôsobom sa bude pristupovať aj k samostatnému modulu slúžiacemu na opravu chýb. Adresy budú zdokumentované v jednej z následujúcich kapitol, rovnako ako správny formát vstupných respektíve výstupných dát. 
+	\par Druhou časťou bude prezentačná vrstva, známa aj pod anglickým ekvivalentom frontend, ktorá bude komunikovať s vrstvou prístupu k dátam skrz REST rozhrania. Tieto budú zabezpečené aj na strane backendu aj na strane front-endu proti neoprávnenému prístupu neautorizovaného používateľa. Ten sa bude musieť na získanie oprávnenia zaregistrovať. Registrovať sa budú môcť iba užívatelia role STUDENT (žiaci), učiteľ (rola TEACHER) bude musieť požiadať o vytvorenie účtu administrátora (rola ADMINISTRATOR). Overenie prístupu bude prebiehať zavolaním špeciálnej adresy, definovanej v jednej z následujúcich kapitol spolu s užívateľským menom a heslom a následným povolením/odmietnutím prístupu na základe týchto údajov. Prezentačná vrstva bude navrhnutá ako tzv. jednostránková aplikácia\footnote{Single Page Application, skrátene SPA}.
+	\pagebreak
+	\section{Ukladanie servisných informácií o diktátoch}
+	\par Servisnou informáciou o diktáte rozumieme všetky dáta uložené spolu s diktátom, ktoré ho nejakým spôsobom definujú. Ide konkrétne o textový prepis diktátu, značky koncov jednotlivých viet, východzí počet opakovaní viet ako aj celého diktátu a dĺžka pauzy medzi jednotlivými vetami. V bakalárskej práci bol systém navrhnutý tak, že boli všetky tieto informácie uložené vrámci mp3 súboru s diktátom \cite{rumanov12}. Tento prístup má však niekoľko nevýhod. Jednak je obmedzená použiteľnosť iných zvukových formátov na mp3, pretože sa informácie ukladajú do ID3v2 tagu\footnote{Do súboru mp3 je možné uložiť rôzne atribúty, nazývané tagy, ktoré obsahujú napr. názov interpreta, názov skladby, rok vydania atď.}. Druhá nevýhoda je, že tento návrh komplikuje prípadnú budúcu úpravu systému a spracovanie napr. pre účely štatistiky. V neposlednom rade je nevýhodou nemožnosť použitia iného zdroja pre nahrávanie diktátu do systému skrz rozhranie kvôli nutnosti nakoniec uložiť všetky dáta do mp3.
+	\par Toto všetko sú dôvody, prečo sú nakoniec všetky servisné dáta uložené v databáze spolu s autorom a názvom súboru s diktátom a zvukový záznam je uložený zvlášť na serveri. Viac o uložení súboru na serveri v kapitole \ref{ukladanie}.
+	
+    \chapter{Implementácia systému}
+    
+    \par Pri implementácii systému bol kladený dôraz na použitie moderných technológií a štruktúra je navrhnutá tak, aby sa ktorákoľvek súčasť dala v prípade potreby rýchlo nahradiť inou bez nutnosti zásahu do iných vrstiev systému. V následujúcich sekciách sú postupne uvedené použité technológie podľa príslušnosti k vrstve systému.
+      \section{Štruktúra aplikácie}
+      	\subsection{Rozdelenie aplikácie na moduly}
+      	\par Systém je rozdelený na 6 modulov. Prvý s názvom \texttt{dictatetrainer-model} obsahuje prístup k databáze, servisnú vrstvu aplikácie a k nim prislúchajúce testy, modul \texttt{dictatetrainer-resource} obsahuje verejne prístupné rozhrania spolu s ich testami, \texttt{dictatetrainer-corrector} je zvláštny modul zabezpečujúci opravu diktátu a poskytuje verejne prístupné rozhranie. Modul \texttt{dictatetrainer-int-tests}, ako je už z názvu patrné, združuje integračné testy systému. \texttt{dictatetrainer-resource-war} pozostáva s prezentačnej vrstvy aplikácie a nakoniec modul \texttt{dictatetrainer-ear} zabezpečuje správne zabalenie celého systému, oddeľuje závislosti do zvláštneho adresára a backend do zvláštneho archívu tak, aby bola štruktúra aplikácie čo najprehľadnejšia.
+      	
+      	\subsection{Adresárová štruktúra}
+      	
+      \section{Vrstva prístupu k databáze}
+      
+      \par Aby bolo možné abstrahovať definíciu tabuliek a relácii medzi nimi od konkrétnej implementácie databázového systému (ako je napr. Postgres, MySQL, Oracle a pod.), je nutné použiť framework umožňujúci objektovo relačné mapovanie tabuliek v databáze na Java objekty, tzv. entity. Entita je trieda reprezentujúca typicky jednu tabuľku v databáze. Obsahuje atribúty, ktoré sú ekvivalentné stĺpcom v databázovej tabuľke, bezparametrický konštruktor a, ak chceme definovať aj vzťahy medzi entitami, musí obsahovať aj preťažené metódy \texttt{equals} a \texttt{hashCode}. Štandardný framework umožňujúci ORM je Java Persistence API (skrátene JPA). Je to vlastne sada rozhraní definujúcich ako by malo ORM fungovať. Existuje viacero implementácií JPA - ako napr. EclipseLink, OpenJPA alebo Hibernate. Aplikácia je postavená na poslednej spomínanej knižnici.
+      
+      \pagebreak
+      \subsection{Ukladanie audio súborov s diktátmi} \label{ukladanie}
+      \par Existujú dve možnosti ako ukladať audio súbory a všeobecne akékoľvek dáta. Prvý prístup ukladá dáta priamo do databázy ako BLOB\footnote{dátový typ pre bližšie nešpecifikované binárne dáta v databáze}. Nevýhoda tejto alternatívy je v tom, že neúmerne zväčšuje databázu, spomaľuje dotazy a všeobecne degraduje jej rýchlosť.
+      \par Druhá možnosť je ukladať súbory priamo na server a do databázy pridať iba odkaz, resp. meno súboru ako jeden stĺpec v tabuľke. Tento prístup je pri veľkých súboroch odporúčaný \cite{sof1}. Rozhodol som sa preto oddeliť súbory s diktátmi od databázy a ponechať tam iba odkazy. Viac o konkrétnom riešení s použitím databázy Postgres a aplikačného serveru Wildfly je uvedené v kapitole \ref{nasadenie}. Nasadenie systému.
+      \section{Bussiness vrstva aplikácie}
+      \section{Vrstva rozhraní - REST}
+      \section{Prezentačná vrstva}
+      		\subsection{Angular JS JavaScript framework}
+      		\subsection{CSS a Bootstrap}
+      		\subsection{HTML5}
+      		\pagebreak
+      \section{Zabezpečenie aplikácie}
+      		\subsection{Zabezpečená komunikácia pomocou HTTPS}
+      		\par Základom bezpečnosti akéhokoľvek webového systému je zabezpečená komunikácia. Dáta posielané užívateľom cez sieť vrámci interakcie so systémom vrátane mena, hesla a iných citlivých informácií, by bez nej boli vystavené potenciálnemu riziku odcudzenia. Takýto útok sa nazýva Man in the middle attack\footnote{Typ útoku, kedy útočník napadne komunikáciu medzi užívateľom a serverom s cieľom ukradnúť citlivé dáta}. Je tomu však možno zabrániť zašifrovaním komunikácie s použitím protokolu HTTPS, ktorý je bezpečnou verziou HTTP. Cezeň sa posielajú dáta medzi internetovým prehliadačom a webovou stránkou, ku ktorej je prehliadač pripojený. 
+      		\par HTTPS typicky využíva jeden z dvoch protokolov na šifrovanie komunikácie - TLS alebo SSL. Oba používajú tzv. asymetrickú šifru, ktorá pracuje s dvoma typmi kľúčov. Privátny kľúč je bezpečne uložený na webovom serveri a zabezpečuje šifrovanie posielaných dát. Verejný kľúč je distribuovaný komukoľvek, kto chce rozšifrovať informácie zašifrované pomocou privátneho kľúča. Verejný kľúč obdrží používateľ v SSL certifikáte webovej stránky pri prvotnom požiadavku o spojenie \cite{comodo15}.
+      		\par Vo vyvíjanej aplikácii, ktorá je nasadená na službe je vynútený protokol HTTPS. Openshift ponúka svoj SSL certifikát, takže nie je nutné vytvárať vlastný. Je iba potrebné správne nastaviť \texttt{web.xml} a \texttt{jboss-web.xml} podľa dokumentácie \cite{openshift15}.
+      		\pagebreak
+
+      		\subsection{JSON Web Token}
+      		\subsection{Zabezpečenie na úrovni AngularJS frameworku}
+      		\subsection{Autentikácia pomocou sociálnych sietí}
+      \section{Modul na opravu diktátov}
+      
+      \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva so značkovača vstupného textu od užívateľa a definície pravidiel, podľa ktorých bude určený typ chyby a jej popis. Značkovač je vo východzej verzii implementovaný za pomoci knižnice \texttt{diff-match-patch} od Google\cite{diffmatchpatch}, slúžiacej na porovnávanie reťazcov. Definícia pravidiel vychádza z výstupu bakalárskej práce Vojtěcha Škvařila \cite{skvaril14} a je prepísaný z pseudokódu do programovacieho Jazyka Java.
+      \par Prístup k modulu zabezpečuje verejné REST rozhranie, ktoré ako vstup berie dva reťazce - správny text diktátu a text napísaný užívateľom (viac v prílohe \ref{navod_oprava}). Výstup vo formáte JSON obsahuje list jednotlivých chýb zoradených podľa výskytu v diktáte.
+      
+	  \par Chyba je objekt typu \texttt{Mistake}. Obsahuje nasledovné atribúty: 
+\begin{itemize}
+	\item Jednoznačný identifikátor \texttt{id}
+	\item Pozíciu chyby (Pozícia je definovaná ako číslo tokenu\footnote{token je kategorizovaný blok textu, obyčajne pozostáva z nedeliteľných znakov} vrámci diktátu.)
+	\item správne slovo alebo frázu
+	\item prioritu slova (číslo od 1 do 10, pričom 10 je najväčšia priorita)
+	\item typ chyby - chýbajúce slovo, nadbytočné slovo, chyba
+	\item popis chyby na základe daných pravidiel
+\end{itemize}
+	
+      \par Celý modul je navrhnutý s dôrazom na modifikovateľnosť a nahraditeľnosť jednotlivých častí. Stačí vymeniť implementácie daných Java rozhraní. Modul je používaný aj samotnou navrhovanou aplikáciou, kde využíva objekty typu \texttt{Mistake} a ukladá ich do databázy spolu s informáciami o používateľovi a diktáte ako objekt typu \texttt{Error}. Návrh bol zvolený z toho dôvodu, aby bol opravovací modul čo najjednoduchšie použiteľný aplikáciami tretích strán (preto má objekt typu \texttt{Mistake} iba základné atribúty, ktoré je možné vyčítať z daných vstupných dát). Objekt typu \texttt{Error} je ukladaný do databáze a zamýšľané použitie dodatočných informácii je na generovanie štatistických dát o jednotlivých používateľoch a diktátoch.
+    \chapter{Testovanie systému}
+      \section{Jednotkové testy}
+      \section{Integračné testy}
+      \section{Manuálne testovanie}
+    \chapter{Nasadenie systému} \label{nasadenie}
+      \section{Databázový systém}
+      \section{Aplikačný server}
+    \chapter{Záver}   
+        
+    \appendix
+    \chapter{Používateľský manuál} 	  % Appendices
+      \section{Definícia dostupných rozhraní systému}    
+      \section{Rozhranie slúžiace na opravu diktátov} \label{navod_oprava}
+      \section{Manuál ku grafickému užívateľskému rozhraniu}
+    \chapter{Snímky obrazoviek}
+
+
+
+
+
+    % Bibliography goes here
+    \begin{thebibliography}{59}
+    	\bibitem{crimson15}
+  		Fahs, C. Ramsey.
+  		\emph{EdX Overtakes Coursera in Number of Ivy League Partners}
+  		[online].
+  		2015
+  		[cit. 2015-10-27].
+  		Dostupné z: <\url{http://www.thecrimson.com/article/2015/10/2/edx-ivy-league-coursera/}>.
+
+		\bibitem{comodo15}
+  		Comodo CA Limited.
+  		\emph{What is HTTPS}
+  		[online].
+  		2015
+  		[cit. 2015-10-26].
+  		Dostupné z: <\url{https://www.instantssl.com/ssl-certificate-products/https.html}>.
+	
+		\bibitem{openshift15}
+  		Red Hat Inc.
+  		\emph{Troubleshooting FAQs - How do I redirect traffic to HTTPS?}
+  		[online].
+  		2015
+  		[cit. 2015-10-26].
+  		Dostupné z: <\url{https://developers.openshift.com/en/troubleshooting-faq.html#_how_do_i_redirect_traffic_to_https}>.
+  		
+  		\bibitem{samwell14}
+  		Samwell.
+  		\emph{URL Route Authorization and Security in Angular}
+  		[online].
+  		2014
+  		[cit. 2015-10-26].
+  		Dostupné z: <\url{http://jonsamwell.com/url-route-authorization-and-security-in-angular/}>.
+  		
+  		\bibitem{yalkabov14}
+  		Yalkabov.
+  		\emph{Build an Instagram clone with AngularJS, Satellizer, Node.js and MongoDB}
+  		[online].
+  		2014
+  		[cit. 2015-10-26].
+  		Dostupné z: <\url{https://hackhands.com/building-instagram-clone-angularjs-satellizer-nodejs-mongodb/}>.
+  		
+  		\bibitem{mik14}
+  		Mikołajczyk.
+  		\emph{Top 18 Most Common AngularJS Developer Mistakes}
+  		[online].
+  		2015
+  		[cit. 2015-10-26].
+  		Dostupné z: <\url{http://www.toptal.com/angular-js/top-18-most-common-angularjs-developer-mistakes}>.
+  			
+  	    \bibitem{sof1}
+  		Stack Exchange Inc.
+  		\emph{What is best way to store mp3 files in server ? Storing it in database (BLOB) , is right?}
+  		[online].
+  		2014
+  		[cit. 2015-10-26].
+  		Dostupné z: <\url{http://stackoverflow.com/questions/11958465/
+  		what-is-best-way-to-store-mp3-files-in-server-storing-it-in-database-blob}>.
+  		
+  		\bibitem{rumanov12}
+  		Rumanovský, Jakub.
+  		\emph{Systém na trénovanie diktátov}
+  		Brno, 
+  		2012
+  		Dostupné z: <\url{http://is.muni.cz/th/359581/fi_b/Bakalarka_FI_nal.pdf}>.
+  		Bakalárska práca. Masarykova Univerzita.
+  		
+  		\bibitem{skvaril14}
+  		Škvařil, Vojtěch.
+  		\emph{Návrh algoritmu pro vyhodnocení bezkontextových pravopisných chyb}
+  		Brno, 
+  		2014
+  		Dostupné z: <\url{http://is.muni.cz/th/399486/ff_b/BAKALARSKA_PRACE_27._6..pdf}>.
+  		Bakalárska práca. Masarykova Univerzita.
+  		
+  		\bibitem{diffmatchpatch}
+  		Google, Inc.
+  		\emph{API Google-diff-match-patch}
+  		[online].
+  		2011
+  		[cit. 2015-10-29].
+  		Dostupné z: <\url{http://code.google.com/p/google-diff-match-patch/wiki/API}>.
+  		
+  		http://goldfirestudios.com/blog/104/howler.js-Modern-Web-Audio-Javascript-Library
+  		http://stackoverflow.com/questions/22684037/how-to-configure-wildfly-to-serve-static-content-like-images
+  		https://blog.openshift.com/multipart-forms-and-file-uploads-with-tomcat-7/
+  		http://stackoverflow.com/questions/32008182/wildfly-9-http-to-https
+  		https://forums.openshift.com/changes-to-standalonexml-file
+  			
+	\end{thebibliography}
+\end{document}
