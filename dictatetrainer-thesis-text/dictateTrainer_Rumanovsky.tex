@@ -97,6 +97,7 @@
     \chapter{Implementácia systému}
     
     \par Pri implementácii systému bol kladený dôraz na použitie moderných technológií a štruktúra je navrhnutá tak, aby sa ktorákoľvek súčasť dala v prípade potreby rýchlo nahradiť inou bez nutnosti zásahu do iných vrstiev systému. V následujúcich sekciách sú postupne uvedené použité technológie podľa príslušnosti k vrstve systému.
+    
       \section{Štruktúra aplikácie}
       	\subsection{Rozdelenie aplikácie na moduly}
       	\par Systém je rozdelený na 6 modulov. Prvý s názvom \texttt{dictatetrainer-model} obsahuje prístup k databáze, servisnú vrstvu aplikácie a k nim prislúchajúce testy, modul \texttt{dictatetrainer-resource} obsahuje verejne prístupné rozhrania spolu s ich testami, \texttt{dictatetrainer-corrector} je zvláštny modul zabezpečujúci opravu diktátu a poskytuje verejne prístupné rozhranie. Modul \texttt{dictatetrainer-int-tests}, ako je už z názvu patrné, združuje integračné testy systému. \texttt{dictatetrainer-resource-war} pozostáva s prezentačnej vrstvy aplikácie a nakoniec modul \texttt{dictatetrainer-ear} zabezpečuje správne zabalenie celého systému, oddeľuje závislosti do zvláštneho adresára a backend do zvláštneho archívu tak, aby bola štruktúra aplikácie čo najprehľadnejšia.
@@ -110,7 +111,7 @@
       \pagebreak
       \subsection{Ukladanie audio súborov s diktátmi} \label{ukladanie}
       \par Existujú dve možnosti ako ukladať audio súbory a všeobecne akékoľvek dáta. Prvý prístup ukladá dáta priamo do databázy ako BLOB\footnote{dátový typ pre bližšie nešpecifikované binárne dáta v databáze}. Nevýhoda tejto alternatívy je v tom, že neúmerne zväčšuje databázu, spomaľuje dotazy a všeobecne degraduje jej rýchlosť.
-      \par Druhá možnosť je ukladať súbory priamo na server a do databázy pridať iba odkaz, resp. meno súboru ako jeden stĺpec v tabuľke. Tento prístup je pri veľkých súboroch odporúčaný \cite{sof1}. Rozhodol som sa preto oddeliť súbory s diktátmi od databázy a ponechať tam iba odkazy. Viac o konkrétnom riešení s použitím databázy Postgres a aplikačného serveru Wildfly je uvedené v kapitole \ref{nasadenie}. Nasadenie systému.
+      \par Druhá možnosť je ukladať súbory priamo na server a do databázy pridať iba odkaz, resp. meno súboru ako jeden stĺpec v tabuľke. Tento prístup je pri veľkých súboroch odporúčaný \cite{sof1}. Rozhodol som sa preto oddeliť súbory s diktátmi od databázy a ponechať tam iba odkazy. Viac o konkrétnom riešení s použitím databázy Postgres a aplikačného servera Wildfly je uvedené v kapitole \ref{nasadenie}. Nasadenie systému.
       \section{Bussiness vrstva aplikácie}
       \section{Vrstva rozhraní - REST}
       \section{Prezentačná vrstva}
@@ -127,8 +128,15 @@
 
       		\subsection{JSON Web Token}
       		\subsection{Zabezpečenie na úrovni AngularJS frameworku}
+      		\par 
       		\subsection{Autentikácia pomocou sociálnych sietí}
+      		
       		\subsection{Cross Domain Resource Sharing (CORS)}
+      		\par CORS HTTP požiadavka\footnote{V preklade: Zdieľanie zdrojov naprieč doménami} zdrojovej stránky je definovaná ako požiadavka na dáta alebo informácie z inej domény ako je doména zdroja. Dáta môžu byť v akejkoľvek forme, napr. obrázky, css štýly, skripty atď. Z bezpečnostných dôvodov sú CORS požiadavky vo všetkých webových prehliadačoch implicitne zakázané. Explicitne je však možné prístup pre určité rozhrania a domény povoliť. Ku konkrétnej odpovedi servera sa pridajú hlavičky ktoré popisujú množinu domén a HTTP metód, ktorým je povolený prístup. HTTP metódy, ktoré môžu spôsobiť vedľajšie efekty na odosielané používateľské dáta (predovšetkým GET a POST), je najprv vykonaná tzv. predpožiadavka\footnote{angl. Preflight request}, ktorý pozdrží odoslanie odpovede servera do prehliadača až do okamihu, keď je povolený prístup na základe hlavičiek\cite{mozilla2015}. Správny formát hlavičiek znižuje bezpečnostné riziká spojené s CORS, predovšetkým CSRF útok\footnote{Cross-Site Request Forgery, v preklade: Falšovanie požiadaviek cudzími doménami je typ útoku, ktorý vykoná požiadavku z inej domény ako doména servera využívajúc aktuálne prihláseného používateľa}\cite{sof4}. Definícia hlavičiek spolu s dokumentáciou sa nachádza na stránkach pracovnej skupiny W3C\cite{w3c2014}.
+      		\par Povolenie prístupu musí byť definovaná na strane servera. Z návrhu aplikácie vyplýva, že je nutné povoliť jediný zdroj slúžiaci na opravu diktátov, využívajúci metódu POST. Java ponúka hneď niekoľko možností.
+      		\par Prvá možnosť je použitie filtru, ktorý implementuje rozhranie \texttt{ContainerResponseFilter}\cite{matei14}\cite{sof3}. Tento spôsob však povoľuje prístup pre všetky zdroje, preto je pre aplikáciu nevhodný. Druhé riešenie je pridať prístupové hlavičky priamo pri budovaní odpovede spolu s telom odpovede a návratovým kódom. Výhoda tohto riešenia je, že umožňuje vybrať podmnožinu dostupných zdrojov u ktorých bude povolený CORS. Bohužiaľ, tento postup nie je možné použiť pre HTTP metódu POST, pretože ak je požiadavka vykonaná z inej domény, hlavičky sa nepridajú a odpoveď skončí s chybou\cite{sof2}. 
+      		\par Riešenie spĺňajúce obmedzenia aplikácie využíva externú knižnicu\cite{dzhuvinov15}, ktorá definuje prístupové hlavičky priamo v súbore \texttt{web.xml}. Tento postup jednak ponúka možnosť vybrať z dostupných zdrojov tie, ktoré budú povolené, a taktiež funguje s HTTP metódou POST\cite{sof2}.
+      		
       \section{Modul na opravu diktátov} \label{modul-diktaty}
       
       \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva so značkovača vstupného textu od užívateľa a definície pravidiel, podľa ktorých bude určený typ chyby a jej popis. Značkovač je vo východzej verzii implementovaný za pomoci knižnice \texttt{diff-match-patch} od Google\cite{diffmatchpatch}, slúžiacej na porovnávanie reťazcov. Definícia pravidiel vychádza z výstupu bakalárskej práce Vojtěcha Škvařila \cite{skvaril14} a je prepísaný z pseudokódu do programovacieho Jazyka Java.
@@ -219,6 +227,7 @@
 
     % Bibliography goes here
     \begin{thebibliography}{59}
+    
     	\bibitem{crimson15}
   		Fahs, C. Ramsey.
   		\emph{EdX Overtakes Coursera in Number of Ivy League Partners}
@@ -299,6 +308,64 @@
   		2011
   		[cit. 2015-10-29].
   		Dostupné z: <\url{http://code.google.com/p/google-diff-match-patch/wiki/API}>.
+  		
+  		\bibitem{mozilla2015}
+  		Mozilla Developer Network.
+  		\emph{HTTP access control (CORS)}
+  		[online].
+  		2015
+  		[cit. 2015-11-01].
+  		Dostupné z: <\url{https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS}>.
+  		
+  		\bibitem{w3c2014}
+  		W3C.
+  		\emph{Cross-Origin Resource Sharing}
+  		[online].
+  		2014
+  		[cit. 2015-11-01].
+  		Dostupné z: <\url{http://www.w3.org/TR/cors/}>.
+  		
+  		\bibitem{sof2}
+  		Stack Exchange Inc.
+  		\emph{CORS angular js + restEasy on POST}
+  		[online].
+  		2014
+  		[cit. 2015-11-01].
+  		Dostupné z: <\url{http://stackoverflow.com/questions/22849972/cors-angular-js-resteasy-on-post}>.
+		  	
+	  	\bibitem{dzhuvinov15}
+  		Dzhuvinov, Vladimir.
+  		\emph{CORS Filter : Cross-Origin Resource Sharing for Your Java Web Apps}
+  		[online].
+  		2015
+  		[cit. 2015-11-01].
+  		Dostupné z: <\url{http://software.dzhuvinov.com/cors-filter-configuration.html}>.	  		
+ 		
+ 		\bibitem{sof3}
+  		Stack Exchange Inc.
+  		\emph{How to enable Cross domain requests on JAX-RS web services?}
+  		[online].
+  		2014
+  		[cit. 2015-11-01].
+  		Dostupné z: <\url{http://stackoverflow.com/questions/23450494/how-to-enable-cross-domain-requests-on-jax-rs-web-services}>.
+ 		
+ 		\bibitem{matei14}
+  		Matei, Adrian.
+  		\emph{How to add CORS support on the server side in Java with Jersey}
+  		[online].
+  		2014
+  		[cit. 2015-11-01].
+  		Dostupné z: <\url{http://www.codingpedia.org/ama/how-to-add-cors-support-on-the-server-side-in-java-with-jersey/}>.
+  		
+  		\bibitem{sof4}
+  		Stack Exchange Inc.
+  		\emph{When is it safe to enable CORS?}
+  		[online].
+  		2015
+  		[cit. 2015-11-01].
+  		Dostupné z: <\url{http://stackoverflow.com/questions/9713644/when-is-it-safe-to-enable-cors}>.
+  		
+  		
   		
   		http://goldfirestudios.com/blog/104/howler.js-Modern-Web-Audio-Javascript-Library
   		http://stackoverflow.com/questions/22684037/how-to-configure-wildfly-to-serve-static-content-like-images
