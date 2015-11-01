@@ -9,6 +9,10 @@
   plainpages = false,               % We have multiple page numberings
   pdfpagelabels                     % Generate pdf page labels
 ]{hyperref}
+\usepackage{listings}             % Include the listings-package
+
+\usepackage{caption}
+\captionsetup[lstlisting]{position=bottom}
 
 \thesislang{sk}                   % The language of the thesis
 \thesistitle{Portál pre písanie a vyhodnocovanie diktátov}       % The title of the thesis
@@ -124,7 +128,8 @@
       		\subsection{JSON Web Token}
       		\subsection{Zabezpečenie na úrovni AngularJS frameworku}
       		\subsection{Autentikácia pomocou sociálnych sietí}
-      \section{Modul na opravu diktátov}
+      		\subsection{Cross Domain Resource Sharing (CORS)}
+      \section{Modul na opravu diktátov} \label{modul-diktaty}
       
       \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva so značkovača vstupného textu od užívateľa a definície pravidiel, podľa ktorých bude určený typ chyby a jej popis. Značkovač je vo východzej verzii implementovaný za pomoci knižnice \texttt{diff-match-patch} od Google\cite{diffmatchpatch}, slúžiacej na porovnávanie reťazcov. Definícia pravidiel vychádza z výstupu bakalárskej práce Vojtěcha Škvařila \cite{skvaril14} a je prepísaný z pseudokódu do programovacieho Jazyka Java.
       \par Prístup k modulu zabezpečuje verejné REST rozhranie, ktoré ako vstup berie dva reťazce - správny text diktátu a text napísaný užívateľom (viac v prílohe \ref{navod_oprava}). Výstup vo formáte JSON obsahuje list jednotlivých chýb zoradených podľa výskytu v diktáte.
@@ -143,6 +148,7 @@
     \chapter{Testovanie systému}
       \section{Jednotkové testy}
       \section{Integračné testy}
+      \par mvn clean install -PintegrationTests-wildfly
       \section{Manuálne testovanie}
     \chapter{Nasadenie systému} \label{nasadenie}
       \section{Databázový systém}
@@ -151,8 +157,59 @@
         
     \appendix
     \chapter{Používateľský manuál} 	  % Appendices
-      \section{Definícia dostupných rozhraní systému}    
+
       \section{Rozhranie slúžiace na opravu diktátov} \label{navod_oprava}
+      \par V nasledujúcej podkapitole bude popísané REST rozhranie spolu s korektným telom požiadavky a telom odpovede.
+%tablebegin
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}|c|c|c|c|@{}}
+\hline
+\textbf{HTTP metóda} & \textbf{Cesta} & \textbf{Povolené role} & \textbf{Návratový kód}  \\ \hline
+           POST     &  /api/correctDictate         &     neautorizovaný       &    201        \\ \hline
+\end{tabular}
+\caption{Popis rozhrania na opravu diktátu}
+\label{rozhranie-oprava}
+\end{table}
+%tableend
+%listingbegin
+\lstset{language=Java}          % Set your language (you can change the language for each code-block optionally)
+\begin{lstlisting}[frame=single]  % Start your code-block
+
+{ 
+	transcriptText: String,
+	userText: String
+}
+\end{lstlisting}
+\captionof{lstlisting}{Telo požiadavky}
+%listingend
+%listingbegin
+\bigskip
+\lstset{language=Java}          % Set your language (you can change the language for each code-block optionally)
+\begin{lstlisting}[frame=single]  % Start your code-block
+
+{ 
+	totalMistakes: Integer,
+	mistakes: 
+		[{ 
+		  id: Long,
+		  wordPosition: String,
+		  correctWord: String,
+		  writtenWord: String,
+		  priority: Long,
+		  mistakeType: enum,
+		  mistakeDescription: String 	
+		}]	
+}
+\end{lstlisting}
+\captionof{lstlisting}{Telo odpovede}
+%listingend
+\bigskip
+\par Viac o tom, čo jednotlivé atribúty znamenajú je uvedené v kapitole \ref{modul-diktaty}.
+
+
+
+
       \section{Manuál ku grafickému užívateľskému rozhraniu}
     \chapter{Snímky obrazoviek}
 
@@ -248,6 +305,9 @@
   		https://blog.openshift.com/multipart-forms-and-file-uploads-with-tomcat-7/
   		http://stackoverflow.com/questions/32008182/wildfly-9-http-to-https
   		https://forums.openshift.com/changes-to-standalonexml-file
+  		
+  		
+  	http://stackoverflow.com/questions/23450494/how-to-enable-cross-domain-requests-on-jax-rs-web-services
   			
 	\end{thebibliography}
 \end{document}
