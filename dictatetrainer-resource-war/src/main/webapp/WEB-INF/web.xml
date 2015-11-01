@@ -18,7 +18,7 @@
     <!--use https to secure everything-->
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>dictatetrainer-resource-war-0.0.1-SNAPSHOT</web-resource-name>
+            <web-resource-name>All Resources</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <user-data-constraint>
@@ -34,6 +34,22 @@
             <url-pattern>/api/users/*</url-pattern>
             <http-method>POST</http-method>
         </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <!--no constraint regarding security on /api/correctDictate -->
+    <security-constraint>
+        <display-name>API New User</display-name>
+        <web-resource-collection>
+            <web-resource-name>API New User</web-resource-name>
+            <url-pattern>/api/correctDictate</url-pattern>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
     </security-constraint>
 
     <!--you need to be logged to access /api/*-->
@@ -50,6 +66,9 @@
         <auth-constraint>
             <role-name>*</role-name>
         </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
     </security-constraint>
 
     <!--method by which WildFly will be authenticating the users-->
@@ -69,4 +88,52 @@
         <role-name>STUDENT</role-name>
     </security-role>
 
+
+
+    <!--CORS filter definition-->
+    <filter>
+        <filter-name>CORS</filter-name>
+        <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
+
+        <init-param>
+            <param-name>cors.allowGenericHttpRequests</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>cors.allowOrigin</param-name>
+            <param-value>*</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>cors.allowSubdomains</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>cors.supportedMethods</param-name>
+            <param-value>POST, OPTIONS</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>cors.supportedHeaders</param-name>
+            <param-value>Content-Type, X-Requested-With</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>cors.supportsCredentials</param-name>
+            <param-value>false</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>cors.maxAge</param-name>
+            <param-value>3600</param-value>
+        </init-param>
+    </filter>
+
+    <!-- CORS Filter mapping -->
+    <filter-mapping>
+        <filter-name>CORS</filter-name>
+        <url-pattern>/api/correctDictate</url-pattern>
+    </filter-mapping>
 </web-app>
