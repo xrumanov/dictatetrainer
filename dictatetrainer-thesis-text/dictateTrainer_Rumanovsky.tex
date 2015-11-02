@@ -31,14 +31,21 @@
       \AdvisorName
     \end{ThesisDeclaration}
     \begin{ThesisThanks}            % The acknowledgements (optional)
-      Ďakujem vedúcemu práce Mgr. Marekovi Grácovi, Ph.D. za vedenie, trpezlivosť a rady pri písaní diplomovej práce a mojej rodine, kamarátom a priateľke za podporu.
+      Ďakujem vedúcemu práce Mgr. Marekovi Grácovi, Ph.D. za vedenie, trpezlivosť a rady pri písaní diplomovej
+       práce a mojej rodine, kamarátom a priateľke za podporu.
     \end{ThesisThanks}
     \begin{ThesisAbstract}          % The abstract
-      Úlohou diplomovej práce je vytvorenie diktátového webového systému určeného predovšetkým žiakom základných a stredných škôl a ich učiteľom. Zahŕňa to taktiež vytvorenie samostatného modulu vrámci aplikácie, ktorý bude verejne prístupný skrz rozhranie. To bude zabezpečovať opravu diktátu a bude použiteľné aj pre prípadné iné systémy.
+      Úlohou diplomovej práce je vytvorenie diktátového webového systému určeného predovšetkým žiakom základných
+      a stredných škôl a ich učiteľom. Zahŕňa to taktiež vytvorenie samostatného modulu vrámci aplikácie, ktorý
+      bude verejne prístupný skrz rozhranie. To bude zabezpečovať opravu diktátu a bude použiteľné aj pre
+      prípadné iné systémy.
     \end{ThesisAbstract}
     \begin{ThesisAbstracten}          % The abstract
 
-      The aim of this Master thesis is to create a dictate web system, which can be used mainly by pupils of elementary school and high school and their teachers. It also contains creation of an independent module inside the app, that will be public and will correct the dictate based on the input text using proper endpoint. This module will also be reusable for other systems.
+      The aim of this Master thesis is to create a dictate web system, which can be used mainly by pupils of
+      elementary school and high school and their teachers. It also contains creation of an independent module
+      inside the app, that will be public and will correct the dictate based on the input text using proper
+      endpoint. This module will also be reusable for other systems.
     \end{ThesisAbstracten}
     \begin{ThesisKeyWords}          % The keywords
       Java EE, dictate, trainer, grammar correction, correction module
@@ -50,10 +57,14 @@
   \MainMatter                     % The main matter
     \chapter{Úvod}          % Chapters
   
-  Informačné technológie sa v súčasnosti dostávajú do stále väčšieho množstva odvetví ľudskej činnosti. Aj do takých, v akých by sme ich ešte pred pár rokmi nečakali. A v mnohých majú nepopierateľne obrovský potenciál rozvoja. Jedným z príkladov takéhoto odvetvia je e-learning, alebo slovensky vzdelávanie prostredníctvom informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju tejto oblasti. Prispeli k tomu nemalou mierou aj niektoré renomované univerzity \cite{crimson15}, ktoré poskytujú svoje kurzy zdarma alebo za menší poplatok. Celá táto evolúcia vzdelávania poskytuje doteraz netušené možnosti a to skutočne pre každého kto má záujem. Je dokonca možné absolvovať vopred vybrané kurzy a získať certifikát, ktorý si potom možno uviesť ako doplnkové vzdelanie v životopise a preukázať tak svoju kompetenciu v určitom odvetví alebo činnosti. Z horeuvedených príkladov je vidno, že e-learning v akejkoľvek forme má zmysel aj potenciál a prináša nesporné výhody pre žiakov, študentov aj vyučujúcich. 
-  K dôležitým schopnostiam každého človeka, či už v profesionálnom alebo súkromnom živote, patrí písomný prejav. Jeden z jeho najpodstatnejších aspektov je správna gramatika a pravopis. Tie sa žiaci učia na školách od najútlejšieho veku a osvojovanie gramatiky prebieha už niekoľko desaťročí rovnakým spôsobom. Ku klasickým nástrojom na trénovanie správneho pravopisu patrí písanie diktátov. Do tejto oblasti moderné technológie ešte celkom nestihli preniknúť. Diktát sa píše na papier a následne je opravovaný a hodnotený učiteľom. Samozrejme už v súčasnosti existujú viac či menej kvalitné alternatívy (viď kapitola 2). 
-  Kvôli neexistencii dostačujúcej aplikácie pre trénovanie diktátov za pomoci počítača, je v následujúcom texte navrhnutý webový portál, ktorý slúži ako alternatíva k testovaniu gramatiky v škole. Žiak sa môže kedykoľvek, či už na popud učiteľa alebo z vlastnej vôle, otestovať v písaní. Aplikácia si kladie za cieľ rozšíriť písanie a korekciu diktátov, ktorá sa momentálne píše žiakmi a opravuje učiteľmi, o výhody, ktoré ponúkajú informačné technológie. Konkrétne medzi ne patria rýchlejšia - a hlavne automatická - oprava chýb, možnosť ukladania a následného analyzovania chýb v širšom kontexte (či už v prípade konkrétneho študenta alebo prípadne celej triedy) a v neposlednom rade tiež zobrazenie týchto chýb v štatistike.
-  Portál má už v dobe písania tejto práce niekoľko záujemcov, ktorí sa podujmú na funkčnom testovaní. Jednak sú to vybrané základné školy a jednak sa bude systém využívať na Pedagogickej fakulte Masarykovej univerzity pri výuke budúcich pedagógov.
+  \par Informačné technológie sa v súčasnosti dostávajú do stále väčšieho množstva odvetví ľudskej činnosti. Aj
+do takých, v akých by sme ich ešte pred pár rokmi nečakali. A v mnohých majú nepopierateľne obrovský potenciál
+rozvoja. Jedným z príkladov takéhoto odvetvia je e-learning, alebo slovensky vzdelávanie prostredníctvom
+informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju tejto oblasti. Prispeli k tomu
+      nemalou mierou aj niektoré renomované univerzity \cite{crimson15}, ktoré poskytujú svoje kurzy zdarma alebo za menší poplatok. Celá táto evolúcia vzdelávania poskytuje doteraz netušené možnosti a to skutočne pre každého kto má záujem. Je dokonca možné absolvovať vopred vybrané kurzy a získať certifikát, ktorý si potom možno uviesť ako doplnkové vzdelanie v životopise a preukázať tak svoju kompetenciu v určitom odvetví alebo činnosti. Z horeuvedených príkladov je vidno, že e-learning v akejkoľvek forme má zmysel aj potenciál a prináša nesporné výhody pre žiakov, študentov aj vyučujúcich. 
+  \par K dôležitým schopnostiam každého človeka, či už v profesionálnom alebo súkromnom živote, patrí písomný prejav. Jeden z jeho najpodstatnejších aspektov je správna gramatika a pravopis. Tie sa žiaci učia na školách od najútlejšieho veku a osvojovanie gramatiky prebieha už niekoľko desaťročí rovnakým spôsobom. Ku klasickým nástrojom na trénovanie správneho pravopisu patrí písanie diktátov. Do tejto oblasti moderné technológie ešte celkom nestihli preniknúť. Diktát sa píše na papier a následne je opravovaný a hodnotený učiteľom. Samozrejme už v súčasnosti existujú viac či menej kvalitné alternatívy (viď kapitola 2). 
+  \par Kvôli neexistencii dostačujúcej aplikácie pre trénovanie diktátov za pomoci počítača, je v následujúcom texte navrhnutý webový portál, ktorý slúži ako alternatíva k testovaniu gramatiky v škole. Žiak sa môže kedykoľvek, či už na popud učiteľa alebo z vlastnej vôle, otestovať v písaní. Aplikácia si kladie za cieľ rozšíriť písanie a korekciu diktátov, ktorá sa momentálne píše žiakmi a opravuje učiteľmi, o výhody, ktoré ponúkajú informačné technológie. Konkrétne medzi ne patria rýchlejšia - a hlavne automatická - oprava chýb, možnosť ukladania a následného analyzovania chýb v širšom kontexte (či už v prípade konkrétneho študenta alebo prípadne celej triedy) a v neposlednom rade tiež zobrazenie týchto chýb v štatistike.
+  \par Portál má už v dobe písania tejto práce niekoľko záujemcov, ktorí sa podujmú na funkčnom testovaní. Jednak sú to vybrané základné školy a jednak sa bude systém využívať na Pedagogickej fakulte Masarykovej univerzity pri výuke budúcich pedagógov.
     
     \chapter{Analýza systému}
        \section{Definícia problému}
@@ -62,7 +73,7 @@
        		\subsection{Problémy v existujúcich riešeniach}
        		\subsection{Výhody a nevýhody existujúcich riešení}
        \section{Navrhovaný systém}
-       		\subsection{Ciele navrhovaného systému}
+       		\subsection{Ciele navrhovaného systému} \label{spec-app}
        		
 Úlohou tejto diplomovej práce je vytvorenie webového systému na komplexnú prácu s diktátmi, pričom je vopred určená vývojová platforma Java Enterprise Edition. Tento systém bude pozostávať z:
 
@@ -120,23 +131,32 @@
       		\subsection{HTML5}
       		\pagebreak
       \section{Zabezpečenie aplikácie}
-      		\subsection{Zabezpečená komunikácia pomocou HTTPS}
+      		\subsection{Zabezpečená komunikácia pomocou HTTPS} \label{https}
       		\par Základom bezpečnosti akéhokoľvek webového systému je zabezpečená komunikácia. Dáta posielané užívateľom cez sieť vrámci interakcie so systémom vrátane mena, hesla a iných citlivých informácií, by bez nej boli vystavené potenciálnemu riziku odcudzenia. Takýto útok sa nazýva Man in the middle attack\footnote{Typ útoku, kedy útočník napadne komunikáciu medzi užívateľom a serverom s cieľom ukradnúť citlivé dáta}. Je tomu však možno zabrániť zašifrovaním komunikácie s použitím protokolu HTTPS, ktorý je bezpečnou verziou HTTP. Cezeň sa posielajú dáta medzi internetovým prehliadačom a webovou stránkou, ku ktorej je prehliadač pripojený. 
       		\par HTTPS typicky využíva jeden z dvoch protokolov na šifrovanie komunikácie - TLS alebo SSL. Oba používajú tzv. asymetrickú šifru, ktorá pracuje s dvoma typmi kľúčov. Privátny kľúč je bezpečne uložený na webovom serveri a zabezpečuje šifrovanie posielaných dát. Verejný kľúč je distribuovaný komukoľvek, kto chce rozšifrovať informácie zašifrované pomocou privátneho kľúča. Verejný kľúč obdrží používateľ v SSL certifikáte webovej stránky pri prvotnom požiadavku o spojenie \cite{comodo15}.
       		\par Vo vyvíjanej aplikácii, ktorá je nasadená na službe je vynútený protokol HTTPS. Openshift ponúka svoj SSL certifikát, takže nie je nutné vytvárať vlastný. Je iba potrebné správne nastaviť \texttt{web.xml} a \texttt{jboss-web.xml} podľa dokumentácie \cite{openshift15}.
       		\pagebreak
 
-      		\subsection{JSON Web Token}
-      		\subsection{Zabezpečenie na úrovni AngularJS frameworku}
+      		\subsection{Basic autentifikácia a AngularJS}
+      		\par Podľa špecifikácie aplikácie uvedenej v kapitole \ref{spec-app} má navrhnutý systém obsahovať administračnú časť pre pedagógov a používateľskú časť pre žiakov. Z tohoto dôvodu je nutné zabezpečiť riadenie prístupu k zdrojom. Ako riešenie je použitá Basic autentifikácia používateľa medzi klientom a serverom.
+      		\par Podľa servera \texttt{spaghetti.io}\cite{spaghetti14} je Basic autentifikácia jedna z najrozšírenejších a najviac používaných autentifikačných metód. Aby bolo možné implementovať túto funkcionalitu, musí byť na strane klienta do každej požiadavky pridaná hlavička obsahujúca Base64\footnote{Číslovací systém založený na 64 rôznych znakoch využívajúci veľmi jednoduchý kódovací/dekódovací algoritmus. Neponúka jednosmernú šifrovaciu funkciu ako napr. SHA1} reťazec vo formáte \texttt{Authorization:Basic username:password}. Napriek tomu, že sa meno a heslo nachádza v nezašifrovanej podobe v hlavičke, je protokol bezpečný, vyžaduje však zabezpečenú komunikáciu medzi klientom a serverom, teda HTTPS (kapitola \ref{https}). 
+      		\par Implementácia Basic autentifikácie na strane klienta vychádza z návodu od Watmorea\cite{watmore14}. Je realizovaná tak, že sa najprv odošle požiadavka na konkrétny zdroj s danou HTTP metódou. Pri odpovedi prezentačná vrstva overí, či požiadavka skončila úspešne, ak nie zobrazí chybové hlásenie. Ak je dotaz úspešný, uložia sa informácie jednak do globálnej premennej, aby boli prístupné ostatným stránkam resp. im prislúchajúcim skriptom a jednak do HTTP cookie\footnote{dáta získané od webovej stránky, uložené v prehliadači používateľa}. Toto riešenie bolo zvolené z toho dôvodu, aby sa pri náhodnom alebo cielenom obnovení stránky nestratili prihlasovacie dáta a užívateľ sa nemusel znova prihlasovať do systému. Odhlásenie používateľa znamená presmerovanie na prihlasovaciu stránku a zmazanie HTTP cookie s prihlasovacími údajmi
+      		
+      		\subsection{Zabezpečenie ciest na úrovni AngularJS frameworku}
+      		\par Zabezpečenie prezentačnej vrstvy pred neoprávneným prístupom používateľa je rovnako dôležité ako zabezpečenie časti aplikácie starajúcej sa o prístup k dátam. Ak je používateľ neprihlásený, alebo prihlásený pod rolou, ktorá k uvedenej adrese nemá mať prístup, musí byť zamedzený a používateľ primerane oboznámený.
       		\par 
-      		\subsection{Autentikácia pomocou sociálnych sietí}
+      		
+      		\subsection{Autentifikácia pomocou sociálnych sietí}
+      		\par 
       		
       		\subsection{Cross Domain Resource Sharing (CORS)}
-      		\par CORS HTTP požiadavka\footnote{V preklade: Zdieľanie zdrojov naprieč doménami} zdrojovej stránky je definovaná ako požiadavka na dáta alebo informácie z inej domény ako je doména zdroja. Dáta môžu byť v akejkoľvek forme, napr. obrázky, css štýly, skripty atď. Z bezpečnostných dôvodov sú CORS požiadavky vo všetkých webových prehliadačoch implicitne zakázané. Explicitne je však možné prístup pre určité rozhrania a domény povoliť. Ku konkrétnej odpovedi servera sa pridajú hlavičky ktoré popisujú množinu domén a HTTP metód, ktorým je povolený prístup. HTTP metódy, ktoré môžu spôsobiť vedľajšie efekty na odosielané používateľské dáta (predovšetkým GET a POST), je najprv vykonaná tzv. predpožiadavka\footnote{angl. Preflight request}, ktorý pozdrží odoslanie odpovede servera do prehliadača až do okamihu, keď je povolený prístup na základe hlavičiek\cite{mozilla2015}. Správny formát hlavičiek znižuje bezpečnostné riziká spojené s CORS, predovšetkým CSRF útok\footnote{Cross-Site Request Forgery, v preklade: Falšovanie požiadaviek cudzími doménami je typ útoku, ktorý vykoná požiadavku z inej domény ako doména servera využívajúc aktuálne prihláseného používateľa}\cite{sof4}. Definícia hlavičiek spolu s dokumentáciou sa nachádza na stránkach pracovnej skupiny W3C\cite{w3c2014}.
+      		\par Jedným z požiadaviek na aplikáciu (kap. \ref{spec-app}) je vytvoriť rozhranie prístupné ostatným doménam, ktoré bude schopné opraviť užívateľský text podľa zadaného originálu. Túto funkciu bude môcť v budúcnosti využívať napr. Informačný systém Masarykovej univerzity vo svojich projektoch. Keďže ide o prístup k dátam a zdrojom aplikácie zvonku, je nutné riešiť tzv. Cross Domain Resource Sharing\footnote{V preklade: Zdieľanie zdrojov naprieč doménami}.
+      		\par CORS HTTP požiadavka zdrojovej stránky je definovaná ako požiadavka na dáta alebo informácie z inej domény ako je doména zdroja. Dáta môžu byť v akejkoľvek forme, napr. obrázky, css štýly, skripty atď. Z bezpečnostných dôvodov sú CORS požiadavky vo všetkých webových prehliadačoch implicitne zakázané. Explicitne je však možné prístup pre určité rozhrania a domény povoliť. Ku konkrétnej odpovedi servera sa pridajú hlavičky ktoré popisujú množinu domén a HTTP metód, ktorým je povolený prístup. HTTP metódy, ktoré môžu spôsobiť vedľajšie efekty na odosielané používateľské dáta (predovšetkým GET a POST), je najprv vykonaná tzv. predpožiadavka\footnote{angl. Preflight request}, ktorý pozdrží odoslanie odpovede servera do prehliadača až do okamihu, keď je povolený prístup na základe hlavičiek\cite{mozilla2015}. Správny formát hlavičiek znižuje bezpečnostné riziká spojené s CORS, predovšetkým CSRF útok\footnote{Cross-Site Request Forgery, v preklade: Falšovanie požiadaviek cudzími doménami je typ útoku, ktorý vykoná požiadavku z inej domény ako doména servera využívajúc aktuálne prihláseného používateľa}\cite{sof4}. Definícia hlavičiek spolu s dokumentáciou sa nachádza na stránkach pracovnej skupiny W3C\cite{w3c2014}.
       		\par Povolenie prístupu musí byť definovaná na strane servera. Z návrhu aplikácie vyplýva, že je nutné povoliť jediný zdroj slúžiaci na opravu diktátov, využívajúci metódu POST. Java ponúka hneď niekoľko možností.
       		\par Prvá možnosť je použitie filtru, ktorý implementuje rozhranie \texttt{ContainerResponseFilter}\cite{matei14}\cite{sof3}. Tento spôsob však povoľuje prístup pre všetky zdroje, preto je pre aplikáciu nevhodný. Druhé riešenie je pridať prístupové hlavičky priamo pri budovaní odpovede spolu s telom odpovede a návratovým kódom. Výhoda tohto riešenia je, že umožňuje vybrať podmnožinu dostupných zdrojov u ktorých bude povolený CORS. Bohužiaľ, tento postup nie je možné použiť pre HTTP metódu POST, pretože ak je požiadavka vykonaná z inej domény, hlavičky sa nepridajú a odpoveď skončí s chybou\cite{sof2}. 
       		\par Riešenie spĺňajúce obmedzenia aplikácie využíva externú knižnicu\cite{dzhuvinov15}, ktorá definuje prístupové hlavičky priamo v súbore \texttt{web.xml}. Tento postup jednak ponúka možnosť vybrať z dostupných zdrojov tie, ktoré budú povolené, a taktiež funguje s HTTP metódou POST\cite{sof2}.
-      		
+\pagebreak
+
       \section{Modul na opravu diktátov} \label{modul-diktaty}
       
       \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva so značkovača vstupného textu od užívateľa a definície pravidiel, podľa ktorých bude určený typ chyby a jej popis. Značkovač je vo východzej verzii implementovaný za pomoci knižnice \texttt{diff-match-patch} od Google\cite{diffmatchpatch}, slúžiacej na porovnávanie reťazcov. Definícia pravidiel vychádza z výstupu bakalárskej práce Vojtěcha Škvařila \cite{skvaril14} a je prepísaný z pseudokódu do programovacieho Jazyka Java.
@@ -145,7 +165,7 @@
 	  \par Chyba je objekt typu \texttt{Mistake}. Obsahuje nasledovné atribúty: 
 \begin{itemize}
 	\item Jednoznačný identifikátor \texttt{id}
-	\item Pozíciu chyby (Pozícia je definovaná ako číslo tokenu\footnote{token je kategorizovaný blok textu, obyčajne pozostáva z nedeliteľných znakov} vrámci diktátu.)
+	\item Pozíciu chyby (Pozícia je definovaná ako číslo tokenu\footnote{Token je kategorizovaný blok textu, obyčajne pozostáva z nedeliteľných znakov} vrámci diktátu.)
 	\item správne slovo alebo frázu
 	\item prioritu slova (číslo od 1 do 10, pričom 10 je najväčšia priorita)
 	\item typ chyby - chýbajúce slovo, nadbytočné slovo, chyba
@@ -153,6 +173,8 @@
 \end{itemize}
 	
       \par Celý modul je navrhnutý s dôrazom na modifikovateľnosť a nahraditeľnosť jednotlivých častí. Stačí vymeniť implementácie daných Java rozhraní. Modul je používaný aj samotnou navrhovanou aplikáciou, kde využíva objekty typu \texttt{Mistake} a ukladá ich do databázy spolu s informáciami o používateľovi a diktáte ako objekt typu \texttt{Error}. Návrh bol zvolený z toho dôvodu, aby bol opravovací modul čo najjednoduchšie použiteľný aplikáciami tretích strán (preto má objekt typu \texttt{Mistake} iba základné atribúty, ktoré je možné vyčítať z daných vstupných dát). Objekt typu \texttt{Error} je ukladaný do databáze a zamýšľané použitie dodatočných informácii je na generovanie štatistických dát o jednotlivých používateľoch a diktátoch.
+      
+      
     \chapter{Testovanie systému}
       \section{Jednotkové testy}
       \section{Integračné testy}
@@ -162,70 +184,8 @@
       \section{Databázový systém}
       \section{Aplikačný server}
     \chapter{Záver}   
-        
-    \appendix
-    \chapter{Používateľský manuál} 	  % Appendices
-
-      \section{Rozhranie slúžiace na opravu diktátov} \label{navod_oprava}
-      \par V nasledujúcej podkapitole bude popísané REST rozhranie spolu s korektným telom požiadavky a telom odpovede.
-%tablebegin
-\begin{table}[htbp]
-\centering
-\begin{tabular}{@{}|c|c|c|c|@{}}
-\hline
-\textbf{HTTP metóda} & \textbf{Cesta} & \textbf{Povolené role} & \textbf{Návratový kód}  \\ \hline
-           POST     &  /api/correctDictate         &     neautorizovaný       &    201        \\ \hline
-\end{tabular}
-\caption{Popis rozhrania na opravu diktátu}
-\label{rozhranie-oprava}
-\end{table}
-%tableend
-%listingbegin
-\lstset{language=Java}          % Set your language (you can change the language for each code-block optionally)
-\begin{lstlisting}[frame=single]  % Start your code-block
-
-{ 
-	transcriptText: String,
-	userText: String
-}
-\end{lstlisting}
-\captionof{lstlisting}{Telo požiadavky}
-%listingend
-%listingbegin
-\bigskip
-\lstset{language=Java}          % Set your language (you can change the language for each code-block optionally)
-\begin{lstlisting}[frame=single]  % Start your code-block
-
-{ 
-	totalMistakes: Integer,
-	mistakes: 
-		[{ 
-		  id: Long,
-		  wordPosition: String,
-		  correctWord: String,
-		  writtenWord: String,
-		  priority: Long,
-		  mistakeType: enum,
-		  mistakeDescription: String 	
-		}]	
-}
-\end{lstlisting}
-\captionof{lstlisting}{Telo odpovede}
-%listingend
-\bigskip
-\par Viac o tom, čo jednotlivé atribúty znamenajú je uvedené v kapitole \ref{modul-diktaty}.
-
-
-
-
-      \section{Manuál ku grafickému užívateľskému rozhraniu}
-    \chapter{Snímky obrazoviek}
-
-
-
-
-
-    % Bibliography goes here
+       
+           % Bibliography goes here
     \begin{thebibliography}{59}
     
     	\bibitem{crimson15}
@@ -253,7 +213,7 @@
   		Dostupné z: <\url{https://developers.openshift.com/en/troubleshooting-faq.html#_how_do_i_redirect_traffic_to_https}>.
   		
   		\bibitem{samwell14}
-  		Samwell.
+  		Samwell, Jon.
   		\emph{URL Route Authorization and Security in Angular}
   		[online].
   		2014
@@ -261,7 +221,7 @@
   		Dostupné z: <\url{http://jonsamwell.com/url-route-authorization-and-security-in-angular/}>.
   		
   		\bibitem{yalkabov14}
-  		Yalkabov.
+  		Yalkabov, Sahat.
   		\emph{Build an Instagram clone with AngularJS, Satellizer, Node.js and MongoDB}
   		[online].
   		2014
@@ -269,7 +229,7 @@
   		Dostupné z: <\url{https://hackhands.com/building-instagram-clone-angularjs-satellizer-nodejs-mongodb/}>.
   		
   		\bibitem{mik14}
-  		Mikołajczyk.
+  		Mikołajczyk, Michal.
   		\emph{Top 18 Most Common AngularJS Developer Mistakes}
   		[online].
   		2015
@@ -365,7 +325,21 @@
   		[cit. 2015-11-01].
   		Dostupné z: <\url{http://stackoverflow.com/questions/9713644/when-is-it-safe-to-enable-cors}>.
   		
+  		\bibitem{spaghetti14}
+  		Mitica, Gabrielle.
+  		\emph{AngularJS and Basic Auth}
+  		[online].
+  		2014
+  		[cit. 2015-11-01].
+  		Dostupné z: <\url{http://spaghetti.io/cont/article/angularjs-and-basic-auth/12/1.html}>.
   		
+  		\bibitem{watmore14}
+  		Watmore, Jason.
+  		\emph{AngularJS Basic HTTP Authentication Example}
+  		[online].
+  		2014
+  		[cit. 2015-11-02].
+  		Dostupné z: <\url{http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx}>.
   		
   		http://goldfirestudios.com/blog/104/howler.js-Modern-Web-Audio-Javascript-Library
   		http://stackoverflow.com/questions/22684037/how-to-configure-wildfly-to-serve-static-content-like-images
@@ -373,8 +347,65 @@
   		http://stackoverflow.com/questions/32008182/wildfly-9-http-to-https
   		https://forums.openshift.com/changes-to-standalonexml-file
   		
-  		
-  	http://stackoverflow.com/questions/23450494/how-to-enable-cross-domain-requests-on-jax-rs-web-services
-  			
-	\end{thebibliography}
+  		  			
+	\end{thebibliography} 
+	
+    \appendix
+    \chapter{Používateľský manuál} 	  % Appendices
+
+      \section{Rozhranie slúžiace na opravu diktátov} \label{navod_oprava}
+      \par V nasledujúcej podkapitole bude popísané REST rozhranie spolu s korektným telom požiadavky a telom odpovede.
+%tablebegin
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}|c|c|c|c|@{}}
+\hline
+\textbf{HTTP metóda} & \textbf{Cesta} & \textbf{Povolené role} & \textbf{Návratový kód}  \\ \hline
+           POST     &  /api/correctDictate         &     neautorizovaný       &    201        \\ \hline
+\end{tabular}
+\caption{Popis rozhrania na opravu diktátu}
+\label{rozhranie-oprava}
+\end{table}
+%tableend
+%listingbegin
+\lstset{language=Java}          % Set your language (you can change the language for each code-block optionally)
+\begin{lstlisting}[frame=single]  % Start your code-block
+
+{ 
+	transcriptText: String,
+	userText: String
+}
+\end{lstlisting}
+\captionof{lstlisting}{Telo požiadavky}
+%listingend
+%listingbegin
+\bigskip
+\lstset{language=Java}          % Set your language (you can change the language for each code-block optionally)
+\begin{lstlisting}[frame=single]  % Start your code-block
+
+{ 
+	totalMistakes: Integer,
+	mistakes: 
+		[{ 
+		  id: Long,
+		  wordPosition: String,
+		  correctWord: String,
+		  writtenWord: String,
+		  priority: Long,
+		  mistakeType: enum,
+		  mistakeDescription: String 	
+		}]	
+}
+\end{lstlisting}
+\captionof{lstlisting}{Telo odpovede}
+%listingend
+\bigskip
+\par Viac o tom, čo jednotlivé atribúty znamenajú je uvedené v kapitole \ref{modul-diktaty}.
+
+
+
+
+      \section{Manuál ku grafickému užívateľskému rozhraniu}
+    \chapter{Snímky obrazoviek}
+
 \end{document}
