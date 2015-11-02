@@ -1,5 +1,5 @@
-angular.module('Dictatetrainer')
-  .controller('SignupCtrl', function($scope, $auth, $window, $rootscope) {
+angular.module('DictateTrainer')
+  .controller('SignupCtrl', function($scope, $window, $rootscope) {
     $scope.reg = {};
     
     $scope.signup = function() {
@@ -10,14 +10,14 @@ angular.module('Dictatetrainer')
                  type: $scope.reg.usertype
                 }
 
-      $auth.signup(user)
-        .then(function(response) {
-          $window.localStorage.currentUser = JSON.stringify(response.data.user);
-          $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
-        })
-        .catch(function(response) {
-          console.log(response.data);
-        });
+      //$auth.signup(user)
+      //  .then(function(response) {
+      //    $window.localStorage.currentUser = JSON.stringify(response.data.user);
+      //    $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
+      //  })
+      //  .catch(function(response) {
+      //    console.log(response.data);
+      //  });
     };
 
   });

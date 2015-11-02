@@ -1,4 +1,4 @@
-angular.module('Dictatetrainer')
+angular.module('DictateTrainer')
   .controller('NavbarCtrl', function($scope, $rootScope, $window, $auth) {
 
     $scope.isAuthenticated = function() {

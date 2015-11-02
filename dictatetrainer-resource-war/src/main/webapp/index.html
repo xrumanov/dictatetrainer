@@ -1,71 +1,46 @@
-<!doctype html>
-<html ng-app="Dictatetrainer">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dictate Trainer Beta</title>
-  <link rel="stylesheet" href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
-  <!--<link rel="stylesheet" href="css/bootstrap.css">-->
-  <!--<link rel="stylesheet" href="css/sweet-alert.css">-->
-  <link rel="stylesheet" href="css/styles.min.css">
-</head>
-<body>
+<!DOCTYPE html>
+<html ng-app="DictateTrainer">
 
-<div ng-controller="NavbarCtrl" class="navbar navbar-default navbar-static-top">
-  <div class="container">
-    <ul class="nav navbar-nav">
-        <a href="/" class="navbar-brand"><i class="ion-document"></i> Dictate Trainer</a>
-        
-      <!-- for Student-->
-      <li ng-if="isAuthenticated() && currentUser.type === 'STUDENT'">
-          <a href="#/dictates">Dictates</a></li>                                   
-      <li ng-if="isAuthenticated() && currentUser.type === 'STUDENT'">
-          <a href="#/statistics">My Statistics</a></li>
-        
-      <!-- for teacher-->
-      <li ng-if="isAuthenticated() && currentUser.type === 'TEACHER'">
-          <a href="#/dictates">Dictates</a></li>                                   
-      <li ng-if="isAuthenticated() && currentUser.type === 'TEACHER'">
-          <a href="#/upload">Upload Now</a></li>
-      <li ng-if="isAuthenticated() && currentUser.type === 'TEACHER'">
-          <a href="#/students">My Students</a></li>
-      <li ng-if="isAuthenticated() && currentUser.type === 'TEACHER'">
-          <a href="#/statistics">Student statistics</a></li>
+  <head>
+    <meta charset="utf-8" />
+    <title>Dictate Trainer Beta</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+  </head>
 
-        
-      <li ng-if="isAuthenticated()"><a ng-click="logout()" href="">Logout</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li ng-if="isAuthenticated() && currentUser.name">
-        <a href="#/profile">
-        {{currentUser.name}}
-        </a>
-      </li>
-    </ul>
-  </div>
-</div>
+  <body>
+  
+    <div class="jumbotron">
+      <div class="container">
+        <div class="col-xs-offset-2 col-xs-8">
+          <div ng-view></div>
+        </div>
+      </div>
+    </div>
 
-<div ng-view></div>
+    <div class="credits text-center">
 
-<script src="vendor/angular.js"></script>
-<script src="vendor/angular-route.js"></script>
-<script src="vendor/angular-messages.js"></script>
-<!--<script src="vendor/sweet-alert.js"></script>-->
-<script src="vendor/satellizer.js"></script>
+      <p>
+          DictateTrainer<!--Here will be some credits later-->
+      </p>
+    </div>
+      
+<!--      move to vendor?-->
+    <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="//code.angularjs.org/1.2.20/angular.js"></script>
+    <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
+    <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
+      
+    <script src="app.js"></script>
+<!--    <script src="controllers/navbar.js"></script>-->
+    <script src="controllers/home.js"></script>
+    <script src="controllers/dictates.js"></script>
+    <script src="controllers/profile.js"></script>
+    <script src="controllers/students.js"></script>
+    <script src="controllers/trainer.js"></script>
+    <script src="controllers/signup.js"></script>
+    <script src="controllers/upload.js"></script>
+    <script src="controllers/login.js"></script>
+    <script src="services/authService.js"></script>
+  </body>
 
-<script src="app.js"></script>
-<!--<script src="services/api.js"></script>-->
-<!--<script src="directives/serverError.js"></script>-->
-<script src="controllers/home.js"></script>
-<script src="controllers/navbar.js"></script>
-<script src="controllers/dictates.js"></script>
-<script src="controllers/profile.js"></script>
-<script src="controllers/students.js"></script>
-<script src="controllers/trainer.js"></script>
-<script src="controllers/signup.js"></script>
-<script src="controllers/upload.js"></script>
-
-<!--<script src="app.min.js"></script>-->
-</body>
 </html>

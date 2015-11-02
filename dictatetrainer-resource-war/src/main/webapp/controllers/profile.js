@@ -1,4 +1,4 @@
-angular.module('Dictatetrainer')
+angular.module('DictateTrainer')
   .controller('ProfileCtrl', function($scope, $rootscope) {
 
   });
