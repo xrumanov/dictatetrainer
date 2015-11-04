@@ -8,6 +8,20 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Entity object for Dictate
+ *
+ * Holds this fields:
+ * -------------------
+ * id: id of the object
+ * name: name of the dictate
+ * category: category in which the dictate belongs
+ * uploader: person who uploads the dictate
+ * description: short description about the dictate
+ * filename: filename of dictate on the server
+ * transcript: correct text transcript of the dictate
+ *
+ */
 @Entity
 @Table(name = "dt_dictate")
 public class Dictate implements Serializable {

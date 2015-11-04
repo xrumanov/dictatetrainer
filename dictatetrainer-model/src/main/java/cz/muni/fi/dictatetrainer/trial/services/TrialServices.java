@@ -8,6 +8,9 @@ import cz.muni.fi.dictatetrainer.trial.model.Trial;
 import cz.muni.fi.dictatetrainer.trial.model.filter.TrialFilter;
 import cz.muni.fi.dictatetrainer.user.exception.UserNotFoundException;
 
+/**
+ * Interface to service methods for Trial entity (CRUD and filtering)
+ */
 public interface TrialServices {
 
     Trial add(Trial trial) throws UserNotFoundException, DictateNotFoundException, FieldNotValidException;

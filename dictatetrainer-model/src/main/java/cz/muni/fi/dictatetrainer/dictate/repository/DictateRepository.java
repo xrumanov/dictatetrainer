@@ -11,6 +11,9 @@ import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Repository layer implementation for the entity Dictate
+ */
 @Stateless
 public class DictateRepository extends GenericRepository<Dictate> {
     @PersistenceContext

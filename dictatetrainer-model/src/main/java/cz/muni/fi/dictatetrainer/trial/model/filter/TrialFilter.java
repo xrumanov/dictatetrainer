@@ -4,6 +4,15 @@ import cz.muni.fi.dictatetrainer.common.model.filter.GenericFilter;
 
 import java.util.Date;
 
+/**
+ * Filtering entity Trial by given parameters
+ *
+ * Available params:
+ *  startDate: shows only trials performed from given date
+ *  endDate:  shows only trials performed till given date
+ *  studentId: shows only trials performed by student with given id
+ *  dictateId:  shows only trials of one particular dictate id of which is given
+ */
 public class TrialFilter extends GenericFilter {
     private Date startDate;
     private Date endDate;

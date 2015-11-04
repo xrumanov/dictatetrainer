@@ -1,3 +1,6 @@
+/**
+ * Exception thrown when non-authorized user requests authorized resource
+ */
 package cz.muni.fi.dictatetrainer.common.exception;
 
 import javax.ejb.ApplicationException;

@@ -5,6 +5,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Entity object for Category
+ *
+ * Holds this fields:
+ * -------------------
+ * id: id of the object
+ * name: name of the category
+ *
+ */
 @Entity
 @Table(name = "dt_category")
 public class Category implements Serializable {

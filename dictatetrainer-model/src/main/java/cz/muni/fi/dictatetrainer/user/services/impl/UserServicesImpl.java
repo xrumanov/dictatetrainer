@@ -18,6 +18,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
 
+/**
+ * Implementation of service methods for User entity
+ */
 @Stateless
 public class UserServicesImpl implements UserServices {
 

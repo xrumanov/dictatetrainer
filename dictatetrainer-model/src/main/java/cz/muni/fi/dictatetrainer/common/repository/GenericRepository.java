@@ -1,6 +1,3 @@
-/**
- * Generic class that encapsulates the methods shared between all repository classes
- */
 package cz.muni.fi.dictatetrainer.common.repository;
 
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
@@ -12,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * Generic class that encapsulates the methods shared between by all classes in repository layer
+ */
 public abstract class GenericRepository<T> {
 
     //return type of the class

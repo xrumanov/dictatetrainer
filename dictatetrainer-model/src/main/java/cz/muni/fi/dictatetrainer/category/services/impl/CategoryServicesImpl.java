@@ -12,6 +12,9 @@ import javax.inject.Inject;
 import javax.validation.Validator;
 import java.util.List;
 
+/**
+ * Implementation of service methods for Category entity
+ */
 @Stateless
 public class CategoryServicesImpl implements CategoryServices {
 

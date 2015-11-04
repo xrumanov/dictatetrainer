@@ -7,6 +7,25 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/**
+ * Entity object for Error, repack the Mistake object from Corrector module
+ * and add Student who does the mistake and dictate in which the mistake was done
+ *
+ * Mainly for sake of generating statistic data about students and dictates
+ *
+ * Holds this fields:
+ * -------------------
+ *
+ * id: id of the object
+ * wordPosition: position of the word in the dictate counted as token number from beginning of the transcript
+ * correctWord: word from the dictate transcript
+ * writtenWord: word written by the student
+ * errorPriority: priority of mistake - 1 is lowest 100 is highest priority
+ * errorDescription: Description of error in the word, for example clarification why is the other variant correct
+ * dictate: dictate in which the error was present
+ * student: student who wrote the error
+ *
+ */
 @Entity
 @Table(name = "dt_error")
 public class Error implements Serializable {

@@ -1,3 +1,6 @@
+/**
+ * Exception thrown when error is not found in the database
+ */
 package cz.muni.fi.dictatetrainer.error.exception;
 
 import javax.ejb.ApplicationException;

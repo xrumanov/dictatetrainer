@@ -2,6 +2,14 @@ package cz.muni.fi.dictatetrainer.dictate.model.filter;
 
 import cz.muni.fi.dictatetrainer.common.model.filter.GenericFilter;
 
+/**
+ * Filtering entity Dictate by given parameters
+ *
+ * Available params:
+ *  uploaderId: shows only dictates uploaded by uploader with given id
+ *  categoryId: shows only dictates in given category
+ *
+ */
 public class DictateFilter extends GenericFilter {
     private Long uploaderId;
     private Long categoryId;

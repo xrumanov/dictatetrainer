@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by jrumanov on 8/30/15.
+ * Repository layer implementation for the entity Trial
  */
-public class TrialRepository extends GenericRepository<Trial>{
+public class TrialRepository extends GenericRepository<Trial> {
 
     @PersistenceContext
     EntityManager em;

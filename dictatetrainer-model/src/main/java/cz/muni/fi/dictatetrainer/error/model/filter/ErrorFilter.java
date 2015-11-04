@@ -2,6 +2,14 @@ package cz.muni.fi.dictatetrainer.error.model.filter;
 
 import cz.muni.fi.dictatetrainer.common.model.filter.GenericFilter;
 
+/**
+ * Filtering entity Error by given parameters
+ *
+ * Available params:
+ *  studentId: shows only errors written by student with given id
+ *  dictateId: shows only errors in a dictate with given id
+ *
+ */
 public class ErrorFilter extends GenericFilter {
     private Long studentId;
     private Long dictateId;

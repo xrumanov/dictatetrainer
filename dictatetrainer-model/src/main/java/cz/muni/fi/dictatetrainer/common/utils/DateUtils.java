@@ -1,12 +1,12 @@
-/**
- * Auxiliary class for converting Date
- */
 package cz.muni.fi.dictatetrainer.common.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Auxiliary class for Date converting
+ */
 public final class DateUtils {
     private static final String FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 

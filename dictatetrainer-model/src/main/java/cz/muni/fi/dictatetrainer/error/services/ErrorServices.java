@@ -11,6 +11,9 @@ import cz.muni.fi.dictatetrainer.user.exception.UserNotFoundException;
 import javax.ejb.Local;
 import java.lang.*;
 
+/**
+ * Interface to service methods for Error entity (CRUD and filtering)
+ */
 @Local
 public interface ErrorServices {
 

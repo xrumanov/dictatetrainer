@@ -9,6 +9,9 @@ import cz.muni.fi.dictatetrainer.dictate.model.filter.DictateFilter;
 
 import javax.ejb.Local;
 
+/**
+ * Interface to service methods for Dictate entity (CRUD and filtering)
+ */
 @Local
 public interface DictateServices {
 

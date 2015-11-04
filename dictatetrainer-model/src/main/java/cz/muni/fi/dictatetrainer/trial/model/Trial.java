@@ -8,6 +8,19 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Entity object for Trial - one access of an user to particular dictate
+ *
+ * Holds this fields:
+ * -------------------
+ * id: id of the object
+ * performed: date on which the trial was performed
+ * trialText: text written by a student
+ * student: student who accessed the dictate to test him/herself
+ * dictate: dictate accessed
+ * TODO errors: errors done in this trial
+ *
+ */
 @Entity
 @Table(name = "dt_trial")
 public class Trial implements Serializable {

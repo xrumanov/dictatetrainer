@@ -1,10 +1,11 @@
-/**
- * Total number of entries and Entities on the particular page
- */
 package cz.muni.fi.dictatetrainer.common.model;
 
 import java.util.List;
 
+/**
+ * Class that enables pagination feature - showing the subset of results on a page
+ * It holds total number of entries and entities on the particular page
+ */
 public class PaginatedData<T> {
     private final int numberOfRows;
     //just the rows on the particular page

@@ -1,5 +1,8 @@
 package cz.muni.fi.dictatetrainer.common.model.filter;
 
+/**
+ * Generic class for filtering feature
+ */
 public class GenericFilter {
     private PaginationData paginationData;
 

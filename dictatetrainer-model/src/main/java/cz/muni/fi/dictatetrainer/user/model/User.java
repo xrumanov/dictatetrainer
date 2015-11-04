@@ -1,6 +1,3 @@
-/**
- * User Entity definition - the superclass of Student and Teacher
- */
 package cz.muni.fi.dictatetrainer.user.model;
 
 import org.hibernate.validator.constraints.Email;
@@ -12,6 +9,20 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Entity object for general entity User (superclass)
+ *
+ * Holds this fields:
+ * -------------------
+ * id: id of the object
+ * createdAt: date when the user was created
+ * name: name of the user
+ * email: unique email of user
+ * password: user password in crypted form
+ * roles: which of these roles has the user (STUDENT, TEACHER, ADMINISTRATOR)
+ * userType: type of the user - STUDENT or TEACHER
+ *
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")

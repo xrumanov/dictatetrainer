@@ -1,3 +1,6 @@
+/**
+ * Exception thrown when trial is not found in the database
+ */
 package cz.muni.fi.dictatetrainer.trial.exception;
 
 import javax.ejb.ApplicationException;

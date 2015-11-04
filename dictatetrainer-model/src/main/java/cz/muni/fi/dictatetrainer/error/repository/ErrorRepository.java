@@ -11,6 +11,9 @@ import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Repository layer implementation for the entity Error
+ */
 @Stateless
 public class ErrorRepository extends GenericRepository<Error> {
     @PersistenceContext

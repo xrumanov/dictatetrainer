@@ -21,6 +21,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
 
+/**
+ * Implementation of service methods for Trial entity
+ */
 @Stateless
 public class TrialServicesImpl implements TrialServices {
 

@@ -6,6 +6,14 @@ package cz.muni.fi.dictatetrainer.user.model.filter;
 import cz.muni.fi.dictatetrainer.common.model.filter.GenericFilter;
 import cz.muni.fi.dictatetrainer.user.model.User;
 
+/**
+ * Filtering entity User by given parameters
+ *
+ * Available params:
+ *  name: shows only users with given name
+ *  userType:  shows only users that are STUDENT or only TEACHER
+ *
+ */
 public class UserFilter extends GenericFilter {
 	private String name;
 	private User.UserType userType;

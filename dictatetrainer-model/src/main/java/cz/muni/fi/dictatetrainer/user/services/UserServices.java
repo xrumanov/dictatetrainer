@@ -12,6 +12,9 @@ import cz.muni.fi.dictatetrainer.user.exception.UserNotFoundException;
 import cz.muni.fi.dictatetrainer.user.model.User;
 import cz.muni.fi.dictatetrainer.user.model.filter.UserFilter;
 
+/**
+ * Interface to service methods for User entity (CRUD, filtering, password altering, authentication)
+ */
 @Local
 public interface UserServices {
 

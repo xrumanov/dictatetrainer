@@ -9,6 +9,9 @@ import cz.muni.fi.dictatetrainer.category.exception.CategoryNotFoundException;
 import cz.muni.fi.dictatetrainer.category.model.Category;
 import cz.muni.fi.dictatetrainer.common.exception.FieldNotValidException;
 
+/**
+ * Interface to service methods for Category entity (CRUD)
+ */
 @Local
 public interface CategoryServices {
 

@@ -15,6 +15,9 @@ import cz.muni.fi.dictatetrainer.user.services.UserServices;
 import javax.inject.Inject;
 import javax.validation.Validator;
 
+/**
+ * Implementation of service methods for Dictate entity
+ */
 public class DictateServicesImpl implements DictateServices {
 
     @Inject

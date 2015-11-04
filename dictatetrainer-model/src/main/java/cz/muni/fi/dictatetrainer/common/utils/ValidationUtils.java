@@ -1,6 +1,3 @@
-/**
- * Generic validation class - validation of entity fields according to constraints set in the entity
- */
 package cz.muni.fi.dictatetrainer.common.utils;
 
 import cz.muni.fi.dictatetrainer.common.exception.FieldNotValidException;
@@ -10,6 +7,9 @@ import javax.validation.Validator;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Generic validation class - validation of entity fields according to constraints set in the entity
+ */
 public class ValidationUtils {
 
     public static <T> void validateEntityFields(final Validator validator, final T entity) {
