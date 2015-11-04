@@ -1,11 +1,12 @@
-/**
- * Write the operational result
- */
 package cz.muni.fi.dictatetrainer.common.json;
 
 import com.google.gson.JsonObject;
 import cz.muni.fi.dictatetrainer.common.model.OperationResult;
 
+/**
+ * Auxiliary method for creating JSON when operation is successful or
+ * creating JSON with error identification and description
+ */
 public final class OperationResultJsonWriter {
 
     private OperationResultJsonWriter() {

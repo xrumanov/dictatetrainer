@@ -30,6 +30,9 @@ import javax.ws.rs.core.UriInfo;
 
 import static cz.muni.fi.dictatetrainer.common.model.StandardsOperationResults.*;
 
+/**
+ * Resource that allows system to perform CRUD operations with Error entities in Database
+ */
 @Path("/errors")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

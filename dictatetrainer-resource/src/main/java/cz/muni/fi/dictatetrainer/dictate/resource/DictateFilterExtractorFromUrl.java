@@ -5,6 +5,9 @@ import cz.muni.fi.dictatetrainer.dictate.model.filter.DictateFilter;
 
 import javax.ws.rs.core.UriInfo;
 
+/**
+ * Extract the filter settings from the URL for Dictate resource
+ */
 public class DictateFilterExtractorFromUrl extends AbstractFilterExtractorFromUrl {
 
     public DictateFilterExtractorFromUrl(final UriInfo uriInfo) {

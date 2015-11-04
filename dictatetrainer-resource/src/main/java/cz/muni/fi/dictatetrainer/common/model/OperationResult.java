@@ -1,8 +1,8 @@
-/**
- * Result of an REST operation
- */
 package cz.muni.fi.dictatetrainer.common.model;
 
+/**
+ * Auxiliary method for setting the JSON operation result
+ */
 public class OperationResult {
 
     private boolean success;

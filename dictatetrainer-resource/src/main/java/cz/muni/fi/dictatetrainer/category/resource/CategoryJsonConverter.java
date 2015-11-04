@@ -8,6 +8,9 @@ import cz.muni.fi.dictatetrainer.category.model.Category;
 import cz.muni.fi.dictatetrainer.common.json.EntityJsonConverter;
 import cz.muni.fi.dictatetrainer.common.json.JsonReader;
 
+/**
+ * Converter from JSON to Category object and vice versa
+ */
 @ApplicationScoped
 public class CategoryJsonConverter implements EntityJsonConverter<Category> {
 

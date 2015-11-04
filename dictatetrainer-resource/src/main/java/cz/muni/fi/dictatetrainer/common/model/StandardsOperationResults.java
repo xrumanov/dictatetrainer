@@ -1,10 +1,10 @@
-/**
- * Helper method for using ResourceMessage class
- */
 package cz.muni.fi.dictatetrainer.common.model;
 
 import cz.muni.fi.dictatetrainer.common.exception.FieldNotValidException;
 
+/**
+ * Auxiliary method for using ResourceMessage class
+ */
 public final class StandardsOperationResults {
 
     private StandardsOperationResults() {

@@ -26,6 +26,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Converter from JSON to User object and vice versa
+ */
 @ApplicationScoped
 public class UserJsonConverter implements EntityJsonConverter<User> {
 
@@ -63,8 +66,9 @@ public class UserJsonConverter implements EntityJsonConverter<User> {
     public static String generateJWT(User user) {
 
         Map<String, Object> claims = new HashMap<String, Object>();
-        claims.put("email", user.getEmail());
-        claims.put("roles", user.getRoles().toString());
+        claims.put("sub", user.getId());
+        //claims.put("email", user.getEmail());
+        //claims.put("roles", user.getRoles().toString());
         Key apiKey = MacProvider.generateKey();
 
 

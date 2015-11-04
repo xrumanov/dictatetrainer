@@ -1,6 +1,3 @@
-/**
- * Class for extracting filter parameters form the URL
- */
 package cz.muni.fi.dictatetrainer.common.resource;
 
 import cz.muni.fi.dictatetrainer.common.model.filter.PaginationData;
@@ -8,6 +5,9 @@ import cz.muni.fi.dictatetrainer.common.model.filter.PaginationData.OrderMode;
 
 import javax.ws.rs.core.UriInfo;
 
+/**
+ * Abstract class for extracting filter parameters of Entities form the URL
+ */
 public abstract class AbstractFilterExtractorFromUrl {
     private UriInfo uriInfo;
     private static final int DEFAULT_PAGE = 0;

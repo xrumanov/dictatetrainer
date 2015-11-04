@@ -27,6 +27,9 @@ import javax.ws.rs.core.*;
 import static cz.muni.fi.dictatetrainer.common.model.StandardsOperationResults.getOperationResultDependencyNotFound;
 import static cz.muni.fi.dictatetrainer.common.model.StandardsOperationResults.getOperationResultInvalidField;
 
+/**
+ * Resource that allows system to perform CRUD operations with Trial entities in Database
+ */
 @Path("/trials")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

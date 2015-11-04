@@ -30,6 +30,9 @@ import javax.ws.rs.core.UriInfo;
 
 import static cz.muni.fi.dictatetrainer.common.model.StandardsOperationResults.*;
 
+/**
+ * Resource that allows system to perform CRUD operations with Dictate entities in Database
+ */
 @Path("/dictates")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

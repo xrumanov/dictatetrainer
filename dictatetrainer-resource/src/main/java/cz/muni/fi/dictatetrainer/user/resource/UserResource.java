@@ -3,13 +3,13 @@
  */
 package cz.muni.fi.dictatetrainer.user.resource;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cz.muni.fi.dictatetrainer.common.exception.FieldNotValidException;
-import cz.muni.fi.dictatetrainer.common.json.JsonReader;
-import cz.muni.fi.dictatetrainer.common.json.JsonUtils;
-import cz.muni.fi.dictatetrainer.common.json.JsonWriter;
-import cz.muni.fi.dictatetrainer.common.json.OperationResultJsonWriter;
+import cz.muni.fi.dictatetrainer.common.json.*;
 import cz.muni.fi.dictatetrainer.common.model.HttpCode;
 import cz.muni.fi.dictatetrainer.common.model.OperationResult;
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
@@ -26,12 +26,24 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import java.io.IOException;
+import java.util.Map;
+
 import static cz.muni.fi.dictatetrainer.common.model.StandardsOperationResults.*;
 
+/**
+ * Resource that allows system to perform CRUD operations with User entities in Database
+ * also to authenticate user in the system and update password
+ */
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -40,6 +52,12 @@ public class UserResource {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("user");
+
+    public static final String CLIENT_ID_KEY = "client_id", REDIRECT_URI_KEY = "redirect_uri",
+            CLIENT_SECRET = "client_secret", CODE_KEY = "code", GRANT_TYPE_KEY = "grant_type",
+            AUTH_CODE = "authorization_code";
+
+    public static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Inject
     UserServices userServices;
@@ -209,6 +227,48 @@ public class UserResource {
         return responseBuilder.build();
     }
 
+    @POST
+    @Path("/authenticate/facebook")
+    @PermitAll
+    public Response authenticateFacebook(@Valid final Payload payload,
+                                         @Context final HttpServletRequest request) throws IOException {
+
+            Client client = ClientBuilder.newClient();
+            final String accessTokenUrl = "https://graph.facebook.com/v2.3/oauth/access_token";
+            final String graphApiUrl = "https://graph.facebook.com/v2.3/me";
+
+            Response response;
+
+            // Step 1. Exchange authorization code for access token.
+
+        //get the params from the URL
+            response =
+                    client.target(accessTokenUrl)
+                            .queryParam(CLIENT_ID_KEY, payload.getClientId())
+                            .queryParam(REDIRECT_URI_KEY, payload.getRedirectUri())
+                            .queryParam(CLIENT_SECRET, "c27441f7e8eb54fcb87c046ef2aa4510")
+                            .queryParam(CODE_KEY, payload.getCode())
+                            .request("text/plain").accept(MediaType.TEXT_PLAIN).get();
+
+        // save the response in the responseEntity
+            Map<String, Object> responseEntity = getResponseEntity(response);
+
+
+        // use the response in another request
+            response =
+                    client.target(graphApiUrl)
+                            .queryParam("access_token", responseEntity.get("access_token"))
+                            .queryParam("expires_in", responseEntity.get("expires_in"))
+                            .request("text/plain").get();
+
+//         save the response in the responseEntity
+            final Map<String, Object> userInfo = getResponseEntity(response);
+
+            // Step 3. Process the authenticated the user.
+            return processUser(request, "facebook", userInfo.get("id").toString(), userInfo.get("name").toString());
+
+    }
+
     @GET
     @RolesAllowed({"ADMINISTRATOR"}) // list all the users in the system
     public Response findByFilter() {
@@ -250,6 +310,87 @@ public class UserResource {
     private String getPasswordFromJson(final String body) {
         final JsonObject jsonObject = JsonReader.readAsJsonObject(body);
         return JsonReader.getStringOrNull(jsonObject, "password");
+    }
+
+    private Map<String, Object> getResponseEntity(final Response response) throws IOException {
+        return MAPPER.readValue(response.readEntity(String.class),
+                new TypeReference<Map<String, Object>>() {
+                });
+    }
+
+    private Response processUser(final HttpServletRequest request, final String provider,
+                                 final String id, final String displayName) {
+//        final Optional<User> user = dao.findByProvider(provider, id);
+//
+//        // Step 3a. If user is already signed in then link accounts.
+//        User userToSave;
+//        final String authHeader = request.getHeader(AuthUtils.AUTH_HEADER_KEY);
+//        if (StringUtils.isNotBlank(authHeader)) {
+//            if (user.isPresent()) {
+//                return Response.status(Status.CONFLICT)
+//                        .entity(new ErrorMessage(String.format(CONFLICT_MSG, provider.capitalize()))).build();
+//            }
+//
+//            final String subject = AuthUtils.getSubject(authHeader);
+//            final Optional<User> foundUser = dao.findById(Long.parseLong(subject));
+//            if (!foundUser.isPresent()) {
+//                return Response.status(Status.NOT_FOUND).entity(new ErrorMessage(NOT_FOUND_MSG)).build();
+//            }
+//
+//            userToSave = foundUser.get();
+//            userToSave.setProviderId(provider, id);
+//            if (userToSave.getDisplayName() == null) {
+//                userToSave.setDisplayName(displayName);
+//            }
+//            userToSave = dao.save(userToSave);
+//        } else {
+//            // Step 3b. Create a new user account or return an existing one.
+//            if (user.isPresent()) {
+//                userToSave = user.get();
+//            } else {
+//                userToSave = new User();
+//                userToSave.setProviderId(provider, id);
+//                userToSave.setDisplayName(displayName);
+//                userToSave = dao.save(userToSave);
+//            }
+//        }
+
+        User userToAuthenticate = new Student();
+        userToAuthenticate.setId(Long.parseLong(id));
+        userToAuthenticate.setEmail("fdsd@dfsdf.sk");
+        userToAuthenticate.setName(displayName);
+        userToAuthenticate.setPassword("face");
+        userToAuthenticate.setUserType(User.UserType.STUDENT);
+
+        ResponseBuilder responseBuilder;
+
+            final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, userToAuthenticate));
+            responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
+
+        return responseBuilder.build();
+    }
+
+    public static class Payload {
+        @NotNull
+        String clientId;
+
+        @NotNull
+        String redirectUri;
+
+        @NotNull
+        String code;
+
+        public String getClientId() {
+            return clientId;
+        }
+
+        public String getRedirectUri() {
+            return redirectUri;
+        }
+
+        public String getCode() {
+            return code;
+        }
     }
 
 }

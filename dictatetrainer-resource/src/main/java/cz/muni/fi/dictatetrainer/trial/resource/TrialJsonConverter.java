@@ -13,6 +13,9 @@ import cz.muni.fi.dictatetrainer.user.model.User;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
+/**
+ * Converter from JSON to Trial object and vice versa
+ */
 @ApplicationScoped
 public class TrialJsonConverter implements EntityJsonConverter<Trial> {
 

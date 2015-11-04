@@ -6,6 +6,9 @@ import cz.muni.fi.dictatetrainer.trial.model.filter.TrialFilter;
 
 import javax.ws.rs.core.UriInfo;
 
+/**
+ * Extract the filter settings from the URL for Trial resource
+ */
 public class TrialFilterExtractorFromUrl extends AbstractFilterExtractorFromUrl {
 
     public TrialFilterExtractorFromUrl(final UriInfo uriInfo) {

@@ -5,6 +5,9 @@ import cz.muni.fi.dictatetrainer.error.model.filter.ErrorFilter;
 
 import javax.ws.rs.core.UriInfo;
 
+/**
+ * Extract the filter settings from the URL for Error resource
+ */
 public class ErrorFilterExtractorFromUrl extends AbstractFilterExtractorFromUrl {
 
     public ErrorFilterExtractorFromUrl(final UriInfo uriInfo) {

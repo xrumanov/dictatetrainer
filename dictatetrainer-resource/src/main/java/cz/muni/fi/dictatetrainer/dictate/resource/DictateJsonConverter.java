@@ -14,6 +14,9 @@ import cz.muni.fi.dictatetrainer.user.resource.UserJsonConverter;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+/**
+ * Converter from JSON to Dictate object and vice versa
+ */
 @ApplicationScoped
 public class DictateJsonConverter implements EntityJsonConverter<Dictate> {
 
