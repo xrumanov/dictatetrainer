@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * Holds this fields:
  * -------------------
  * id: id of the object
+ * wordPosition: position of the word in the dictate counted as token number from begining of the transcript
  * correctWord: word from the dictate transcript
  * writtenWord: word written by the student
  * priority: priority of mistake - 1 is lowest 100 is highest priority

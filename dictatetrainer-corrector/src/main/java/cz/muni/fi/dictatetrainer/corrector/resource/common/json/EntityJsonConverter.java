@@ -5,6 +5,10 @@ import com.google.gson.JsonElement;
 
 import java.util.List;
 
+/**
+ * Interface for converting entity to Json and vice versa
+ * @param <T> Entity
+ */
 public interface EntityJsonConverter<T> {
 
     T convertFrom(String json);

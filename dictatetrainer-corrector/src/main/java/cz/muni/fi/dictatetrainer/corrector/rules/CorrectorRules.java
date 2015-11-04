@@ -2,11 +2,13 @@ package cz.muni.fi.dictatetrainer.corrector.rules;
 
 import cz.muni.fi.dictatetrainer.corrector.model.Mistake;
 
-
+/**
+ * Interface for Rules definition used by corrector
+ */
 public interface CorrectorRules {
 
     /**
-     * apply rules to given marked String
+     * Apply rules to given marked String
      * @return Mistake
      */
     Mistake applyRules(String markedString);

@@ -1,11 +1,11 @@
-/**
- * Helper class for reading JSON
- */
 package cz.muni.fi.dictatetrainer.corrector.resource.common.json;
 
 import com.google.gson.*;
 import cz.muni.fi.dictatetrainer.corrector.exception.InvalidJsonException;
 
+/**
+ * Auxiliary class for reading properties from JSON string
+ */
 public class JsonReader {
 
     public static JsonObject readAsJsonObject(final String json) throws InvalidJsonException {

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Implementation of CorrectorService
+ */
 public class CorrectorServiceImpl implements CorrectorService {
 
     private static final String charWithDiac = "a-zA-Z0-9.,?!áäÁÄčČďĎéÉěĚíÍĺľĹĽňóôöőÓÔÖŐŕŔřŘšŠťŤůúüűÚÜŰýÝžŽ";

@@ -1,8 +1,8 @@
-/**
- * HTTP return codes for REST interfaces
- */
 package cz.muni.fi.dictatetrainer.corrector.resource.common.model;
 
+/**
+ * enum for HTTP return codes for REST interfaces
+ */
 public enum HttpCode {
     CREATED(201),
     VALIDATION_ERROR(422),

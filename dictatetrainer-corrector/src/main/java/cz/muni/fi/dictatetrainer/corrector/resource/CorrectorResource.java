@@ -26,6 +26,19 @@ import java.util.List;
 
 import static cz.muni.fi.dictatetrainer.corrector.resource.common.model.StandardsOperationResults.getOperationResultInvalidField;
 
+/**
+ * Resource that allows user or other website to correct dictate
+ *
+ * Request:
+ *  String with correct dictate (dictateTranscript)
+ *  String with text inputted by user (userText)
+ *
+ * Response:
+ *  number of mistakes in user text (numberOfMistakes)
+ *  array of Mistake objects
+ *
+ * For this resource only, there is CORS enabled to allow anybody to request the resource
+ */
 @Path("/correctDictate")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -69,7 +82,9 @@ public class CorrectorResource {
             result = getOperationResultInvalidField(RESOURCE_MESSAGE, e);
         }
 
-        logger.debug("Returning the operation result after adding dictate: {}", result);
-        return Response.status(httpCode.getCode()).entity(OperationResultJsonWriter.toJson(result)).build();
+        return Response
+                .status(httpCode.getCode())
+                .entity(OperationResultJsonWriter.toJson(result))
+                .build();
     }
 }

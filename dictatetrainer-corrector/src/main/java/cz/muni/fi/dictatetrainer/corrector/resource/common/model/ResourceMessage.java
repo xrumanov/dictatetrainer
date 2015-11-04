@@ -1,8 +1,8 @@
-/**
- * Helper class for constructing of JSON messages when there is an Exception thrown
- */
 package cz.muni.fi.dictatetrainer.corrector.resource.common.model;
 
+/**
+ * Auxiliary class for constructing of JSON messages when there is an Exception thrown
+ */
 public class ResourceMessage {
     private final String resource;
 

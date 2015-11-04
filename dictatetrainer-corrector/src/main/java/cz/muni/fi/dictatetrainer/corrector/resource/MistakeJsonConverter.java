@@ -10,6 +10,9 @@ import cz.muni.fi.dictatetrainer.corrector.resource.common.json.JsonReader;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
+/**
+ * Converter from JSON to Mistake object and vice versa
+ */
 @ApplicationScoped
 public class MistakeJsonConverter implements EntityJsonConverter<Mistake> {
 
