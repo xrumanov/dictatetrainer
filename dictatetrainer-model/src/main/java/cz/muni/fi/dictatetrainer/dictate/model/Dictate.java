@@ -45,7 +45,7 @@ public class Dictate implements Serializable {
     @JoinColumn(name = "uploader_id")
     private User uploader;
 
-    @Lob
+    //@Lob
     @NotNull
     @Size(min = 10)
     private String description;
@@ -53,7 +53,7 @@ public class Dictate implements Serializable {
     @NotNull
     private String filename;
 
-    @Lob
+    //@Lob
     @NotNull
     private String transcript;
 
