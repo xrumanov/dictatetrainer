@@ -54,6 +54,7 @@ public class DictateJsonConverter implements EntityJsonConverter<Dictate> {
         final JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("id", dictate.getId());
+        jsonObject.addProperty("name", dictate.getName());
         jsonObject.addProperty("description", dictate.getDescription());
         jsonObject.addProperty("filename", dictate.getFilename());
         jsonObject.addProperty("transcript", dictate.getTranscript());
