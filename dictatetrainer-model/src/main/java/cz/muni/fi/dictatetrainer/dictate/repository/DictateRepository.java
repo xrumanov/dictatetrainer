@@ -41,6 +41,11 @@ public class DictateRepository extends GenericRepository<Dictate> {
             queryParameters.put("categoryId", dictateFilter.getCategoryId());
         }
 
+        if (dictateFilter.getFilename() != null) {
+            clause.append(" AND e.filename = :filename");
+            queryParameters.put("filename", dictateFilter.getFilename());
+        }
+
         return findByParameters(clause.toString(), dictateFilter.getPaginationData(), queryParameters, "filename ASC");
     }
 

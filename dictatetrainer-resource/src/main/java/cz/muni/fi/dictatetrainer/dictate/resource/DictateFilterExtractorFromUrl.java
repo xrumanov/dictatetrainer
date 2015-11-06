@@ -29,6 +29,11 @@ public class DictateFilterExtractorFromUrl extends AbstractFilterExtractorFromUr
             dictateFilter.setCategoryId(Long.valueOf(categoryIdStr));
         }
 
+        final String filenameStr = getUriInfo().getQueryParameters().getFirst("filename");
+        if (filenameStr != null) {
+            dictateFilter.setFilename(filenameStr);
+        }
+
         return dictateFilter;
     }
 
