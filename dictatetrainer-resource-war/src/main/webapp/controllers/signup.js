@@ -8,7 +8,7 @@ angular.module('DictateTrainer')
                  email: $scope.reg.email,
                  password: $scope.reg.password,
                  type: $scope.reg.usertype
-                }
+                };
 
       //$auth.signup(user)
       //  .then(function(response) {

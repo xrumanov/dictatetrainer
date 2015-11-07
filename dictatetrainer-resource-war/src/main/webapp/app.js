@@ -2,8 +2,10 @@
 
 angular.module('DictateTrainer', [
     'ngRoute',
-    'ngCookies'
+    'ngCookies',
+    'ngResource'
 ])
+
     .config(function ($routeProvider) {
 
         $routeProvider
@@ -54,7 +56,7 @@ angular.module('DictateTrainer', [
                 }
             })
 
-            .when('/trainer', {
+            .when('/trainer/:filename', {
                 templateUrl: 'views/trainer.html',
                 controller: 'TrainerCtrl',
                 access: {
@@ -62,21 +64,21 @@ angular.module('DictateTrainer', [
                 }
             })
 
-            .otherwise({redirectTo: '/login'});
+            .otherwise({redirectTo: '/login'}); //404
     })
 
-        .run(['$rootScope', '$location', '$cookieStore', '$http',
-            function ($rootScope, $location, $cookieStore, $http) {
-                // keep user logged in after page refresh
-                $rootScope.globals = $cookieStore.get('globals') || {};
-                if ($rootScope.globals.currentUser) {
-                    $http.defaults.headers.common['Authorization'] = 'Basic ' +      $rootScope.globals.currentUser.authdata; // jshint ignore:line
-                }
+    .run(['$rootScope', '$location', '$cookieStore', '$http',
+        function ($rootScope, $location, $cookieStore, $http) {
+            // keep user logged in after page refresh
+            $rootScope.globals = $cookieStore.get('globals') || {};
+            if ($rootScope.globals.currentUser) {
+                $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+            }
 
-                $rootScope.$on('$locationChangeStart', function (event, next, current) {
-                    // redirect to login page if not logged in
-                    if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
-                        $location.path('/login');
-                    }
-                });
-            }]);
+            $rootScope.$on('$locationChangeStart', function (event, next, current) {
+                // redirect to login page if not logged in
+                if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+                    $location.path('/login');
+                }
+            });
+        }]);

@@ -1,13 +1,11 @@
- <audio controls>
-<!--if mp3-->
-  <source src="/dictate/sample_dictate.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
+<source ng-app ng-controller="TrainerCtrl">
+<audio src="{{pathToDictate | trustUrl}}" audioplayer controls></audio>
 <br/>
 <div>
-    <textarea rows="10" cols="80" autofocus placeholder="Start writing dictate here" style="resize:none"></textarea>
+    <textarea ng-model="userText.val" ng-model-options="{ updateOn: 'blur' }" rows="10" cols="80" autofocus
+              placeholder="Sem píšte diktát!" style="resize:none"></textarea>
 </div>
 <br/>
 <div>
-    <button type="submit" class="btn btn-default" ng-click="correctDictate()">Correct It!</button>
+    <a class="btn btn-lg"  ng-click="correctDictate()">Oprav!</a>
 </div>
