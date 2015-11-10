@@ -28,15 +28,15 @@ import static cz.muni.fi.dictatetrainer.corrector.resource.common.model.Standard
 
 /**
  * Resource that allows user or other website to correct dictate
- *
+ * <p>
  * Request:
- *  String with correct dictate (dictateTranscript)
- *  String with text inputted by user (userText)
- *
+ * String with correct dictate (dictateTranscript)
+ * String with text inputted by user (userText)
+ * <p>
  * Response:
- *  number of mistakes in user text (numberOfMistakes)
- *  array of Mistake objects
- *
+ * number of mistakes in user text (numberOfMistakes)
+ * array of Mistake objects
+ * <p>
  * For this resource only, there is CORS enabled to allow anybody to request the resource
  */
 @Path("/correctDictate")
@@ -59,7 +59,7 @@ public class CorrectorResource {
     public Response correct(final String body) {
         logger.debug("Adding a new corrector body {}", body);
 
-        HttpCode httpCode = HttpCode.CREATED;
+        HttpCode httpCode = HttpCode.OK;
         final JsonObject jsonObject = JsonReader.readAsJsonObject(body);
         OperationResult result;
 
