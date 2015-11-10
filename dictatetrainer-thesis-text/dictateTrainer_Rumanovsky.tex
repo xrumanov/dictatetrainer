@@ -127,6 +127,7 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
       \section{Vrstva rozhraní - REST}
       \section{Prezentačná vrstva}
       		\subsection{Angular JS JavaScript framework}
+			\subsubsection{Asynchrónne volanie }
       		\subsection{CSS a Bootstrap}
       		\subsection{HTML5}
       		\pagebreak
@@ -159,8 +160,9 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
 
       \section{Modul na opravu diktátov} \label{modul-diktaty}
       
-      \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva so značkovača vstupného textu od užívateľa a definície pravidiel, podľa ktorých bude určený typ chyby a jej popis. Značkovač je vo východzej verzii implementovaný za pomoci knižnice \texttt{diff-match-patch} od Google\cite{diffmatchpatch}, slúžiacej na porovnávanie reťazcov. Definícia pravidiel vychádza z výstupu bakalárskej práce Vojtěcha Škvařila \cite{skvaril14} a je prepísaný z pseudokódu do programovacieho Jazyka Java.
-      \par Prístup k modulu zabezpečuje verejné REST rozhranie, ktoré ako vstup berie dva reťazce - správny text diktátu a text napísaný užívateľom (viac v prílohe \ref{navod_oprava}). Výstup vo formáte JSON obsahuje list jednotlivých chýb zoradených podľa výskytu v diktáte.
+      \subsection{Návrh}
+      \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva zo značkovača vstupného používateľského textu a definície pravidiel, podľa ktorých bude určený typ chyby a popis o akú chybu sa jedná. Značkovač je vo východzej verzii implementovaný za pomoci knižnice \texttt{diff-match-patch} od Google\cite{diffmatchpatch}, slúžiacej na porovnávanie reťazcov. Označenie chýb a definícia pravidiel vychádza z výstupu bakalárskej práce Vojtěcha Škvařila \cite{skvaril14}. Pravidlá sú prepísané z pseudokódu do programovacieho Jazyka Java.
+      \par Prístup k modulu zabezpečuje verejné REST rozhranie, ktoré ako vstup berie dva reťazce - správny text diktátu a text napísaný užívateľom (viac v prílohe \ref{navod_oprava}). Výstup vo formáte JSON obsahuje list jednotlivých chýb zoradených podľa pozície chyby v diktáte.
       
 	  \par Chyba je objekt typu \texttt{Mistake}. Obsahuje nasledovné atribúty: 
 \begin{itemize}
@@ -172,8 +174,32 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
 	\item popis chyby na základe daných pravidiel
 \end{itemize}
 	
-      \par Celý modul je navrhnutý s dôrazom na modifikovateľnosť a nahraditeľnosť jednotlivých častí. Stačí vymeniť implementácie daných Java rozhraní. Modul je používaný aj samotnou navrhovanou aplikáciou, kde využíva objekty typu \texttt{Mistake} a ukladá ich do databázy spolu s informáciami o používateľovi a diktáte ako objekt typu \texttt{Error}. Návrh bol zvolený z toho dôvodu, aby bol opravovací modul čo najjednoduchšie použiteľný aplikáciami tretích strán (preto má objekt typu \texttt{Mistake} iba základné atribúty, ktoré je možné vyčítať z daných vstupných dát). Objekt typu \texttt{Error} je ukladaný do databáze a zamýšľané použitie dodatočných informácii je na generovanie štatistických dát o jednotlivých používateľoch a diktátoch.
+      \par Celý modul je navrhnutý s dôrazom na modifikovateľnosť a nahraditeľnosť jednotlivých častí. Stačí vymeniť implementácie daných Java rozhraní. Modul je používaný aj samotnou navrhovanou aplikáciou, kde využíva objekty typu \texttt{Mistake} z popisovaného modulu a ukladá ich do databázy spolu s informáciami o používateľovi, diktáte a prístupe k diktátu ako objekt typu \texttt{Error}. Návrh bol zvolený z toho dôvodu, aby bolo rozhranie čo najjednoduchšie použiteľné aplikáciami tretích strán (preto má objekt typu \texttt{Mistake} iba základné atribúty, ktoré je možné vyčítať z daných vstupných dát). Objekt typu \texttt{Error} je ukladaný do databáze a zamýšľané použitie dodatočných informácii je na generovanie štatistických dát o jednotlivých používateľoch a diktátoch.
       
+      \subsection{Značkovanie chýb}
+      \par Formát značkovania je postavený na návrhu prezentovanom v bakalárskej práci Vojtěcha Škvařila\cite{skvaril14}. Je definovaný nasledujúcim spôsobom:
+      \begin{itemize}
+	\item Definícia chyby v slove je pätica v,w,x,y,z, kde \textit{v} je chybný znak, \textit{w} je správny znak, \textit{x} je pozícia nezhody znaku (číslovaná od 1), \textit{y} je chybné slovo a \textit{z} je veta, v ktorej k chybe došlo.
+	\item K uvedeným údajom pozíciu slova v diktáte a správne slovo.
+	\end{itemize}
+
+V práci sú definované aj jednotlivé hraničné prípady:	
+	
+	 \begin{itemize}
+	\item Ak je chyba spôsobená absenciou znaku, je v definícii namiesto správneho znaku (\textit{w})=0
+	\item Ak je chyba spôsobená nadbytočným znakom, je v definícii namiesto chybného znaku (\textit{v})=0
+	\item Ak je v slove nadbytočný znak, je pozícia nezhody znaku (\textit{x})=0
+	\item K uvedenej definícii sú pridané ešte prípady absencie slova resp. nadbytočného slova
+\end{itemize}
+
+      \subsection{Spracovanie chýb podľa definovaných pravidiel}	      
+      
+   \section{Nahrávanie diktátov}
+   \par Jednou zo zadaných požiadaviek na aplikáciu bolo umožniť učiteľom nahrávať diktáty pomocou užívateľského grafického rozhrania a pridať k nim pomocné dáta, ktoré budú diktát popisovať (počet opakovaní jednotlivých viet, počet opakovaní celého diktátu, dĺžka pauzy medzi vetami...). Ako je spomenuté v kapitole \ref{ukladanie}, samotný súbor s diktátom je uložený oddelene od metadát.
+   \par Návrh tejto časti bol rozdelený na tri etapy - sprístupnenie zložky určenej pre ukladanie diktátov na aplikačnom serveri, vytvorenie REST rozhrania pristupujúcemu k tejto zložke a navrhnutie nahrávania diktátu v prezentačnej vrstve na strane klienta.
+   \par Zložka sprístupnená učiteľom pre nahrávanie diktátov musí byť umiestnená mimo samotný kontext aplikácie. Hlavným dôvodom je nutnosť zachovania nahratých súborov v prípade opätovného nasadenia aplikácie kvôli vylepšeniam resp. oprave chýb.
+   \par 
+   \par
       
     \chapter{Testovanie systému}
       \section{Jednotkové testy}
@@ -388,7 +414,7 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
 	mistakes: 
 		[{ 
 		  id: Long,
-		  wordPosition: String,
+		  wordPosition: Integer,
 		  correctWord: String,
 		  writtenWord: String,
 		  priority: Long,
