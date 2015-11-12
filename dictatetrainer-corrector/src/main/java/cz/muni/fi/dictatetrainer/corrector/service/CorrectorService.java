@@ -14,7 +14,7 @@ import java.util.List;
  * markInput method: marks the given text using f.e. some diff library
  * tokenizeAndReturnTokens method: tokenize the string from the previous method by using given delimiter
  *                                  and returns List of String tokens
- * correctUsingCorrectorRules method: correct the given tokens using the given rules and
+ * createMistakeObjectsAndApplyCorrectorRules method: correct the given tokens using the given rules and
  *                                    returns List of Mistake objects
  *
  */
@@ -25,6 +25,11 @@ public interface CorrectorService {
 
     String[] tokenizeAndReturnTokens(String markedText, String delimiter);
 
-    List<Mistake> correctUsingCorrectorRules(String[] tokens, CorrectorRules rules);
+    List<String> sentencizedAndReturnSentences(String markedText, String languageCode);
 
+    List<Mistake> createMistakeObjectsAndApplyCorrectorRules(String[] tokens, List<String> sentences, CorrectorRules rules);
+
+    String[] getLemmaAndTagForMistake(String correctWord);
+
+    String getTagForMistake(String correctWord);
 }

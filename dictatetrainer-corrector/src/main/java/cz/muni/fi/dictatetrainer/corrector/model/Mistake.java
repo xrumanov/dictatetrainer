@@ -9,13 +9,14 @@ import java.util.concurrent.atomic.AtomicLong;
  * Holds this fields:
  * -------------------
  * id: id of the object
- * mistakeCharPosInWord: position of mistake in characters (beginning with 1)
- * correctChar: correct character from transcript
- * writtenChar: incorrect character written by student
+ * mistakeCharPosInWord: position of first mistaken character (beginning with 1)
+ * correctChars: correct characters from transcript
+ * writtenChars: incorrect characters written by student
  * correctWord: word from the dictate transcript
  * writtenWord: word written by the student
  * wordPosition: position of the word in the dictate counted as token number from begining of the transcript (beginning with 1)
  * lemma: lemma of the error word
+ * posTag: part of speech tag
  * sentence: whole sentence in which mistake occurs, for future use
  * priority: priority of mistake - 1 is lowest 100 is highest priority
  * mistakeType: enum, can be SURPLUS_WORD, MISSING_WORD or MISTAKE
@@ -33,32 +34,13 @@ public class Mistake implements Serializable {
         this.id = counter.incrementAndGet();
     }
 
-    public Mistake(int wordPosition, String correctWord, String writtenWord, String mistakeDescription, MistakeType mistakeType) {
-        this.id = counter.incrementAndGet();
-        this.wordPosition = wordPosition;
-        this.correctWord = correctWord;
-        this.writtenWord = writtenWord;
-        this.mistakeDescription = mistakeDescription;
-        this.mistakeType = mistakeType;
-    }
-
-    public Mistake(int wordPosition, String correctWord, String writtenWord, int priority, MistakeType mistakeType, String mistakeDescription) {
-        this.id = counter.incrementAndGet();
-        this.wordPosition = wordPosition;
-        this.correctWord = correctWord;
-        this.writtenWord = writtenWord;
-        this.priority = priority;
-        this.mistakeType = mistakeType;
-        this.mistakeDescription = mistakeDescription;
-    }
-
     public Long id;
 
     public Integer mistakeCharPosInWord;
 
-    public String correctChar;
+    public String correctChars;
 
-    public String writtenChar;
+    public String writtenChars;
 
     public String correctWord;
 
@@ -67,6 +49,8 @@ public class Mistake implements Serializable {
     public Integer wordPosition;
 
     public String lemma;
+
+    public String posTag; //TODO consider enum
 
     public String sentence;
 
@@ -92,20 +76,20 @@ public class Mistake implements Serializable {
         this.mistakeCharPosInWord = mistakeCharPosInWord;
     }
 
-    public String getCorrectChar() {
-        return correctChar;
+    public String getCorrectChars() {
+        return correctChars;
     }
 
-    public void setCorrectChar(String correctChar) {
-        this.correctChar = correctChar;
+    public void setCorrectChars(String correctChar) {
+        this.correctChars = correctChar;
     }
 
-    public String getWrittenChar() {
-        return writtenChar;
+    public String getWrittenChars() {
+        return writtenChars;
     }
 
-    public void setWrittenChar(String writtenChar) {
-        this.writtenChar = writtenChar;
+    public void setWrittenChars(String writtenChars) {
+        this.writtenChars = writtenChars;
     }
 
     public String getCorrectWord() {
@@ -138,6 +122,14 @@ public class Mistake implements Serializable {
 
     public void setLemma(String lemma) {
         this.lemma = lemma;
+    }
+
+    public String getPosTag() {
+        return posTag;
+    }
+
+    public void setPosTag(String posTag) {
+        this.posTag = posTag;
     }
 
     public String getSentence() {
@@ -176,9 +168,15 @@ public class Mistake implements Serializable {
     public String toString() {
         return "Mistake{" +
                 "id=" + id +
-                ", wordPosition=" + wordPosition +
+                ", mistakeCharPosInWord=" + mistakeCharPosInWord +
+                ", correctChars='" + correctChars + '\'' +
+                ", writtenChars='" + writtenChars + '\'' +
                 ", correctWord='" + correctWord + '\'' +
                 ", writtenWord='" + writtenWord + '\'' +
+                ", wordPosition=" + wordPosition +
+                ", lemma='" + lemma + '\'' +
+                ", posTag='" + posTag + '\'' +
+                ", sentence='" + sentence + '\'' +
                 ", priority=" + priority +
                 ", mistakeType=" + mistakeType +
                 ", mistakeDescription='" + mistakeDescription + '\'' +

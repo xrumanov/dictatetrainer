@@ -34,7 +34,7 @@ import static cz.muni.fi.dictatetrainer.corrector.resource.common.model.Standard
  * String with text inputted by user (userText)
  * <p>
  * Response:
- * number of mistakes in user text (numberOfMistakes)
+ * total number of mistakes in user text (numberOfMistakes)
  * array of Mistake objects
  * <p>
  * For this resource only, there is CORS enabled to allow anybody to request the resource
@@ -69,11 +69,10 @@ public class CorrectorResource {
 
             String markedText = correctorSerivce.markInput(transcript, userText);
             String[] tokens = correctorSerivce.tokenizeAndReturnTokens(markedText, "\\s+");
-            List<Mistake> mistakes = correctorSerivce.correctUsingCorrectorRules(tokens, new CorrectorRulesNoContext());
+            List<String> sentences = correctorSerivce.sentencizedAndReturnSentences(markedText, "cs");
+            List<Mistake> mistakes = correctorSerivce.createMistakeObjectsAndApplyCorrectorRules(tokens, sentences,
+                    new CorrectorRulesNoContext());
 
-
-            final JsonObject resultObject = new JsonObject();
-            resultObject.addProperty("result", mistakes.toString());
             result = OperationResult.success(mistakeJsonConverter.getMistakesAsJsonElement(mistakes, mistakeJsonConverter));
 
         } catch (final FieldNotValidException e) {

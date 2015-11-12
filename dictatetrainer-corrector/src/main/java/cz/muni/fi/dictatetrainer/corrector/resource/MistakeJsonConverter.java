@@ -20,7 +20,9 @@ public class MistakeJsonConverter implements EntityJsonConverter<Mistake> {
     public Mistake convertFrom(final String json) {
         final JsonObject jsonObject = JsonReader.readAsJsonObject(json);
 
+        //TODO change the structure according to getMistakeAsJsonElement
         final Mistake mistake = new Mistake();
+
         mistake.setWordPosition(JsonReader.getIntegerOrNull(jsonObject, "wordPosition"));
         mistake.setCorrectWord(JsonReader.getStringOrNull(jsonObject, "correctWord"));
         mistake.setWrittenWord(JsonReader.getStringOrNull(jsonObject, "writtenWord"));
@@ -50,14 +52,26 @@ public class MistakeJsonConverter implements EntityJsonConverter<Mistake> {
 
     private JsonElement getMistakeAsJsonElement(final Mistake mistake) {
         final JsonObject jsonObject = new JsonObject();
+//        final JsonObject metaData = new JsonObject(); TODO
+
 
         jsonObject.addProperty("id", mistake.getId());
-        jsonObject.addProperty("wordPosition", mistake.getWordPosition());
+
+        jsonObject.addProperty("mistakeCharPosInWord", mistake.getMistakeCharPosInWord());
+        jsonObject.addProperty("correctChars", mistake.getCorrectChars());
+        jsonObject.addProperty("writtenChars", mistake.getWrittenChars());
         jsonObject.addProperty("correctWord", mistake.getCorrectWord());
         jsonObject.addProperty("writtenWord", mistake.getWrittenWord());
+        jsonObject.addProperty("wordPosition", mistake.getWordPosition());
+        jsonObject.addProperty("lemma", mistake.getLemma());
+        jsonObject.addProperty("posTag", mistake.getPosTag());
+        jsonObject.addProperty("sentence", mistake.getSentence());
+
+//        jsonObject.add("metadata", metaData);
         jsonObject.addProperty("priority", mistake.getPriority());
         jsonObject.addProperty("mistakeType", mistake.getMistakeType().toString());
         jsonObject.addProperty("mistakeDescription", mistake.getMistakeDescription());
+
         return jsonObject;
     }
 

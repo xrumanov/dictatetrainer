@@ -11,6 +11,6 @@ public interface CorrectorRules {
      * Apply rules to given marked String
      * @return Mistake
      */
-    Mistake applyRules(String markedString);
+    Mistake applyRules(Mistake mistake);
 
 }

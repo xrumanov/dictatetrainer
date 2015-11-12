@@ -15,8 +15,11 @@ public class CorrectorRulesNoContext implements CorrectorRules {
     }
 
     @Override
-    public Mistake applyRules(String markedString) {
-        return null;
+    public Mistake applyRules(Mistake mistake) {
+        mistake.setMistakeType(Mistake.MistakeType.MISTAKE);
+        mistake.setMistakeDescription("NOT IMPLEMENTED YET");
+        mistake.setPriority(0);
+        return mistake;
     }
 
     //-------------Pravopis----------------
