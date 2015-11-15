@@ -1,6 +1,7 @@
 package cz.muni.fi.dictatetrainer.corrector.rules.impl;
 
 import cz.muni.fi.dictatetrainer.corrector.model.Mistake;
+import cz.muni.fi.dictatetrainer.corrector.model.MistakeType;
 import cz.muni.fi.dictatetrainer.corrector.rules.CorrectorRules;
 
 /**
@@ -16,7 +17,7 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     @Override
     public Mistake applyRules(Mistake mistake) {
-        mistake.setMistakeType(Mistake.MistakeType.MISTAKE);
+        mistake.setMistakeType(MistakeType.OSTATNI);
         mistake.setMistakeDescription("NOT IMPLEMENTED YET");
         mistake.setPriority(0);
         return mistake;
