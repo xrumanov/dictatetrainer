@@ -13,15 +13,18 @@ angular.module('DictateTrainer')
         };
   
         
-        service.setCredentials = function (email, password) {
+        service.setCredentials = function (email, password, id, roles) {
             var authdata = Base64.encode(email + ':' + password);
   
             $rootScope.globals = {
                 currentUser: {
+                    id: id,
                     email: email,
-                    authdata: authdata
+                    authdata: authdata,
+                    roles: roles
                 }
             };
+            console.log($rootScope.globals);
   
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $cookieStore.put('globals', $rootScope.globals);

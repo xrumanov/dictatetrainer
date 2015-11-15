@@ -1,6 +1,6 @@
 angular.module('DictateTrainer')
     .controller('TrainerCtrl', function ($scope, $rootScope, $route, $routeParams, $sce,
-                                         dictateService, correctingService, errorService, trialService) {
+                                         dictateService, correctingService, errorService, trialService, $http) {
 
         $scope.userText = {};
         var transcript = "";
@@ -26,9 +26,9 @@ angular.module('DictateTrainer')
 
             $scope.corrector = correctingService.save({dictateTranscript: transcript, userText: $scope.userText.val});
             //return response consisting of mistakes
-            $scope.corrector.$promise.then(function (mistakesData) {
-                numberOfMistakes = mistakesData.totalMistakes;
-                mistakeArray = mistakesData.mistakes;
+            $scope.corrector.$promise.then(function (mistakesResponseData) {
+                numberOfMistakes = mistakesResponseData.totalMistakes;
+                mistakeArray = mistakesResponseData.mistakes;
 
                 //add test if there was success in all error storing
                 $scope.trial = trialService.save({
@@ -37,28 +37,31 @@ angular.module('DictateTrainer')
                     dictateId: dictateId
                 });
 
-                $scope.trial.$promise.then(function (trialData) {
+                $scope.trial.$promise.then(function (trialResponseData) {
 
-                    trialId = trialData.id;
+                    trialId = trialResponseData.id;
                     //get response from correcting service and save it to db as errors in a loop
-                    //for (i = 0; i < numberOfMistakes; i++) {
-                    $scope.error = errorService.save({
-                        //mistake
-                        wordPosition: mistakeArray[0].wordPosition,
-                        correctWord: mistakeArray[0].correctWord,
-                        writtenWord: mistakeArray[0].writtenWord,
-                        errorPriority: mistakeArray[0].priority,
-                        errorDescription: mistakeArray[0].mistakeDescription,
-                        dictateId: dictateId,
-                        studentId: studentId,
-                        trialId: trialId
-                    });
+                    for (i = 0; i < numberOfMistakes; i++) {
+                        $scope.error = errorService.save({
+                            //store error in db
+                            mistakeCharPosInWord: mistakeArray[i].mistakeCharPosInWord,
+                            correctChars: mistakeArray[i].correctChars,
+                            writtenChars: mistakeArray[i].writtenChars,
+                            correctWord: mistakeArray[i].correctWord,
+                            writtenWord: mistakeArray[i].writtenWord,
+                            wordPosition: mistakeArray[i].wordPosition,
+                            lemma: mistakeArray[i].lemma,
+                            posTag: mistakeArray[i].posTag,
+                            sentence: mistakeArray[i].sentence,
+                            errorPriority: mistakeArray[i].priority,
+                            errorDescription: mistakeArray[i].mistakeDescription,
+                            dictateId: dictateId,
+                            studentId: studentId,
+                            trialId: trialId
+                        });
+                    }
                 });
             });
-
-
-            //}
-
 
         }
     })

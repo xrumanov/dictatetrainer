@@ -41,9 +41,9 @@
 
     <!--no constraint regarding security on /api/correctDictate -->
     <security-constraint>
-        <display-name>API New User</display-name>
+        <display-name>API Correct dictate</display-name>
         <web-resource-collection>
-            <web-resource-name>API New User</web-resource-name>
+            <web-resource-name>API Correct dictate</web-resource-name>
             <url-pattern>/api/correctDictate</url-pattern>
             <http-method>POST</http-method>
         </web-resource-collection>

@@ -7,7 +7,7 @@ angular.module('DictateTrainer')
             $scope.dataLoading = true;
             authService.login($scope.email, $scope.password, function(response) {
                 if(response.id) {
-                    authService.setCredentials($scope.email, $scope.password);
+                    authService.setCredentials($scope.email, $scope.password, response.id, response.roles);
                     $location.path('/dictates');
                 } else {
                     $scope.error = response.message;
