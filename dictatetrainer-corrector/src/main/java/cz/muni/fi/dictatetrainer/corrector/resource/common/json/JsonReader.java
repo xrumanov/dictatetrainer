@@ -2,6 +2,7 @@ package cz.muni.fi.dictatetrainer.corrector.resource.common.json;
 
 import com.google.gson.*;
 import cz.muni.fi.dictatetrainer.corrector.exception.InvalidJsonException;
+import cz.muni.fi.dictatetrainer.corrector.model.MistakeType;
 
 /**
  * Auxiliary class for reading properties from JSON string
