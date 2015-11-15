@@ -9,12 +9,14 @@ import java.util.concurrent.atomic.AtomicLong;
  * Holds this fields:
  * -------------------
  * id: id of the object
- * mistakeCharPosInWord: position of first mistaken character (beginning with 1)
- * correctChars: correct characters from transcript
- * writtenChars: incorrect characters written by student
+ * mistakeCharPosInWord: position of first mistaken character (beginning with 1) TODO 0=surplus char, -1=missing char
+ * correctChars: correct characters from transcript TODO empty if surplus char
+ * writtenChars: incorrect characters written by student TODO empty if missing char
  * correctWord: word from the dictate transcript
  * writtenWord: word written by the student
- * wordPosition: position of the word in the dictate counted as token number from begining of the transcript (beginning with 1)
+ * wordPosition: position of the word in the dictate counted as token number from begining of the transcript
+ *  (beginning with 1) TODO how to deal with surplus and missing words? There are more tokens or less tokens then
+ *  0 = surplus word, -1 = missing word
  * lemma: lemma of the error word
  * posTag: part of speech tag
  * sentence: whole sentence in which mistake occurs, for future use
@@ -25,10 +27,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Mistake implements Serializable {
     private static final long serialVersionUID = 1802650487392607943L;
     private static AtomicLong counter = new AtomicLong(-1);
-
-    public enum MistakeType {
-        SURPLUS_WORD, MISSING_WORD, MISTAKE;
-    }
 
     public Mistake() {
         this.id = counter.incrementAndGet();

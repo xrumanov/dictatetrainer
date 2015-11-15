@@ -1,0 +1,35 @@
+package cz.muni.fi.dictatetrainer.corrector.model;
+
+/**
+ * Enumeration defining possible types of mistake
+ */
+public enum MistakeType {
+    VYJMENOVANA_SLOVA,
+    IY_po_C,
+    PREDPONY_S_Z,
+    PREDLOZKY_S_Z,
+    PREJATA_SLOVA_S_Z,
+    DIS_DYS,
+    SLOVA_ZAKONCENE_MANIE,
+    PSANI_N_NN,
+    SPREZKY_SPRAHOVANI,
+    SLOZENA_ADJEKTIVA,
+    VELKA_PISMENA,
+
+    ADJEKTIVA_ICI,
+    ADJEKTIVA_NI_NY,
+    TYP_ACKOLI_ACKOLIV,
+    VOKALIZACE_PREDLOZEK,
+
+    ZAJMENA_VASI_JI_NI,
+    PSANI_BE_VE_PE,
+    SOUHLASKY_PAROVE,
+    DIAKRITIKA,
+    I_PO_MEKKYCH_OBOJETNYCH_SOUHLASKACH,
+    ZAJMENA_A_SLOVA_OBSAHUJICI_MNE_ME,
+
+    CHYBEJICI_SLOVO,
+    NADBYTECNE_SLOVO,
+
+    OSTATNI
+}

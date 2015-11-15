@@ -19,12 +19,12 @@ trial_text varchar not null,	student_id bigint not null,	dictate_id bigint not n
 constraint fk_trial_student foreign key(student_id) references dt_user(id),
 constraint fk_trial_dictate foreign key(dictate_id) references dt_dictate(id));
 
-
-create table dt_error (id bigserial not null primary key,	word_position int not null, correct_word varchar,
-written_word varchar(40), error_priority int not null, description text not null,
-student_id bigint not null,	dictate_id bigint not null, trial_id bigint not null,
+-- TODO update error in db TYPE
+create table dt_error (id bigserial not null primary key,	char_position int not null, correct_chars varchar(10) not null,
+written_chars varchar(10) not null, correct_word varchar not null, written_word varchar(40), word_position int not null,
+lemma varchar(35) not null, pos_tag varchar(15) not null, sentence varchar(35) not null, error_priority int not null,
+error_type VARCHAR(30) not null, description text not null, student_id bigint not null, trial_id bigint not null,
 constraint fk_err_student foreign key(student_id) references dt_user(id),
-constraint fk_err_dictate foreign key(dictate_id) references dt_dictate(id),
 constraint fk_err_trial foreign key(trial_id) references dt_trial(id));
 
 
