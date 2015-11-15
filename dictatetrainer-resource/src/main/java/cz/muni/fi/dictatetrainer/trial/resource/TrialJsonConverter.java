@@ -8,6 +8,7 @@ import cz.muni.fi.dictatetrainer.common.json.JsonReader;
 import cz.muni.fi.dictatetrainer.common.utils.DateUtils;
 import cz.muni.fi.dictatetrainer.dictate.model.Dictate;
 import cz.muni.fi.dictatetrainer.trial.model.Trial;
+import cz.muni.fi.dictatetrainer.user.model.Student;
 import cz.muni.fi.dictatetrainer.user.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -26,6 +27,13 @@ public class TrialJsonConverter implements EntityJsonConverter<Trial> {
         final Trial trial = new Trial();
         trial.setTrialText(JsonReader.getStringOrNull(jsonObject, "trialText"));
 
+        final Dictate dictate = new Dictate();
+        dictate.setId(JsonReader.getLongOrNull(jsonObject, "dictateId"));
+        trial.setDictate(dictate);
+
+        final Student student = new Student();
+        student.setId(JsonReader.getLongOrNull(jsonObject, "studentId"));
+        trial.setStudent(student);
         return trial;
     }
 
