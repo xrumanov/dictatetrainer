@@ -10,16 +10,16 @@ import java.util.Date;
 
 /**
  * Entity object for Trial - one access of an user to particular dictate
- *
+ * <p>
  * Holds this fields:
  * -------------------
  * id: id of the object
  * performed: date on which the trial was performed
  * trialText: text written by a student
+ * errors: set of Error entity object, definition of every Error is encapsulated in the Entity
  * student: student who accessed the dictate to test him/herself
  * dictate: dictate accessed
  * TODO errors: errors done in this trial
- *
  */
 @Entity
 @Table(name = "dt_trial")
@@ -34,19 +34,18 @@ public class Trial implements Serializable {
     @Column(name = "performed_at", updatable = false)
     private Date performed;
 
-    @Lob
     @Column(name = "trial_text")
     @NotNull
     private String trialText;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "student_id")
-    @NotNull
     private Student student;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "dictate_id")
-    @NotNull
     private Dictate dictate;
 
     public Trial() {
