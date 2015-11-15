@@ -45,7 +45,6 @@ public class Dictate implements Serializable {
     @JoinColumn(name = "uploader_id")
     private User uploader;
 
-    //@Lob
     @NotNull
     @Size(min = 10)
     private String description;
@@ -53,7 +52,6 @@ public class Dictate implements Serializable {
     @NotNull
     private String filename;
 
-    //@Lob
     @NotNull
     private String transcript;
 
@@ -116,7 +114,7 @@ public class Dictate implements Serializable {
         return uploader;
     }
 
-    public void setUploader(User uploader) {
+    public void setUploader(final User uploader) {
         this.uploader = uploader;
     }
 
