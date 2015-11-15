@@ -14,6 +14,7 @@ import cz.muni.fi.dictatetrainer.error.exception.ErrorNotFoundException;
 import cz.muni.fi.dictatetrainer.error.model.Error;
 import cz.muni.fi.dictatetrainer.error.model.filter.ErrorFilter;
 import cz.muni.fi.dictatetrainer.error.services.ErrorServices;
+import cz.muni.fi.dictatetrainer.trial.exception.TrialNotFoundException;
 import cz.muni.fi.dictatetrainer.user.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,7 @@ import static cz.muni.fi.dictatetrainer.common.model.StandardsOperationResults.*
 @Path("/errors")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@RolesAllowed({"TEACHER"})
+@RolesAllowed("STUDENT")
 public class ErrorResource {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -53,6 +54,7 @@ public class ErrorResource {
     UriInfo uriInfo;
 
     @POST
+    @RolesAllowed("STUDENT")
     public Response add(final String body) {
         logger.debug("Adding a new error with body {}", body);
         Error error = errorJsonConverter.convertFrom(body);
@@ -70,11 +72,15 @@ public class ErrorResource {
         } catch (final DictateNotFoundException e) {
             httpCode = HttpCode.VALIDATION_ERROR;
             logger.error("Dictate not found for error", e);
-            result = getOperationResultDependencyNotFound(RESOURCE_MESSAGE, "category");
+            result = getOperationResultDependencyNotFound(RESOURCE_MESSAGE, "dictate");
         } catch (final UserNotFoundException e) {
             httpCode = HttpCode.VALIDATION_ERROR;
             logger.error("Student not found for error", e);
-            result = getOperationResultDependencyNotFound(RESOURCE_MESSAGE, "uploader");
+            result = getOperationResultDependencyNotFound(RESOURCE_MESSAGE, "student");
+        } catch (final TrialNotFoundException e) {
+            httpCode = HttpCode.VALIDATION_ERROR;
+            logger.error("Trial not found for error", e);
+            result = getOperationResultDependencyNotFound(RESOURCE_MESSAGE, "trial");
         }
 
         logger.debug("Returning the operation result after adding error: {}", result);
