@@ -2,6 +2,7 @@ package cz.muni.fi.dictatetrainer.common.repository;
 
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
 import cz.muni.fi.dictatetrainer.common.model.filter.PaginationData;
+import cz.muni.fi.dictatetrainer.dictate.model.Dictate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
