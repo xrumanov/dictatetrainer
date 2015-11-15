@@ -120,7 +120,7 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
       \par Aby bolo možné abstrahovať definíciu tabuliek a relácii medzi nimi od konkrétnej implementácie databázového systému (ako je napr. Postgres, MySQL, Oracle a pod.), je nutné použiť framework umožňujúci objektovo relačné mapovanie tabuliek v databáze na Java objekty, tzv. entity. Entita je trieda reprezentujúca typicky jednu tabuľku v databáze. Obsahuje atribúty, ktoré sú ekvivalentné stĺpcom v databázovej tabuľke, bezparametrický konštruktor a, ak chceme definovať aj vzťahy medzi entitami, musí obsahovať aj preťažené metódy \texttt{equals} a \texttt{hashCode}. Štandardný framework umožňujúci ORM je Java Persistence API (skrátene JPA). Je to vlastne sada rozhraní definujúcich ako by malo ORM fungovať. Existuje viacero implementácií JPA - ako napr. EclipseLink, OpenJPA alebo Hibernate. Aplikácia je postavená na poslednej spomínanej knižnici.
       
       \pagebreak
-      \subsection{Ukladanie audio súborov s diktátmi} \label{ukladanie}
+      \subsection{Ukladanie audio súborov s diktátmi na server} \label{ukladanie}
       \par Existujú dve možnosti ako ukladať audio súbory a všeobecne akékoľvek dáta. Prvý prístup ukladá dáta priamo do databázy ako BLOB\footnote{dátový typ pre bližšie nešpecifikované binárne dáta v databáze}. Nevýhoda tejto alternatívy je v tom, že neúmerne zväčšuje databázu, spomaľuje dotazy a všeobecne degraduje jej rýchlosť.
       \par Druhá možnosť je ukladať súbory priamo na server a do databázy pridať iba odkaz, resp. meno súboru ako jeden stĺpec v tabuľke. Tento prístup je pri veľkých súboroch odporúčaný \cite{sof1}. Rozhodol som sa preto oddeliť súbory s diktátmi od databázy a ponechať tam iba odkazy. Viac o konkrétnom riešení s použitím databázy Postgres a aplikačného servera Wildfly je uvedené v kapitole \ref{nasadenie}. Nasadenie systému.
       \section{Bussiness vrstva aplikácie}
@@ -161,22 +161,27 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
       \section{Modul na opravu diktátov} \label{modul-diktaty}
       
       \subsection{Návrh}
-      \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva zo značkovača vstupného používateľského textu a definície pravidiel, podľa ktorých bude určený typ chyby a popis o akú chybu sa jedná. Značkovač je vo východzej verzii implementovaný za pomoci knižnice \texttt{diff-match-patch} od Google\cite{diffmatchpatch}, slúžiacej na porovnávanie reťazcov. Označenie chýb a definícia pravidiel vychádza z výstupu bakalárskej práce Vojtěcha Škvařila \cite{skvaril14}. Pravidlá sú prepísané z pseudokódu do programovacieho Jazyka Java.
-      \par Prístup k modulu zabezpečuje verejné REST rozhranie, ktoré ako vstup berie dva reťazce - správny text diktátu a text napísaný užívateľom (viac v prílohe \ref{navod_oprava}). Výstup vo formáte JSON obsahuje list jednotlivých chýb zoradených podľa pozície chyby v diktáte.
-      
-	  \par Chyba je objekt typu \texttt{Mistake}. Obsahuje nasledovné atribúty: 
-\begin{itemize}
-	\item Jednoznačný identifikátor \texttt{id}
-	\item Pozíciu chyby (Pozícia je definovaná ako číslo tokenu\footnote{Token je kategorizovaný blok textu, obyčajne pozostáva z nedeliteľných znakov} vrámci diktátu.)
-	\item správne slovo alebo frázu
-	\item prioritu slova (číslo od 1 do 10, pričom 10 je najväčšia priorita)
-	\item typ chyby - chýbajúce slovo, nadbytočné slovo, chyba
-	\item popis chyby na základe daných pravidiel
+      \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva zo značkovača vstupného používateľského textu a definície pravidiel. Prístup k modulu zabezpečuje verejné REST rozhranie. Vstupom je správny text diktátu z databázy a text vložený používateľom. Výstup vo formáte JSON obsahuje celkový počet chýb a list jednotlivých chýb zoradených podľa pozície chyby v diktáte (viac o definícii rozhrania, formáte vstupu a výstupu v prílohe \ref{navod_oprava}). 
+      \par Opravu diktátu možno rozdeliť do niekoľkých fáz. Najprv sa vstupné reťazce porovnajú za pomoci knižnice \texttt{diff-match-patch}\cite{diffmatchpatch} a vytvorí sa označkovaný text. Z takto predspracovaného textu sa v ďalšom kroku vygeneruje pre každú chybu objekt typu \texttt{Mistake}. Tento objekt je určený na uchovanie dát popisujúcich jednotlivé chyby. Štruktúra dát vychádza z návrhu popísaného v bakalárskej práci Vojtěcha Škvařila \cite{skvaril14}. V nasledujúcom texte bude ako správny označený znak alebo slovo vyskytujúce sa v správnom texte diktátu z databázy a chybným znakom alebo slovom rozumieme podreťazec textu vloženého používateľom, ktorý sa nezhoduje so správnym znakom resp. slovom. Slovo je v tomto texte synonymum k výrazu token\footnote{Token je kategorizovaný blok textu, obyčajne pozostáva z nedeliteľných znakov}. Posledná fáza aplikuje definované pravidlá a na ich základe pridáva definíciu chyby, typ chyby a prioritu.
+\par Každá inštancia chyby obsahuje nasledovné atribúty:
+      \begin{itemize}
+	\item \texttt{id} - jednoznačný identifikátor objektu
+	\item \texttt{mistakeCharPosInWord} - pozícia chybného znaku, pri viacerých chybných znakoch označených za sebou ako jedna chyba vracia pozíciu prvého chybného znaku, v prípade nadbytočného znaku je pozícia 0, v prípade chýbajúceho -1.
+	\item \texttt{correctChars} - správny znak resp. podreťazec. Ak sa jedná o nadbytočný znak, môže byť prázdny
+	\item \texttt{writtenChars} - chybný znak resp. podreťazec označený ako jedna chyba. Ak sa jedná o chýbajúci znak, môže byť prázdny
+	\item \texttt{correctWord} - správne slovo
+	\item \texttt{writtenWord} - chybné slovo bez značiek označujúcich chybu
+	\item \texttt{wordPosition} - pozíciu chyby v diktáte, použiteľnú napr. pri výpise chýb konkrétneho slova. Pozícia je definovaná ako číslo tokenu vrámci diktátu, číslovaná od 1, 0 znamená nadbytočné slovo, -1 chýbajúce slovo
+	\item \texttt{lemma} - základný tvar slova získaný z výstupu morfologického analyzátoru Majka\cite{majka}, ak je vo výstupe viac ako jeden tvar, berie sa vždy prvý v poradí
+	\item \texttt{posTag} - značka popisujúca slovné druhy a iné morfologické(?) kategórie, rovnako získané z výstupu analyzátoru Majka. Popis značiek je dostupný na webovej stránke NLP FI\cite{nlpfi}, pričom znova platí, že ak je z výstupu dostupných viacero možností, je braná vždy prvá v poradí
+	\item \texttt{sentence} - veta v ktorej sa vyskytla chyba. Ukladá sa veta z výstupu značkovača, teda s označenými chybami. Tento atribút je určený pre budúce využitie v prípade popisu kontextových chýb, ktoré sa v tejto práci neriešia
+	\item \texttt{priority} - prioritu slova. Priorita je číslo od 1 do 10, pričom 10 je najväčšia priorita a získava sa spolu s typom chyby a jej popisom ako výstup definície pravidiel
+	\item \texttt{mistakeType} - typ chyby, tzn. zaradenie chyby do určitej kategórie. Úplný zoznam možných typov chýb je dostupný v prílohe \ref{typy-chyb}.
+	\item \texttt{mistakeDescription} - popis chyby na základe daných pravidiel.
 \end{itemize}
-	
-      \par Celý modul je navrhnutý s dôrazom na modifikovateľnosť a nahraditeľnosť jednotlivých častí. Stačí vymeniť implementácie daných Java rozhraní. Modul je používaný aj samotnou navrhovanou aplikáciou, kde využíva objekty typu \texttt{Mistake} z popisovaného modulu a ukladá ich do databázy spolu s informáciami o používateľovi, diktáte a prístupe k diktátu ako objekt typu \texttt{Error}. Návrh bol zvolený z toho dôvodu, aby bolo rozhranie čo najjednoduchšie použiteľné aplikáciami tretích strán (preto má objekt typu \texttt{Mistake} iba základné atribúty, ktoré je možné vyčítať z daných vstupných dát). Objekt typu \texttt{Error} je ukladaný do databáze a zamýšľané použitie dodatočných informácii je na generovanie štatistických dát o jednotlivých používateľoch a diktátoch.
+      \par Celý modul je navrhnutý s dôrazom na modifikovateľnosť a nahraditeľnosť jednotlivých častí. Stačí vymeniť implementácie daných Java rozhraní. Modul je používaný aj samotnou navrhovanou aplikáciou, kde využíva objekty typu \texttt{Mistake} z popisovaného modulu a ukladá ich do databázy spolu s informáciami o používateľovi, diktáte a prístupe k diktátu ako objekt typu \texttt{Error}. Návrh bol zvolený z toho dôvodu, aby bolo rozhranie opravy diktátu čo najjednoduchšie použiteľné aplikáciami tretích strán (preto má objekt typu \texttt{Mistake} iba atribúty, ktoré je možné vyčítať z daných vstupných dát). Zamýšľané použitie objektu typu \texttt{Error} je na generovanie štatistických dát o jednotlivých používateľoch a diktátoch.
       
-      \subsection{Značkovanie chýb}
+      \subsection{Značkovanie chýb PREROBIŤ}
       \par Formát značkovania je postavený na návrhu prezentovanom v bakalárskej práci Vojtěcha Škvařila\cite{skvaril14}. Je definovaný nasledujúcim spôsobom:
       \begin{itemize}
 	\item Definícia chyby v slove je pätica v,w,x,y,z, kde \textit{v} je chybný znak, \textit{w} je správny znak, \textit{x} je pozícia nezhody znaku (číslovaná od 1), \textit{y} je chybné slovo a \textit{z} je veta, v ktorej k chybe došlo.
@@ -367,6 +372,18 @@ V práci sú definované aj jednotlivé hraničné prípady:
   		[cit. 2015-11-02].
   		Dostupné z: <\url{http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx}>.
   		
+  		\bibitem{majka}
+		DOPLNIT CITACIU
+  		Dostupné z: <\url{xyz}>.
+  		
+  		\bibitem{nlpfi}
+  		DOPLN.
+  		\emph{DOPLN}
+  		[online].
+  		2050
+  		[cit. 2015-11-13].
+  		Dostupné z: <\url{https://nlp.fi.muni.cz/projekty/ajka/tags.pdf}>.
+  		
   		http://goldfirestudios.com/blog/104/howler.js-Modern-Web-Audio-Javascript-Library
   		http://stackoverflow.com/questions/22684037/how-to-configure-wildfly-to-serve-static-content-like-images
   		https://blog.openshift.com/multipart-forms-and-file-uploads-with-tomcat-7/
@@ -414,12 +431,21 @@ V práci sú definované aj jednotlivé hraničné prípady:
 	mistakes: 
 		[{ 
 		  id: Long,
-		  wordPosition: Integer,
+		  mistakeCharPosInWord: Integer,
+		  correctChars: String,
+		  writtenChars: String,
 		  correctWord: String,
 		  writtenWord: String,
+		  wordPosition: Integer,
+		  lemma: String,
+		  posTag: String,
+		  sentence: String,
 		  priority: Long,
-		  mistakeType: enum,
+		  mistakeType: String,
 		  mistakeDescription: String 	
+		}
+		{
+		...
 		}]	
 }
 \end{lstlisting}
@@ -429,9 +455,49 @@ V práci sú definované aj jednotlivé hraničné prípady:
 \par Viac o tom, čo jednotlivé atribúty znamenajú je uvedené v kapitole \ref{modul-diktaty}.
 
 
-
-
       \section{Manuál ku grafickému užívateľskému rozhraniu}
     \chapter{Snímky obrazoviek}
+    \chapter{Zoznam jednotlivých typov chýb} \label{typy-chyb}
+    \par Nižšie je uvedený zoznam možných typov chýb, ktorý bol jedným z výstupov bakalárskej práce Vojtěcha Škvařila\cite{skvaril14} v poradí, v akom sa vyskytol v priloženom pseudokóde popisujúcom jednotlivé pravidlá.
+	\par \bigskip \textbf{Pravopis:}
+\begin{itemize}
+	\item Vyjmenovaná slova
+	\item Psaní i/y po písmenu c
+	\item Psaní předpon s-, z-
+	\item Psaní předložek s, z (z postele, s knihou, s sebou)
+	\item Pravopis a výslovnost přejatých slov se s – z
+	\item Psaní dis-, dys-
+	\item Psaní slov se zakončením -manie
+	\item Psaní n – nn
+	\item Psaní spřežek a spřahování
+	\item Složená přídavná jména - První část přídavného jména je zakončena na -sko, -cko, -ně nebo –ově
+	\item Velká písmena
+\end{itemize}
+\bigskip
+	\textbf{Slovotvorba:}
+\begin{itemize}
+	\item Přídavná jména zakončená na -icí – -ící
+	\item Přídavná jména zakončená na -ní – -ný
+	\item Typ ačkoli – ačkoliv, kdokoli – kdokoliv
+	\item Vokalizace předložek
+\end{itemize}
+\bigskip
+	\textbf{Jevy, které nejsou v Akademické příručce českého jazyka přímo uvedeny:}
+\begin{itemize}
+	\item Zájmena typu vaši/vaší, ji/jí, ni/ní
+	\item Psaní bě/bje, vě/vje, pě
+	\item Souhlásky párové
+	\item Diakritika
+	\item i/í po měkkých a obojetných souhláskách
+	\item Zájmena mně x mě a slova obsahující mě a mně
+\end{itemize}
+
+\par K týmto typom je naviac pridaný typ nadbytočného resp. chýbajúceho slova.
+	\textbf{Jevy, které nejsou v Akademické příručce českého jazyka přímo uvedeny:}
+\begin{itemize}
+	\item Chybějící slovo
+	\item Nadbytečné slovo
+\end{itemize}
+    
 
 \end{document}
