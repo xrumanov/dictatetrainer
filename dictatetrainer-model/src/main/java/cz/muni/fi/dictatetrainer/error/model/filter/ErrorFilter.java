@@ -13,6 +13,7 @@ import cz.muni.fi.dictatetrainer.common.model.filter.GenericFilter;
 public class ErrorFilter extends GenericFilter {
     private Long studentId;
     private Long dictateId;
+    //TODO add filter for trials
 
     public Long getStudentId() {
         return studentId;

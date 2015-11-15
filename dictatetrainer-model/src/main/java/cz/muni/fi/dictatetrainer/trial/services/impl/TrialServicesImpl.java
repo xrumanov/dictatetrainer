@@ -69,8 +69,8 @@ public class TrialServicesImpl implements TrialServices {
     }
 
     private void checkStudentAndSetItOnTrial(final Trial trial) {
-        final User user = userServices.findByEmail(sessionContext.getCallerPrincipal().getName()); // get the caller
-        trial.setStudent((Student) user);
+        final User student = userServices.findByEmail(sessionContext.getCallerPrincipal().getName()); // get the caller
+        trial.setStudent((Student) student);
     }
 
     private void checkDictateAndSetItOnTrial(final Trial trial) {

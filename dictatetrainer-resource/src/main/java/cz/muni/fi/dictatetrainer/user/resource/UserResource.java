@@ -3,13 +3,15 @@
  */
 package cz.muni.fi.dictatetrainer.user.resource;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cz.muni.fi.dictatetrainer.common.exception.FieldNotValidException;
-import cz.muni.fi.dictatetrainer.common.json.*;
+import cz.muni.fi.dictatetrainer.common.json.JsonReader;
+import cz.muni.fi.dictatetrainer.common.json.JsonUtils;
+import cz.muni.fi.dictatetrainer.common.json.JsonWriter;
+import cz.muni.fi.dictatetrainer.common.json.OperationResultJsonWriter;
 import cz.muni.fi.dictatetrainer.common.model.HttpCode;
 import cz.muni.fi.dictatetrainer.common.model.OperationResult;
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
@@ -34,7 +36,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
-
 import java.io.IOException;
 import java.util.Map;
 
@@ -233,39 +234,39 @@ public class UserResource {
     public Response authenticateFacebook(@Valid final Payload payload,
                                          @Context final HttpServletRequest request) throws IOException {
 
-            Client client = ClientBuilder.newClient();
-            final String accessTokenUrl = "https://graph.facebook.com/v2.3/oauth/access_token";
-            final String graphApiUrl = "https://graph.facebook.com/v2.3/me";
+        Client client = ClientBuilder.newClient();
+        final String accessTokenUrl = "https://graph.facebook.com/v2.3/oauth/access_token";
+        final String graphApiUrl = "https://graph.facebook.com/v2.3/me";
 
-            Response response;
+        Response response;
 
-            // Step 1. Exchange authorization code for access token.
+        // Step 1. Exchange authorization code for access token.
 
         //get the params from the URL
-            response =
-                    client.target(accessTokenUrl)
-                            .queryParam(CLIENT_ID_KEY, payload.getClientId())
-                            .queryParam(REDIRECT_URI_KEY, payload.getRedirectUri())
-                            .queryParam(CLIENT_SECRET, "c27441f7e8eb54fcb87c046ef2aa4510")
-                            .queryParam(CODE_KEY, payload.getCode())
-                            .request("text/plain").accept(MediaType.TEXT_PLAIN).get();
+        response =
+                client.target(accessTokenUrl)
+                        .queryParam(CLIENT_ID_KEY, payload.getClientId())
+                        .queryParam(REDIRECT_URI_KEY, payload.getRedirectUri())
+                        .queryParam(CLIENT_SECRET, "c27441f7e8eb54fcb87c046ef2aa4510")
+                        .queryParam(CODE_KEY, payload.getCode())
+                        .request("text/plain").accept(MediaType.TEXT_PLAIN).get();
 
         // save the response in the responseEntity
-            Map<String, Object> responseEntity = getResponseEntity(response);
+        Map<String, Object> responseEntity = getResponseEntity(response);
 
 
         // use the response in another request
-            response =
-                    client.target(graphApiUrl)
-                            .queryParam("access_token", responseEntity.get("access_token"))
-                            .queryParam("expires_in", responseEntity.get("expires_in"))
-                            .request("text/plain").get();
+        response =
+                client.target(graphApiUrl)
+                        .queryParam("access_token", responseEntity.get("access_token"))
+                        .queryParam("expires_in", responseEntity.get("expires_in"))
+                        .request("text/plain").get();
 
 //         save the response in the responseEntity
-            final Map<String, Object> userInfo = getResponseEntity(response);
+        final Map<String, Object> userInfo = getResponseEntity(response);
 
-            // Step 3. Process the authenticated the user.
-            return processUser(request, "facebook", userInfo.get("id").toString(), userInfo.get("name").toString());
+        // Step 3. Process the authenticated the user.
+        return processUser(request, "facebook", userInfo.get("id").toString(), userInfo.get("name").toString());
 
     }
 
@@ -364,8 +365,8 @@ public class UserResource {
 
         ResponseBuilder responseBuilder;
 
-            final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, userToAuthenticate));
-            responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
+        final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, userToAuthenticate));
+        responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
 
         return responseBuilder.build();
     }
