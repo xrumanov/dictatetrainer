@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cz.muni.fi.dictatetrainer.corrector.model.Mistake;
+import cz.muni.fi.dictatetrainer.corrector.model.MistakeType;
 import cz.muni.fi.dictatetrainer.corrector.resource.common.json.EntityJsonConverter;
 import cz.muni.fi.dictatetrainer.corrector.resource.common.json.JsonReader;
 
@@ -20,14 +21,14 @@ public class MistakeJsonConverter implements EntityJsonConverter<Mistake> {
     public Mistake convertFrom(final String json) {
         final JsonObject jsonObject = JsonReader.readAsJsonObject(json);
 
-        //TODO change the structure according to getMistakeAsJsonElement
+        //TODO change the structure according to getMistakeAsJsonElement maybe I don't need it at all
         final Mistake mistake = new Mistake();
 
         mistake.setWordPosition(JsonReader.getIntegerOrNull(jsonObject, "wordPosition"));
         mistake.setCorrectWord(JsonReader.getStringOrNull(jsonObject, "correctWord"));
         mistake.setWrittenWord(JsonReader.getStringOrNull(jsonObject, "writtenWord"));
         mistake.setPriority(JsonReader.getIntegerOrNull(jsonObject, "priority"));
-        //mistake.setMistakeType(new Mistake.MistakeType(JsonReader.getStringOrNull(jsonObject, "mistakeType")));
+        mistake.setMistakeType(MistakeType.valueOf(JsonReader.getStringOrNull(jsonObject, "mistakeType")));
         mistake.setMistakeDescription(JsonReader.getStringOrNull(jsonObject, "mistakeText"));
 
 
