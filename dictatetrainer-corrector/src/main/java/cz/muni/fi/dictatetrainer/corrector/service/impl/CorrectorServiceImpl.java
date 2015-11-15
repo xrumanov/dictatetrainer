@@ -6,6 +6,7 @@ import cz.muni.fi.dictatetrainer.corrector.service.CorrectorService;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.text.BreakIterator;
@@ -100,8 +101,7 @@ public class CorrectorServiceImpl implements CorrectorService {
             String markedWord = tokens[i];
 
             // suppose that these three are the only end-of-sentence characters and that there is no abbreviations in dictate
-            // TODO fix writes weird characters
-            if (markedWord.contains("[.!?]")) {
+            if (i>0 && (tokens[i-1].contains(".") || tokens[i-1].contains("!") || tokens[i-1].contains("?"))) {
                 sentenceCounter++;
             }
 
@@ -115,7 +115,7 @@ public class CorrectorServiceImpl implements CorrectorService {
                     //Add mistake creation here...last surplus word
 
                 } else if (!markedWord.contains("(") && markedWord.contains("<")) { //missing word
-
+                    //TODO can be also missing character!!! FIX
                     while (!markedWord.contains(">")) {
                         //Add mistake creation here for missing word
                         i++;
@@ -210,14 +210,17 @@ public class CorrectorServiceImpl implements CorrectorService {
                 .replaceAll(" \\)", "\\) "); // for [ )] ~> [) ]
     }
 
+    //------------Mistake attribute definition----------------------------------
+
     /**
      * Get position of mistaken characters
      * for example ab(cd)e(fg)h the given positions are c=2, f=5
-     * TODO still does not work! fix (probably gives one pos more in second mistake)
+     * TODO 0 if character is surplus, -1 if character is missing
+     *
      * @param markedWord
      * @return
      */
-    private List<Integer> getMistakeCharPosInWordForMistake(String markedWord) {
+    public List<Integer> getMistakeCharPosInWordForMistake(String markedWord) {
         // delete all characters between <> to ease the counting
         markedWord = markedWord.replaceAll("\\s*\\<[^\\>]*\\>\\s*", " ");
 
@@ -227,8 +230,8 @@ public class CorrectorServiceImpl implements CorrectorService {
 
         List<Integer> charPos = new ArrayList<>();
         for (int i = -1; (i = markedWord.indexOf("(", i + 1)) != -1; ) {
-            charPos.add(i - n);
-            n = n + 2;
+            charPos.add(i - n + 1);
+            n = n + 3;
         }
         return charPos;
     }
@@ -241,7 +244,7 @@ public class CorrectorServiceImpl implements CorrectorService {
      * @param markedWord marked word
      * @return List of correct chars for one token
      */
-    private List<String> getCorrectCharsForMistake(String markedWord) {
+    public List<String> getCorrectCharsForMistake(String markedWord) {
         List<String> correctChars = new ArrayList<>();
 
         //get all Strings between '(' and ')'
@@ -260,7 +263,7 @@ public class CorrectorServiceImpl implements CorrectorService {
      * @param markedWord marked word
      * @return List of written chars for one token
      */
-    private List<String> getWrittenCharsForMistake(String markedWord) {
+    public List<String> getWrittenCharsForMistake(String markedWord) {
         List<String> writtenChars = new ArrayList<>();
 
         //get all Strings between '<' and '>'
@@ -278,7 +281,7 @@ public class CorrectorServiceImpl implements CorrectorService {
      * @param markedWord marked word
      * @return correct word
      */
-    private String getCorrectWordForMistake(String markedWord) {
+    public String getCorrectWordForMistake(String markedWord) {
         return markedWord.replaceAll("<[" + charWithDiac + "]*>", "").replaceAll("\\(", "").replaceAll("\\)", "");
     }
 
@@ -289,7 +292,7 @@ public class CorrectorServiceImpl implements CorrectorService {
      * @param markedWord marked word
      * @return correct word
      */
-    private String getWrittenWordForMistake(String markedWord) {
+    public String getWrittenWordForMistake(String markedWord) {
         return markedWord.replaceAll("\\([" + charWithDiac + "]*\\)", "").replaceAll("<", "").replaceAll(">", "");
     }
 
@@ -299,7 +302,7 @@ public class CorrectorServiceImpl implements CorrectorService {
      * @param correctWord correct version of word where the mistake is present
      * @return lemma for the given correct word
      */
-    private String getLemmaForMistake(String correctWord) {
+    public String getLemmaForMistake(String correctWord) {
         return getLemmaAndTagForMistake(correctWord)[0];
     }
 
@@ -324,6 +327,7 @@ public class CorrectorServiceImpl implements CorrectorService {
      * [Tag] on the 1st position of an array
      * <p>
      * If more than one possible pair lemma:tag is returned, the first one is taken
+     * TODO zobrazit prvy tag s najviac sa vyskytujucim slovnym druhom
      * If nothing is found, NOT_FOUND is returned
      * More about tag structure available at
      * <a>https://nlp.fi.muni.cz/projekty/ajka/tags.pdf</a>
@@ -334,21 +338,31 @@ public class CorrectorServiceImpl implements CorrectorService {
         final String MORPH_ANALYZER_REST_URL = "http://athena.fi.muni.cz:8080/lt";
         final String URL_WITH_CORRECT_WORD = MORPH_ANALYZER_REST_URL + "/" + correctWord;
         final String NOT_FOUND = "NOT FOUND";
+        final String NOT_FOUND_CONN = "NOT FOUND CONN";
 
         Client client = ClientBuilder.newClient();
 
-        String response = client.target(URL_WITH_CORRECT_WORD)
-                .request("text/html")
-                .accept("text/html")
-                .acceptEncoding("gzip")
-                .get(String.class);
+        try {
+            String response = client.target(URL_WITH_CORRECT_WORD)
+                    .request("text/html")
+                    .accept("text/html")
+                    .acceptEncoding("gzip")
+                    .get(String.class);
 
-        if (!response.equals("")) {         // if nothing is found return NOT_FOUND
-            return response.split("\\s+")[0].split(":");
-        } else {
+
+            if (!response.equals("")) {         // if nothing is found return NOT_FOUND
+                return response.split("\\s+")[0].split(":");
+            } else {
+                String[] notFoundString = new String[2];
+                notFoundString[0] = NOT_FOUND;
+                notFoundString[1] = NOT_FOUND;
+                return notFoundString;
+            }
+
+        } catch (ProcessingException pe) {
             String[] notFoundString = new String[2];
-            notFoundString[0] = NOT_FOUND;
-            notFoundString[1] = NOT_FOUND;
+            notFoundString[0] = NOT_FOUND_CONN;
+            notFoundString[1] = NOT_FOUND_CONN;
             return notFoundString;
         }
     }
