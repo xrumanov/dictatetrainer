@@ -9,6 +9,9 @@ import cz.muni.fi.dictatetrainer.error.model.Error;
 import cz.muni.fi.dictatetrainer.error.model.filter.ErrorFilter;
 import cz.muni.fi.dictatetrainer.error.repository.ErrorRepository;
 import cz.muni.fi.dictatetrainer.error.services.ErrorServices;
+import cz.muni.fi.dictatetrainer.trial.model.Trial;
+import cz.muni.fi.dictatetrainer.trial.services.TrialServices;
+import cz.muni.fi.dictatetrainer.user.model.Student;
 import cz.muni.fi.dictatetrainer.user.model.User;
 import cz.muni.fi.dictatetrainer.user.services.UserServices;
 
@@ -32,12 +35,16 @@ public class ErrorServicesImpl implements ErrorServices {
     @Inject
     DictateServices dictateServices;
 
+    @Inject
+    TrialServices trialServices;
+
     @Override
     public Error add(final Error error) {
         ValidationUtils.validateEntityFields(validator, error);
 
         checkDictateAndSetItOnError(error);
         checkUserAndSetHimOnError(error);
+        checkTrialAndSetItOnError(error);
 
         return errorRepository.add(error);
     }
@@ -52,6 +59,7 @@ public class ErrorServicesImpl implements ErrorServices {
 
         checkDictateAndSetItOnError(error);
         checkUserAndSetHimOnError(error);
+        checkTrialAndSetItOnError(error);
 
         errorRepository.update(error);
     }
@@ -81,4 +89,8 @@ public class ErrorServicesImpl implements ErrorServices {
         error.setDictate(dictate);
     }
 
+    private void checkTrialAndSetItOnError(final Error error) {
+        final Trial trial = trialServices.findById(error.getTrial().getId());
+        error.setTrial(trial);
+    }
 }
