@@ -94,43 +94,45 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
        		
        		\subsection{Rozsah navrhovaného systému}
        		\subsection{Výhody a nevýhody navrhovaného systému}
-    \chapter{Návrh systému}
+    \chapter{Návrh a implementácia systému}
     
     \par Webový systém bude rozdelený na dve úplne oddelené časti.
 
 \par Vrstvu prístupu k dátam, označovaná anglickým slovom backend, ktorá sa bude starať o ukladanie dát a navonok bude možné k nej pristupovať pomocou tzv. REST endpointov – známych adries, ktoré po prijatí dát v správnom formáte v JSON vrátia požadované údaje v definovanej forme. Rovnakým spôsobom sa bude pristupovať aj k samostatnému modulu slúžiacemu na opravu chýb. Adresy budú zdokumentované v jednej z následujúcich kapitol, rovnako ako správny formát vstupných respektíve výstupných dát. 
 	\par Druhou časťou bude prezentačná vrstva, známa aj pod anglickým ekvivalentom frontend, ktorá bude komunikovať s vrstvou prístupu k dátam skrz REST rozhrania. Tieto budú zabezpečené aj na strane backendu aj na strane front-endu proti neoprávnenému prístupu neautorizovaného používateľa. Ten sa bude musieť na získanie oprávnenia zaregistrovať. Registrovať sa budú môcť iba užívatelia role STUDENT (žiaci), učiteľ (rola TEACHER) bude musieť požiadať o vytvorenie účtu administrátora (rola ADMINISTRATOR). Overenie prístupu bude prebiehať zavolaním špeciálnej adresy, definovanej v jednej z následujúcich kapitol spolu s užívateľským menom a heslom a následným povolením/odmietnutím prístupu na základe týchto údajov. Prezentačná vrstva bude navrhnutá ako tzv. jednostránková aplikácia\footnote{Single Page Application, skrátene SPA}.
+	    \par Pri implementácii systému bol kladený dôraz na použitie moderných technológií a štruktúra je navrhnutá tak, aby sa ktorákoľvek súčasť dala v prípade potreby rýchlo nahradiť inou bez nutnosti zásahu do iných vrstiev systému. V následujúcich sekciách sú postupne uvedené použité technológie podľa príslušnosti k vrstve systému.
+	    
 	\pagebreak
-	\section{Ukladanie servisných informácií o diktátoch}
-	\par Servisnou informáciou o diktáte rozumieme všetky dáta uložené spolu s diktátom, ktoré ho nejakým spôsobom definujú. Ide konkrétne o textový prepis diktátu, značky koncov jednotlivých viet, východzí počet opakovaní viet ako aj celého diktátu a dĺžka pauzy medzi jednotlivými vetami. V bakalárskej práci bol systém navrhnutý tak, že boli všetky tieto informácie uložené vrámci mp3 súboru s diktátom \cite{rumanov12}. Tento prístup má však niekoľko nevýhod. Jednak je obmedzená použiteľnosť iných zvukových formátov na mp3, pretože sa informácie ukladajú do ID3v2 tagu\footnote{Do súboru mp3 je možné uložiť rôzne atribúty, nazývané tagy, ktoré obsahujú napr. názov interpreta, názov skladby, rok vydania atď.}. Druhá nevýhoda je, že tento návrh komplikuje prípadnú budúcu úpravu systému a spracovanie napr. pre účely štatistiky. V neposlednom rade je nevýhodou nemožnosť použitia iného zdroja pre nahrávanie diktátu do systému skrz rozhranie kvôli nutnosti nakoniec uložiť všetky dáta do mp3.
-	\par Toto všetko sú dôvody, prečo sú nakoniec všetky servisné dáta uložené v databáze spolu s autorom a názvom súboru s diktátom a zvukový záznam je uložený zvlášť na serveri. Viac o uložení súboru na serveri v kapitole \ref{ukladanie}.
-	
-    \chapter{Implementácia systému}
-    
-    \par Pri implementácii systému bol kladený dôraz na použitie moderných technológií a štruktúra je navrhnutá tak, aby sa ktorákoľvek súčasť dala v prípade potreby rýchlo nahradiť inou bez nutnosti zásahu do iných vrstiev systému. V následujúcich sekciách sú postupne uvedené použité technológie podľa príslušnosti k vrstve systému.
-    
-      \section{Štruktúra aplikácie}
-      	\subsection{Rozdelenie aplikácie na moduly}
+	   	\section{Rozdelenie aplikácie na moduly}
       	\par Systém je rozdelený na 6 modulov. Prvý s názvom \texttt{dictatetrainer-model} obsahuje prístup k databáze, servisnú vrstvu aplikácie a k nim prislúchajúce testy, modul \texttt{dictatetrainer-resource} obsahuje verejne prístupné rozhrania spolu s ich testami, \texttt{dictatetrainer-corrector} je zvláštny modul zabezpečujúci opravu diktátu a poskytuje verejne prístupné rozhranie. Modul \texttt{dictatetrainer-int-tests}, ako je už z názvu patrné, združuje integračné testy systému. \texttt{dictatetrainer-resource-war} pozostáva s prezentačnej vrstvy aplikácie a nakoniec modul \texttt{dictatetrainer-ear} zabezpečuje správne zabalenie celého systému, oddeľuje závislosti do zvláštneho adresára a backend do zvláštneho archívu tak, aby bola štruktúra aplikácie čo najprehľadnejšia.
-      	
-      	\subsection{Adresárová štruktúra}
-      	
-      \section{Vrstva prístupu k databáze}
+    \section{Štruktúra aplikácie}
+          \subsection{Vrstva prístupu k databáze}
       
       \par Aby bolo možné abstrahovať definíciu tabuliek a relácii medzi nimi od konkrétnej implementácie databázového systému (ako je napr. Postgres, MySQL, Oracle a pod.), je nutné použiť framework umožňujúci objektovo relačné mapovanie tabuliek v databáze na Java objekty, tzv. entity. Entita je trieda reprezentujúca typicky jednu tabuľku v databáze. Obsahuje atribúty, ktoré sú ekvivalentné stĺpcom v databázovej tabuľke, bezparametrický konštruktor a, ak chceme definovať aj vzťahy medzi entitami, musí obsahovať aj preťažené metódy \texttt{equals} a \texttt{hashCode}. Štandardný framework umožňujúci ORM je Java Persistence API (skrátene JPA). Je to vlastne sada rozhraní definujúcich ako by malo ORM fungovať. Existuje viacero implementácií JPA - ako napr. EclipseLink, OpenJPA alebo Hibernate. Aplikácia je postavená na poslednej spomínanej knižnici.
       
       \pagebreak
-      \subsection{Ukladanie audio súborov s diktátmi na server} \label{ukladanie}
+
+      \subsection{Bussiness vrstva aplikácie}
+      \subsection{Vrstva rozhraní - REST}
+         \subsubsection{Nahrávanie diktátov}
+   \par Jednou zo zadaných požiadaviek na aplikáciu bolo umožniť učiteľom nahrávať diktáty pomocou užívateľského grafického rozhrania a pridať k nim pomocné dáta, ktoré budú diktát popisovať (počet opakovaní jednotlivých viet, počet opakovaní celého diktátu, dĺžka pauzy medzi vetami...). Ako je spomenuté v kapitole \ref{ukladanie}, samotný súbor s diktátom je uložený oddelene od metadát.
+   \par Návrh tejto časti bol rozdelený na tri etapy - sprístupnenie zložky určenej pre ukladanie diktátov na aplikačnom serveri, vytvorenie REST rozhrania pristupujúcemu k tejto zložke a navrhnutie nahrávania diktátu v prezentačnej vrstve na strane klienta.
+   \par Zložka sprístupnená učiteľom pre nahrávanie diktátov musí byť umiestnená mimo samotný kontext aplikácie. Hlavným dôvodom je nutnosť zachovania nahratých súborov v prípade opätovného nasadenia aplikácie kvôli vylepšeniam resp. oprave chýb.
+
+      \subsection{Prezentačná vrstva}
+      		\subsubsection{Angular JS JavaScript framework}
+			\subsubsection{Asynchrónne volanie}
+      		\subsubsection{CSS a Bootstrap}
+      		\subsubsection{HTML5}
+      		\pagebreak
+	\section{Ukladanie dát popisujúcich diktát}
+	\par Dátami popisujúcimi diktát rozumieme všetky dáta uložené spolu s diktátom, ktoré ho nejakým spôsobom definujú. Konkrétne sa jedná o textový prepis diktátu (tzv. transkript), značky koncov jednotlivých viet, východzí počet opakovaní prehrávania viet ako aj celého diktátu a dĺžka pauzy medzi jednotlivými vetami. V bakalárskej práci bol systém navrhnutý tak, že boli tieto informácie uložené vrámci mp3 súboru s diktátom \cite{rumanov12}. Tento prístup má však niekoľko nevýhod. Jednak je použitie zvukových formátov obmedzený na mp3, pretože sa informácie ukladajú do ID3v2 tagu\footnote{Do súboru mp3 je možné uložiť rôzne atribúty, nazývané tagy, ktoré obsahujú napr. názov interpreta, názov skladby, rok vydania atď.}. Druhá nevýhoda je, že tento návrh komplikuje prípadnú budúcu úpravu systému a spracovanie napr. pre účely štatistiky, pretože v prípade budovania štatistických informácií by bolo nutné najprv pristúpiť ku každému súboru zvlášť a získať z neho potrebné dáta. V neposlednom rade je nevýhodou neflexibilita takéhoto riešenia. Každý súbor s diktátom by totiž pred nahratím na server musel najprv integrovať všetky dáta pomocou špecialneho nástroja dostupného v systéme.
+	\par Toto všetko sú dôvody, prečo bolo nakoniec rozhodnuté ukladať všetky popisné dáta v databáze spolu s autorom a názvom súboru s diktátom a zvukový záznam je uložiť zvlášť na serveri. Viac o uložení súboru v kapitole \ref{ukladanie}.
+	        
+	\section{Ukladanie audio súborov s diktátmi na server} \label{ukladanie}
       \par Existujú dve možnosti ako ukladať audio súbory a všeobecne akékoľvek dáta. Prvý prístup ukladá dáta priamo do databázy ako BLOB\footnote{dátový typ pre bližšie nešpecifikované binárne dáta v databáze}. Nevýhoda tejto alternatívy je v tom, že neúmerne zväčšuje databázu, spomaľuje dotazy a všeobecne degraduje jej rýchlosť.
       \par Druhá možnosť je ukladať súbory priamo na server a do databázy pridať iba odkaz, resp. meno súboru ako jeden stĺpec v tabuľke. Tento prístup je pri veľkých súboroch odporúčaný \cite{sof1}. Rozhodol som sa preto oddeliť súbory s diktátmi od databázy a ponechať tam iba odkazy. Viac o konkrétnom riešení s použitím databázy Postgres a aplikačného servera Wildfly je uvedené v kapitole \ref{nasadenie}. Nasadenie systému.
-      \section{Bussiness vrstva aplikácie}
-      \section{Vrstva rozhraní - REST}
-      \section{Prezentačná vrstva}
-      		\subsection{Angular JS JavaScript framework}
-			\subsubsection{Asynchrónne volanie }
-      		\subsection{CSS a Bootstrap}
-      		\subsection{HTML5}
-      		\pagebreak
+     
       \section{Zabezpečenie aplikácie}
       		\subsection{Zabezpečená komunikácia pomocou HTTPS} \label{https}
       		\par Základom bezpečnosti akéhokoľvek webového systému je zabezpečená komunikácia. Dáta posielané užívateľom cez sieť vrámci interakcie so systémom vrátane mena, hesla a iných citlivých informácií, by bez nej boli vystavené potenciálnemu riziku odcudzenia. Takýto útok sa nazýva Man in the middle attack\footnote{Typ útoku, kedy útočník napadne komunikáciu medzi užívateľom a serverom s cieľom ukradnúť citlivé dáta}. Je tomu však možno zabrániť zašifrovaním komunikácie s použitím protokolu HTTPS, ktorý je bezpečnou verziou HTTP. Cezeň sa posielajú dáta medzi internetovým prehliadačom a webovou stránkou, ku ktorej je prehliadač pripojený. 
@@ -162,7 +164,7 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
       
       \subsection{Návrh}
       \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva zo značkovača vstupného používateľského textu a definície pravidiel. Prístup k modulu zabezpečuje verejné REST rozhranie. Vstupom je správny text diktátu z databázy a text vložený používateľom. Výstup vo formáte JSON obsahuje celkový počet chýb a list jednotlivých chýb zoradených podľa pozície chyby v diktáte (viac o definícii rozhrania, formáte vstupu a výstupu v prílohe \ref{navod_oprava}). 
-      \par Opravu diktátu možno rozdeliť do niekoľkých fáz. Najprv sa vstupné reťazce porovnajú za pomoci knižnice \texttt{diff-match-patch}\cite{diffmatchpatch} a vytvorí sa označkovaný text. Z takto predspracovaného textu sa v ďalšom kroku vygeneruje pre každú chybu objekt typu \texttt{Mistake}. Tento objekt je určený na uchovanie dát popisujúcich jednotlivé chyby. Štruktúra dát vychádza z návrhu popísaného v bakalárskej práci Vojtěcha Škvařila \cite{skvaril14}. V nasledujúcom texte bude ako správny označený znak alebo slovo vyskytujúce sa v správnom texte diktátu z databázy a chybným znakom alebo slovom rozumieme podreťazec textu vloženého používateľom, ktorý sa nezhoduje so správnym znakom resp. slovom. Slovo je v tomto texte synonymum k výrazu token\footnote{Token je kategorizovaný blok textu, obyčajne pozostáva z nedeliteľných znakov}. Posledná fáza aplikuje definované pravidlá a na ich základe pridáva definíciu chyby, typ chyby a prioritu.
+      \par Opravu diktátu možno rozdeliť do niekoľkých fáz. Najprv sa vstupné reťazce porovnajú za pomoci knižnice \texttt{diff-match-patch}\cite{diffmatchpatch} a vytvorí sa označkovaný text. Z takto predspracovaného textu sa v ďalšom kroku vygeneruje pre každú chybu objekt typu \texttt{Mistake}. Tento objekt je určený na uchovanie dát popisujúcich jednotlivé chyby. Štruktúra atribútov vychádza z návrhu popísaného v bakalárskej práci Vojtěcha Škvařila \cite{skvaril14}. V nasledujúcom texte bude ako správny označený znak alebo slovo vyskytujúce sa v správnom texte diktátu z databázy a chybným znakom alebo slovom rozumieme podreťazec textu vloženého používateľom, ktorý sa nezhoduje so správnym znakom resp. slovom. Slovo je v tomto texte synonymum k výrazu token\footnote{Token je kategorizovaný blok textu, obyčajne pozostáva z nedeliteľných znakov} s výnimkou, že slovo môže pozostávať s dvoch tokenov, vlastného slova a interpunkčného znaku. Posledná fáza aplikuje definované pravidlá a na ich základe pridáva definíciu chyby, typ chyby a prioritu.
 \par Každá inštancia chyby obsahuje nasledovné atribúty:
       \begin{itemize}
 	\item \texttt{id} - jednoznačný identifikátor objektu
@@ -181,40 +183,34 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
 \end{itemize}
       \par Celý modul je navrhnutý s dôrazom na modifikovateľnosť a nahraditeľnosť jednotlivých častí. Stačí vymeniť implementácie daných Java rozhraní. Modul je používaný aj samotnou navrhovanou aplikáciou, kde využíva objekty typu \texttt{Mistake} z popisovaného modulu a ukladá ich do databázy spolu s informáciami o používateľovi, diktáte a prístupe k diktátu ako objekt typu \texttt{Error}. Návrh bol zvolený z toho dôvodu, aby bolo rozhranie opravy diktátu čo najjednoduchšie použiteľné aplikáciami tretích strán (preto má objekt typu \texttt{Mistake} iba atribúty, ktoré je možné vyčítať z daných vstupných dát). Zamýšľané použitie objektu typu \texttt{Error} je na generovanie štatistických dát o jednotlivých používateľoch a diktátoch.
       
-      \subsection{Značkovanie chýb PREROBIŤ}
-      \par Formát značkovania je postavený na návrhu prezentovanom v bakalárskej práci Vojtěcha Škvařila\cite{skvaril14}. Je definovaný nasledujúcim spôsobom:
+      \subsection{Značkovanie chýb}
+      \par Formát značkovania vychádza z návrhu prezentovanom v mojej bakalárskej práci \cite{rumanov12}. Je definovaný nasledujúcim spôsobom:
       \begin{itemize}
-	\item Definícia chyby v slove je pätica v,w,x,y,z, kde \textit{v} je chybný znak, \textit{w} je správny znak, \textit{x} je pozícia nezhody znaku (číslovaná od 1), \textit{y} je chybné slovo a \textit{z} je veta, v ktorej k chybe došlo.
-	\item K uvedeným údajom pozíciu slova v diktáte a správne slovo.
+	\item Ak sa v slove vyskytuje chyba, prípadne je chybné celé slovo či slová, označí sa znak, reťazec, slovo alebo slová špeciálnymi značkami definovanými nižšie
+	\item Správny znak resp. reťazec je uzavretý do párových zátvoriek \textit{(} a \textit{)}. Chybný znak alebo reťazec je označený zátvorkami \textit{<} a \textit{>} nasledujúcimi bezprostredne po správnej variante (napr. \textit{r(y)<i>ba})
+	\item Chýbajúci znak alebo reťazec znakov je označený zátvorkami \textit{(} a \textit{)} a bezprostredne za nimi pokračuje dané slovo (napr. \textit{strun(n)ý}) resp. sa môže nachádzať koniec slova (napr. \textit{košil(e)}), čo sa väčšinou vyskytuje pri preklepoch.
+	\item Nadbytočný znak v slove je označený zátvorkami \textit{<} a \textit{>} a bezprostredne za nimi slovo pokračuje (napr. \textit{ran<n>ý}) resp. sa môže nachádzať koniec slova (napr. \textit{košile<e>}), čo sa väčšinou vyskytuje pri preklepoch.
+	\item Chýbajúce slovo alebo slová sú celé uzavreté do zátvoriek a za ním nenasledujú párové zátvorky \textit{<} a \textit{>}, ale koniec slova, prípadne interpunkčný znak\footnote{Interpunkčným znakom rozumieme znak označujúci koniec vety (\textit{. ! ?}) a špeciálne znaky (\textit{" , ; :})} (napr. \textit{Stěhuje se (z domu).})
+	\item Nadbytočné slovo resp. slová sú uzavreté do zátvoriek \textit{<} a \textit{>} a za uzavieracou zátvorkou nasleduje koniec slova, prípadne interpunkčný znak (napr. \textit{Mává <s> kapesníkem.})
 	\end{itemize}
-
-V práci sú definované aj jednotlivé hraničné prípady:	
-	
-	 \begin{itemize}
-	\item Ak je chyba spôsobená absenciou znaku, je v definícii namiesto správneho znaku (\textit{w})=0
-	\item Ak je chyba spôsobená nadbytočným znakom, je v definícii namiesto chybného znaku (\textit{v})=0
-	\item Ak je v slove nadbytočný znak, je pozícia nezhody znaku (\textit{x})=0
-	\item K uvedenej definícii sú pridané ešte prípady absencie slova resp. nadbytočného slova
-\end{itemize}
-
-      \subsection{Spracovanie chýb podľa definovaných pravidiel}	      
-      
-   \section{Nahrávanie diktátov}
-   \par Jednou zo zadaných požiadaviek na aplikáciu bolo umožniť učiteľom nahrávať diktáty pomocou užívateľského grafického rozhrania a pridať k nim pomocné dáta, ktoré budú diktát popisovať (počet opakovaní jednotlivých viet, počet opakovaní celého diktátu, dĺžka pauzy medzi vetami...). Ako je spomenuté v kapitole \ref{ukladanie}, samotný súbor s diktátom je uložený oddelene od metadát.
-   \par Návrh tejto časti bol rozdelený na tri etapy - sprístupnenie zložky určenej pre ukladanie diktátov na aplikačnom serveri, vytvorenie REST rozhrania pristupujúcemu k tejto zložke a navrhnutie nahrávania diktátu v prezentačnej vrstve na strane klienta.
-   \par Zložka sprístupnená učiteľom pre nahrávanie diktátov musí byť umiestnená mimo samotný kontext aplikácie. Hlavným dôvodom je nutnosť zachovania nahratých súborov v prípade opätovného nasadenia aplikácie kvôli vylepšeniam resp. oprave chýb.
-   \par 
-   \par
-      
+	\par Slovo je v mojej práci definované ako reťazec znakov v texte oddelený medzerami. Od pojmu token sa odlišuje tým, že môže pozostávať z dvoch tokenov - tokenu s vlastným slovom a interpunkčného znaku. Chybný znak, reťazec znakov, chýbajúce a nadbytočné slová sú získané zo vstupu zadaného užívateľom. Správny znak alebo reťazec znakov je daný podľa prepisu diktátu uloženého v databáze aplikácie.
+	  \subsection{Generovanie objektov typu \texttt{Mistake}}
+	  
+      \subsection{Spracovanie chýb podľa definovaných pravidiel}
+     	            
     \chapter{Testovanie systému}
       \section{Jednotkové testy}
+      \par Každá entita v každej vrstve aplikácie (pridať odkaz) je otestovaná jednotkovými testami, pričom testy jednotlivých vrstiev sú od seba oddelené za použitia Mock objektov (napísať, čo to je).
       \section{Integračné testy}
       \par mvn clean install -PintegrationTests-wildfly
       \section{Manuálne testovanie}
     \chapter{Nasadenie systému} \label{nasadenie}
       \section{Databázový systém}
+      \par Ako databázový systém bol použitý PostgreSQL vo verzii XY. Prečo? Openstack cartrige? problem s LOB, ktorý je definovaný ako Long
       \section{Aplikačný server}
+      \par Aplikačný server bol zvolený Wildfly vo verzii 9. Prečo? Rýchlosť, jednoduchá konfigurovateľnosť, opensource.
     \chapter{Záver}   
+       \par Čo sa podarilo, čo sa nepodarilo a prečo, splnilo sa oficiálne zadanie?
        
            % Bibliography goes here
     \begin{thebibliography}{59}
@@ -493,11 +489,12 @@ V práci sú definované aj jednotlivé hraničné prípady:
 \end{itemize}
 
 \par K týmto typom je naviac pridaný typ nadbytočného resp. chýbajúceho slova.
-	\textbf{Jevy, které nejsou v Akademické příručce českého jazyka přímo uvedeny:}
+\par \bigskip
+	\textbf{Pridané typy ktoré nie sú v bakalárskej práci uvedené:}
 \begin{itemize}
 	\item Chybějící slovo
 	\item Nadbytečné slovo
+	\item Ostatní
 \end{itemize}
     
-
 \end{document}
