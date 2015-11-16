@@ -1,4 +1,4 @@
-package rules.impl;
+package cz.muni.fi.dictatetrainer.corrector.rules.impl;
 
 import cz.muni.fi.dictatetrainer.corrector.model.Mistake;
 import cz.muni.fi.dictatetrainer.corrector.rules.CorrectorRules;

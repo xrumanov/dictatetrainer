@@ -48,7 +48,7 @@ public class Mistake implements Serializable {
 
     public String lemma;
 
-    public String posTag; //TODO consider enum
+    public String posTag;
 
     public String sentence;
 
@@ -160,6 +160,24 @@ public class Mistake implements Serializable {
 
     public void setMistakeDescription(String mistakeDescription) {
         this.mistakeDescription = mistakeDescription;
+    }
+
+    /**
+     * Constructor for the first step - adding data about mistake
+     * to use them in CorrectorRules
+     * @param definition of the parameters on the top of this class
+     */
+    public Mistake(Integer mistakeCharPosInWord, String correctChars, String writtenChars, String correctWord,
+                   String writtenWord, Integer wordPosition, String lemma, String posTag, String sentence) {
+        this.mistakeCharPosInWord = mistakeCharPosInWord;
+        this.correctChars = correctChars;
+        this.writtenChars = writtenChars;
+        this.correctWord = correctWord;
+        this.writtenWord = writtenWord;
+        this.wordPosition = wordPosition;
+        this.lemma = lemma;
+        this.posTag = posTag;
+        this.sentence = sentence;
     }
 
     @Override

@@ -50,7 +50,7 @@ public class CorrectorServiceImpl implements CorrectorService {
     }
 
     /**
-     * Create tokens from marked text
+     * Create tokens from marked text, also interpunction is token by itself
      *
      * @param markedText output of method markInput
      * @param delimiter  delimiter used to create tokens (normally blank space)
@@ -97,11 +97,11 @@ public class CorrectorServiceImpl implements CorrectorService {
         List<Mistake> mistakeList = new ArrayList<>();
         int sentenceCounter = 0;
 
-        for (int i = 0; i < tokens.length; i++) {
-            String markedWord = tokens[i];
+        for (int tokenNumber = 0; tokenNumber < tokens.length; tokenNumber++) {
+            String markedWord = tokens[tokenNumber];
 
             // suppose that these three are the only end-of-sentence characters and that there is no abbreviations in dictate
-            if (i>0 && (tokens[i-1].contains(".") || tokens[i-1].contains("!") || tokens[i-1].contains("?"))) {
+            if (tokenNumber>0 && (tokens[tokenNumber-1].contains(".") || tokens[tokenNumber-1].contains("!") || tokens[tokenNumber-1].contains("?"))) {
                 sentenceCounter++;
             }
 
@@ -110,7 +110,7 @@ public class CorrectorServiceImpl implements CorrectorService {
                 if (markedWord.contains("(") && !markedWord.contains("<")) { //surplus word
                     while (!markedWord.contains(")")) {
                         //Add mistake creation here for surplus word
-                        i++;
+                        tokenNumber++;
                     }
                     //Add mistake creation here...last surplus word
 
@@ -118,7 +118,7 @@ public class CorrectorServiceImpl implements CorrectorService {
                     //TODO can be also missing character!!! FIX
                     while (!markedWord.contains(">")) {
                         //Add mistake creation here for missing word
-                        i++;
+                        tokenNumber++;
                     }
                     //Add mistake creation here...last missing word
 
@@ -134,19 +134,18 @@ public class CorrectorServiceImpl implements CorrectorService {
                         && (((markedWord.indexOf(")") - markedWord.indexOf("(")) < (markedWord.length() - 1)))))
                         | (markedWord.contains(")<"))) {
 
-                    for (int j = 0; j < getMistakeCharPosInWordForMistake(markedWord).size(); j++) {
-                        Mistake mistake = new Mistake();
-
-
-                        mistake.setMistakeCharPosInWord(getMistakeCharPosInWordForMistake(markedWord).get(j));
-                        mistake.setCorrectChars(getCorrectCharsForMistake(markedWord).get(j));
-                        mistake.setWrittenChars(getWrittenCharsForMistake(markedWord).get(j));
-                        mistake.setCorrectWord(getCorrectWordForMistake(markedWord));
-                        mistake.setWrittenWord(getWrittenWordForMistake(markedWord));
-                        mistake.setWordPosition(i);
-                        mistake.setLemma(getLemmaForMistake(getCorrectWordForMistake(markedWord)));
-                        mistake.setPosTag(getTagForMistake(getCorrectWordForMistake(markedWord)));
-                        mistake.setSentence(sentences.get(sentenceCounter));
+                    for (int mistakeInWordIterator = 0; mistakeInWordIterator < getMistakeCharPosInWordForMistake(markedWord).size(); mistakeInWordIterator++) {
+                        Mistake mistake = new Mistake(
+                                getMistakeCharPosInWordForMistake(markedWord).get(mistakeInWordIterator),
+                                getCorrectCharsForMistake(markedWord).get(mistakeInWordIterator),
+                                getWrittenCharsForMistake(markedWord).get(mistakeInWordIterator),
+                                getCorrectWordForMistake(markedWord),
+                                getWrittenWordForMistake(markedWord),
+                                tokenNumber,
+                                getLemmaForMistake(getCorrectWordForMistake(markedWord)),
+                                getTagForMistake(getCorrectWordForMistake(markedWord)),
+                                sentences.get(sentenceCounter)
+                        );
 
                         // pass the mistake to CorrectorRules to get priority, mistakeType and mistakeDescription
                         mistake = correctorRules.applyRules(mistake);
