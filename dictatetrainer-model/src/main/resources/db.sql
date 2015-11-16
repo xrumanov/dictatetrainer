@@ -7,9 +7,10 @@ email varchar(70) not null unique,	password varchar(100) not null,	type varchar(
 create table dt_user_role (	user_id bigint not null, role varchar(30) not null,	primary key(user_id, role),
 constraint fk_user_roles_user foreign key(user_id) references dt_user(id));
 
-
+-- TODO update dictate in db metadata add
 create table dt_dictate (id bigserial not null primary key,	name varchar(150) not null,	description varchar not null,
 category_id bigint not null,	uploader_id bigint not null,	filename varchar(40) not null,	transcript varchar not null,
+rep_dictate int not null,	rep_sentences int not null,	pause_sentences int not null,	sentence_endings varchar not null,
 constraint fk_dictate_category foreign key(category_id) references dt_category(id),
 constraint fk_dictate_uploader foreign key(uploader_id) references dt_user(id));
 
@@ -19,7 +20,7 @@ trial_text varchar not null,	student_id bigint not null,	dictate_id bigint not n
 constraint fk_trial_student foreign key(student_id) references dt_user(id),
 constraint fk_trial_dictate foreign key(dictate_id) references dt_dictate(id));
 
--- TODO update error in db TYPE
+-- TODO update error in db!!! TYPE
 create table dt_error (id bigserial not null primary key,	char_position int not null, correct_chars varchar(10) not null,
 written_chars varchar(10) not null, correct_word varchar not null, written_word varchar(40), word_position int not null,
 lemma varchar(35) not null, pos_tag varchar(15) not null, sentence varchar(35) not null, error_priority int not null,

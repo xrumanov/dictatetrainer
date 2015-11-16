@@ -45,6 +45,11 @@ public class DictateJsonConverter implements EntityJsonConverter<Dictate> {
 
         dictate.setFilename(JsonReader.getStringOrNull(jsonObject, "filename"));
         dictate.setTranscript(JsonReader.getStringOrNull(jsonObject, "transcript"));
+        dictate.setDefaultRepetitionForDictate(JsonReader.getIntegerOrNull(jsonObject, "defaultRepetitionForDictate"));
+        dictate.setDefaultRepetitionForSentences(JsonReader.getIntegerOrNull(jsonObject, "defaultRepetitionForSentences"));
+        dictate.setDefaultPauseBetweenSentences(JsonReader.getIntegerOrNull(jsonObject, "defaultPauseBetweenSentences"));
+        dictate.setSentenceEndings(JsonReader.getStringOrNull(jsonObject, "sentenceEndings"));
+
 
         return dictate;
     }
@@ -58,6 +63,10 @@ public class DictateJsonConverter implements EntityJsonConverter<Dictate> {
         jsonObject.addProperty("description", dictate.getDescription());
         jsonObject.addProperty("filename", dictate.getFilename());
         jsonObject.addProperty("transcript", dictate.getTranscript());
+        jsonObject.addProperty("defaultRepetitionForDictate", dictate.getDefaultRepetitionForDictate());
+        jsonObject.addProperty("defaultRepetitionForSentences", dictate.getDefaultRepetitionForSentences());
+        jsonObject.addProperty("defaultPauseBetweenSentences", dictate.getDefaultPauseBetweenSentences());
+        jsonObject.addProperty("sentenceEndings", dictate.getSentenceEndings());
 
         jsonObject.add("category", categoryJsonConverter.convertToJsonElement(dictate.getCategory()));
         jsonObject.add("uploader", userJsonConverter.convertToJsonElement(dictate.getUploader()));

@@ -20,6 +20,10 @@ import java.io.Serializable;
  * description: short description about the dictate
  * filename: filename of dictate on the server
  * transcript: correct text transcript of the dictate
+ * defaultRepetitionForDictate: default number of times dictate will be repeated
+ * defaultRepetitionForSentences: default number of times each sentence will be repeated
+ * defaultPauseBetweenSentences: default pause length between sentences
+ * sentenceEndings: list of endtimes for each sentence
  *
  */
 @Entity
@@ -54,6 +58,22 @@ public class Dictate implements Serializable {
 
     @NotNull
     private String transcript;
+
+    @NotNull
+    @Column(name = "rep_dictate")
+    private Integer defaultRepetitionForDictate;
+
+    @NotNull
+    @Column(name = "rep_sentences")
+    private Integer defaultRepetitionForSentences;
+
+    @NotNull
+    @Column(name = "pause_sentences")
+    private Integer defaultPauseBetweenSentences;
+
+    @Column(name = "sentence_endings")
+    @NotNull
+    private String sentenceEndings;
 
     public Dictate() {
     }
@@ -116,6 +136,38 @@ public class Dictate implements Serializable {
 
     public void setUploader(final User uploader) {
         this.uploader = uploader;
+    }
+
+    public Integer getDefaultRepetitionForDictate() {
+        return defaultRepetitionForDictate;
+    }
+
+    public void setDefaultRepetitionForDictate(Integer defaultRepetitionForDictate) {
+        this.defaultRepetitionForDictate = defaultRepetitionForDictate;
+    }
+
+    public Integer getDefaultRepetitionForSentences() {
+        return defaultRepetitionForSentences;
+    }
+
+    public void setDefaultRepetitionForSentences(Integer defaultRepetitionForSentences) {
+        this.defaultRepetitionForSentences = defaultRepetitionForSentences;
+    }
+
+    public Integer getDefaultPauseBetweenSentences() {
+        return defaultPauseBetweenSentences;
+    }
+
+    public void setDefaultPauseBetweenSentences(Integer defaultPauseBetweenSentences) {
+        this.defaultPauseBetweenSentences = defaultPauseBetweenSentences;
+    }
+
+    public String getSentenceEndings() {
+        return sentenceEndings;
+    }
+
+    public void setSentenceEndings(String sentenceEndings) {
+        this.sentenceEndings = sentenceEndings;
     }
 
     @Override
