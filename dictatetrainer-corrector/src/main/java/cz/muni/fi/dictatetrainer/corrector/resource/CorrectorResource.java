@@ -55,8 +55,30 @@ public class CorrectorResource {
     @Context
     UriInfo uriInfo;
 
+    /**
+     * Returns response with all available informations about Mistake
+     *
+     * @param body body of a request
+     * @return JSON with all available informations about Mistake
+     */
     @POST
     public Response correct(final String body) {
+        return getResponse(body, true);
+    }
+
+    /**
+     * Returns only type, priority and description of Mistake
+     *
+     * @param body body of a request
+     * @return JSON with only type, priority and description of Mistake
+     */
+    @POST
+    @Path("/noMeta")
+    public Response correctAndResponseWithoutMetadata(final String body) {
+        return getResponse(body, false);
+    }
+
+    private Response getResponse(String body, boolean withMetadata) {
         logger.debug("Adding a new corrector body {}", body);
 
         HttpCode httpCode = HttpCode.OK;
@@ -73,7 +95,11 @@ public class CorrectorResource {
             List<Mistake> mistakes = correctorSerivce.createMistakeObjectsAndApplyCorrectorRules(tokens, sentences,
                     new CorrectorRulesNoContext());
 
-            result = OperationResult.success(mistakeJsonConverter.getMistakesAsJsonElement(mistakes, mistakeJsonConverter));
+            if (withMetadata) {
+                result = OperationResult.success(mistakeJsonConverter.getMistakesAsJsonElement(mistakes));
+            } else {
+                result = OperationResult.success(mistakeJsonConverter.getMistakesAsJsonElementWithoutMetadata(mistakes));
+            }
 
         } catch (final FieldNotValidException e) {
             httpCode = HttpCode.VALIDATION_ERROR;

@@ -44,7 +44,7 @@
         <display-name>API Correct dictate</display-name>
         <web-resource-collection>
             <web-resource-name>API Correct dictate</web-resource-name>
-            <url-pattern>/api/correctDictate</url-pattern>
+            <url-pattern>/api/correctDictate/*</url-pattern>
             <http-method>POST</http-method>
         </web-resource-collection>
         <user-data-constraint>
@@ -134,6 +134,6 @@
     <!-- CORS Filter mapping -->
     <filter-mapping>
         <filter-name>CORS</filter-name>
-        <url-pattern>/api/correctDictate</url-pattern>
+        <url-pattern>/api/correctDictate/*</url-pattern>
     </filter-mapping>
 </web-app>
