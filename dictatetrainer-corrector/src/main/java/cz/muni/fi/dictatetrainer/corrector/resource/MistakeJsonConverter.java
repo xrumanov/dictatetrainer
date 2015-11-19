@@ -4,9 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cz.muni.fi.dictatetrainer.corrector.model.Mistake;
-import cz.muni.fi.dictatetrainer.corrector.model.MistakeType;
-import cz.muni.fi.dictatetrainer.corrector.resource.common.json.EntityJsonConverter;
-import cz.muni.fi.dictatetrainer.corrector.resource.common.json.JsonReader;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
@@ -15,32 +12,12 @@ import java.util.List;
  * Converter from JSON to Mistake object and vice versa
  */
 @ApplicationScoped
-public class MistakeJsonConverter implements EntityJsonConverter<Mistake> {
+public class MistakeJsonConverter {
 
-    @Override
-    public Mistake convertFrom(final String json) {
-        final JsonObject jsonObject = JsonReader.readAsJsonObject(json);
-
-        //TODO change the structure according to getMistakeAsJsonElement maybe I don't need it at all
-        final Mistake mistake = new Mistake();
-
-        mistake.setWordPosition(JsonReader.getIntegerOrNull(jsonObject, "wordPosition"));
-        mistake.setCorrectWord(JsonReader.getStringOrNull(jsonObject, "correctWord"));
-        mistake.setWrittenWord(JsonReader.getStringOrNull(jsonObject, "writtenWord"));
-        mistake.setPriority(JsonReader.getIntegerOrNull(jsonObject, "priority"));
-        mistake.setMistakeType(MistakeType.valueOf(JsonReader.getStringOrNull(jsonObject, "mistakeType")));
-        mistake.setMistakeDescription(JsonReader.getStringOrNull(jsonObject, "mistakeText"));
-
-
-        return mistake;
-    }
-
-    @Override
     public JsonElement convertToJsonElement(final Mistake mistake) {
         return getMistakeAsJsonElement(mistake);
     }
 
-    @Override
     public JsonElement convertToJsonElement(final List<Mistake> mistakes) {
         final JsonArray jsonArray = new JsonArray();
 
@@ -63,6 +40,8 @@ public class MistakeJsonConverter implements EntityJsonConverter<Mistake> {
         jsonObject.addProperty("writtenChars", mistake.getWrittenChars());
         jsonObject.addProperty("correctWord", mistake.getCorrectWord());
         jsonObject.addProperty("writtenWord", mistake.getWrittenWord());
+        jsonObject.addProperty("previousWord", mistake.getPreviousWord());
+        jsonObject.addProperty("nextWord", mistake.getNextWord());
         jsonObject.addProperty("wordPosition", mistake.getWordPosition());
         jsonObject.addProperty("lemma", mistake.getLemma());
         jsonObject.addProperty("posTag", mistake.getPosTag());
@@ -76,12 +55,43 @@ public class MistakeJsonConverter implements EntityJsonConverter<Mistake> {
         return jsonObject;
     }
 
-    public JsonElement getMistakesAsJsonElement(List<Mistake> mistakes, EntityJsonConverter entityJsonConverter) {
+    public JsonElement getMistakesAsJsonElement(List<Mistake> mistakes) {
 
         final JsonObject jsonWithMistakesAndCount = new JsonObject();
 
         jsonWithMistakesAndCount.addProperty("totalMistakes", mistakes.size());
-        jsonWithMistakesAndCount.add("mistakes", entityJsonConverter.convertToJsonElement(mistakes));
+        jsonWithMistakesAndCount.add("mistakes", convertToJsonElement(mistakes));
+
+        return jsonWithMistakesAndCount;
+    }
+
+    private JsonElement getMistakeAsJsonElementWithoutMetadata(final Mistake mistake) {
+        final JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("id", mistake.getId());
+        jsonObject.addProperty("priority", mistake.getPriority());
+        jsonObject.addProperty("mistakeType", mistake.getMistakeType().toString());
+        jsonObject.addProperty("mistakeDescription", mistake.getMistakeDescription());
+
+        return jsonObject;
+    }
+
+    public JsonElement convertToJsonElementWithoutMetadata(final List<Mistake> mistakes) {
+        final JsonArray jsonArray = new JsonArray();
+
+        for (final Mistake mistake : mistakes) {
+            jsonArray.add(getMistakeAsJsonElementWithoutMetadata(mistake));
+        }
+
+        return jsonArray;
+    }
+
+    public JsonElement getMistakesAsJsonElementWithoutMetadata(List<Mistake> mistakes) {
+
+        final JsonObject jsonWithMistakesAndCount = new JsonObject();
+
+        jsonWithMistakesAndCount.addProperty("totalMistakes", mistakes.size());
+        jsonWithMistakesAndCount.add("mistakes", convertToJsonElementWithoutMetadata(mistakes));
 
         return jsonWithMistakesAndCount;
     }

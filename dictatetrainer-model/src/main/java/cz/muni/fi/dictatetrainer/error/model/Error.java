@@ -23,6 +23,8 @@ import java.io.Serializable;
  * writtenChars: incorrect characters written by student
  * correctWord: word from the dictate transcript
  * writtenWord: word written by the student
+ * previousWord: correct word from transcript that precede the mistaken word
+ * nextWord: correct word from transcript that is next to the mistaken word
  * wordPosition: position of the word in the dictate counted as token number from beginning of the transcript
  * lemma: lemma of the error word
  * posTag: part of speech tag
@@ -60,6 +62,12 @@ public class Error implements Serializable {
 
     @Column(name = "written_word")
     private String writtenWord;
+
+    @Column(name = "previous_word")
+    public String previousWord;
+
+    @Column(name = "next_word")
+    public String nextWord;
 
     @NotNull
     @Column(name = "word_position")
@@ -191,6 +199,22 @@ public class Error implements Serializable {
         this.writtenWord = writtenWord;
     }
 
+    public String getPreviousWord() {
+        return previousWord;
+    }
+
+    public void setPreviousWord(String previousWord) {
+        this.previousWord = previousWord;
+    }
+
+    public String getNextWord() {
+        return nextWord;
+    }
+
+    public void setNextWord(String nextWord) {
+        this.nextWord = nextWord;
+    }
+
     public Integer getWordPosition() {
         return wordPosition;
     }
@@ -229,6 +253,14 @@ public class Error implements Serializable {
 
     public void setErrorPriority(Integer errorPriority) {
         this.errorPriority = errorPriority;
+    }
+
+    public ErrorType getErrorType() {
+        return errorType;
+    }
+
+    public void setErrorType(ErrorType errorType) {
+        this.errorType = errorType;
     }
 
     public String getErrorDescription() {
@@ -297,11 +329,14 @@ public class Error implements Serializable {
                 ", writtenChars='" + writtenChars + '\'' +
                 ", correctWord='" + correctWord + '\'' +
                 ", writtenWord='" + writtenWord + '\'' +
+                ", previousWord='" + previousWord + '\'' +
+                ", nextWord='" + nextWord + '\'' +
                 ", wordPosition=" + wordPosition +
-                ", lemma=" + lemma +
-                ", posTag=" + posTag +
-                ", sentence=" + sentence +
+                ", lemma='" + lemma + '\'' +
+                ", posTag='" + posTag + '\'' +
+                ", sentence='" + sentence + '\'' +
                 ", errorPriority=" + errorPriority +
+                ", errorType=" + errorType +
                 ", errorDescription='" + errorDescription + '\'' +
                 ", dictate=" + dictate +
                 ", student=" + student +

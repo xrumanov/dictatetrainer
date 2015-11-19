@@ -14,9 +14,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * writtenChars: incorrect characters written by student TODO empty if missing char
  * correctWord: word from the dictate transcript
  * writtenWord: word written by the student
+ * previousWord: correct word from transcript that precede the mistaken word
+ * nextWord: correct word from transcript that is next to the mistaken word
  * wordPosition: position of the word in the dictate counted as token number from begining of the transcript
- *  (beginning with 1) TODO how to deal with surplus and missing words? There are more tokens or less tokens then
- *  0 = surplus word, -1 = missing word
+ * (beginning with 1) TODO how to deal with surplus and missing words? There are more tokens or less tokens then
+ * 0 = surplus word, -1 = missing word
  * lemma: lemma of the error word
  * posTag: part of speech tag
  * sentence: whole sentence in which mistake occurs, for future use
@@ -32,6 +34,31 @@ public class Mistake implements Serializable {
         this.id = counter.incrementAndGet();
     }
 
+    public Mistake(Integer mistakeCharPosInWord, String correctChars, String writtenChars,
+                   String correctWord, String writtenWord, String previousWord, String nextWord,
+                   Integer wordPosition, String lemma, String posTag, String sentence) {
+        this.id = counter.incrementAndGet();
+        this.mistakeCharPosInWord = mistakeCharPosInWord;
+        this.correctChars = correctChars;
+        this.writtenChars = writtenChars;
+        this.correctWord = correctWord;
+        this.writtenWord = writtenWord;
+        this.previousWord = previousWord;
+        this.nextWord = nextWord;
+        this.wordPosition = wordPosition;
+        this.lemma = lemma;
+        this.posTag = posTag;
+        this.sentence = sentence;
+    }
+
+    /**
+     * Constructor for the first step - adding data about mistake
+     * to use them in CorrectorRules
+     *
+     * @param definition of the parameters on the top of this class
+     */
+
+
     public Long id;
 
     public Integer mistakeCharPosInWord;
@@ -43,6 +70,10 @@ public class Mistake implements Serializable {
     public String correctWord;
 
     public String writtenWord;
+
+    public String previousWord;
+
+    public String nextWord;
 
     public Integer wordPosition;
 
@@ -106,6 +137,22 @@ public class Mistake implements Serializable {
         this.writtenWord = writtenWord;
     }
 
+    public String getNextWord() {
+        return nextWord;
+    }
+
+    public void setNextWord(String nextWord) {
+        this.nextWord = nextWord;
+    }
+
+    public String getPreviousWord() {
+        return previousWord;
+    }
+
+    public void setPreviousWord(String previousWord) {
+        this.previousWord = previousWord;
+    }
+
     public Integer getWordPosition() {
         return wordPosition;
     }
@@ -162,24 +209,6 @@ public class Mistake implements Serializable {
         this.mistakeDescription = mistakeDescription;
     }
 
-    /**
-     * Constructor for the first step - adding data about mistake
-     * to use them in CorrectorRules
-     * @param definition of the parameters on the top of this class
-     */
-    public Mistake(Integer mistakeCharPosInWord, String correctChars, String writtenChars, String correctWord,
-                   String writtenWord, Integer wordPosition, String lemma, String posTag, String sentence) {
-        this.mistakeCharPosInWord = mistakeCharPosInWord;
-        this.correctChars = correctChars;
-        this.writtenChars = writtenChars;
-        this.correctWord = correctWord;
-        this.writtenWord = writtenWord;
-        this.wordPosition = wordPosition;
-        this.lemma = lemma;
-        this.posTag = posTag;
-        this.sentence = sentence;
-    }
-
     @Override
     public String toString() {
         return "Mistake{" +
@@ -189,6 +218,8 @@ public class Mistake implements Serializable {
                 ", writtenChars='" + writtenChars + '\'' +
                 ", correctWord='" + correctWord + '\'' +
                 ", writtenWord='" + writtenWord + '\'' +
+                ", previousWord='" + previousWord + '\'' +
+                ", nextWord='" + nextWord + '\'' +
                 ", wordPosition=" + wordPosition +
                 ", lemma='" + lemma + '\'' +
                 ", posTag='" + posTag + '\'' +

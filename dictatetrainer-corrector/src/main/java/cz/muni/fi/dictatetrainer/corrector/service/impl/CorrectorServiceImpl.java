@@ -98,10 +98,29 @@ public class CorrectorServiceImpl implements CorrectorService {
         int sentenceCounter = 0;
 
         for (int tokenNumber = 0; tokenNumber < tokens.length; tokenNumber++) {
+
+            //initialize variables
             String markedWord = tokens[tokenNumber];
+            String nextWord;
+            String previousWord;
+
+            //to prevent failing at the first token
+            if (tokenNumber > 0) {
+                previousWord = tokens[tokenNumber - 1];
+            } else {
+                previousWord = "";
+            }
+
+            // to prevent failing at the last token
+            if (tokenNumber+1 < tokens.length) {
+                nextWord = tokens[tokenNumber + 1];
+            } else {
+                nextWord = "";
+            }
+
 
             // suppose that these three are the only end-of-sentence characters and that there is no abbreviations in dictate
-            if (tokenNumber>0 && (tokens[tokenNumber-1].contains(".") || tokens[tokenNumber-1].contains("!") || tokens[tokenNumber-1].contains("?"))) {
+            if (tokenNumber > 0 && (previousWord.contains(".") || previousWord.contains("!") || previousWord.contains("?"))) {
                 sentenceCounter++;
             }
 
@@ -141,6 +160,8 @@ public class CorrectorServiceImpl implements CorrectorService {
                                 getWrittenCharsForMistake(markedWord).get(mistakeInWordIterator),
                                 getCorrectWordForMistake(markedWord),
                                 getWrittenWordForMistake(markedWord),
+                                getCorrectWordForMistake(previousWord),
+                                getCorrectWordForMistake(nextWord),
                                 tokenNumber,
                                 getLemmaForMistake(getCorrectWordForMistake(markedWord)),
                                 getTagForMistake(getCorrectWordForMistake(markedWord)),

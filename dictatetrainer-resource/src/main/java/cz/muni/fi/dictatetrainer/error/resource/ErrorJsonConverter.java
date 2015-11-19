@@ -42,11 +42,14 @@ public class ErrorJsonConverter implements EntityJsonConverter<Error> {
         error.setWrittenChars(JsonReader.getStringOrNull(jsonObject, "writtenChars"));
         error.setCorrectWord(JsonReader.getStringOrNull(jsonObject, "correctWord"));
         error.setWrittenWord(JsonReader.getStringOrNull(jsonObject, "writtenWord"));
+        error.setPreviousWord(JsonReader.getStringOrNull(jsonObject, "previousWord"));
+        error.setNextWord(JsonReader.getStringOrNull(jsonObject, "nextWord"));
         error.setWordPosition(JsonReader.getIntegerOrNull(jsonObject, "wordPosition"));
         error.setLemma(JsonReader.getStringOrNull(jsonObject, "lemma"));
         error.setPosTag(JsonReader.getStringOrNull(jsonObject, "posTag"));
         error.setSentence(JsonReader.getStringOrNull(jsonObject, "sentence"));
         error.setErrorPriority(JsonReader.getIntegerOrNull(jsonObject, "errorPriority"));
+        error.setErrorType(Error.ErrorType.valueOf(JsonReader.getStringOrNull(jsonObject, "errorType")));
         error.setErrorDescription(JsonReader.getStringOrNull(jsonObject, "errorDescription"));
 
         final Dictate dictate = new Dictate();
@@ -76,12 +79,15 @@ public class ErrorJsonConverter implements EntityJsonConverter<Error> {
         jsonObject.addProperty("writtenChars", error.getWrittenChars());
         jsonObject.addProperty("correctWord", error.getCorrectWord());
         jsonObject.addProperty("writtenWord", error.getWrittenWord());
+        jsonObject.addProperty("previousWord", error.getPreviousWord());
+        jsonObject.addProperty("nextWord", error.getNextWord());
         jsonObject.addProperty("wordPosition", error.getWordPosition());
         jsonObject.addProperty("lemma", error.getLemma());
         jsonObject.addProperty("posTag", error.getPosTag());
         jsonObject.addProperty("sentence", error.getSentence());
 
-        jsonObject.addProperty("priority", error.getErrorPriority());
+        jsonObject.addProperty("errorPriority", error.getErrorPriority());
+        jsonObject.addProperty("errorType", error.getErrorType().toString());
         jsonObject.addProperty("mistakeDescription", error.getErrorDescription());
 
         jsonObject.add("dictate", dictateJsonConverter.convertToJsonElement(error.getDictate()));
