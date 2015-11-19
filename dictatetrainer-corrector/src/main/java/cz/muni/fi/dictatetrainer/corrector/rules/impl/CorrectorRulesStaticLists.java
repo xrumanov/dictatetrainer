@@ -1,11 +1,11 @@
 package cz.muni.fi.dictatetrainer.corrector.rules.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+//TODO does it initialize only once?
 
-//TODO make this singleton
+/**
+ * List holds the static lists as defined in pseudocode beside correcting rules, made by Vojtěch Škvařil
+ */
 public class CorrectorRulesStaticLists {
 
     private static final Map<String, String> VYJMENOVANA_SLOVA_PO_B_DUBLET = new HashMap<String, String>() {
@@ -921,58 +921,110 @@ public class CorrectorRulesStaticLists {
 
     //--------------
 
-    private static final List<String> KONSONANTY = new ArrayList<String>() {
+    private static final List<Character> KONSONANTY = new ArrayList<Character>() {
         private static final long serialVersionUID = -9025896333339463041L;
 
         {
-            add("h");
-            add("ch");
-            add("k");
-            add("r");
-            add("d");
-            add("t");
-            add("n");
-            add("ž");
-            add("š");
-            add("č");
-            add("ř");
-            add("c");
-            add("j");
-            add("ď");
-            add("ť");
-            add("ň");
-            add("b");
-            add("f");
-            add("l");
-            add("m");
-            add("p");
-            add("s");
-            add("v");
-            add("z");
+            add('h');
+            //add('ch');
+            add('k');
+            add('r');
+            add('d');
+            add('t');
+            add('n');
+            add('ž');
+            add('š');
+            add('č');
+            add('ř');
+            add('c');
+            add('j');
+            add('ď');
+            add('ť');
+            add('ň');
+            add('b');
+            add('f');
+            add('l');
+            add('m');
+            add('p');
+            add('s');
+            add('v');
+            add('z');
         }
     };
 
-    private static final List<String> VOKALY = new ArrayList<String>() {
+    private static final List<Character> VOKALY = new ArrayList<Character>() {
         private static final long serialVersionUID = -5283834541436824649L;
 
         {
-            add("a");
-            add("á");
-            add("e");
-            add("é");
-            add("i");
-            add("í");
-            add("o");
-            add("ó");
-            add("u");
-            add("ú");
-            add("ů");
-            add("y");
-            add("ý");
+            add('a');
+            add('á');
+            add('e');
+            add('é');
+            add('i');
+            add('í');
+            add('o');
+            add('ó');
+            add('u');
+            add('ú');
+            add('ů');
+            add('y');
+            add('ý');
         }
     };
 
-    private static final List<String> PREDPONY_SLOVESNE_A_OSTATNI = new ArrayList<String>() {
+    private static List<Character> SOUHLASKY_MEKKE = new ArrayList<Character>() {
+        private static final long serialVersionUID = -8448191116229404359L;
+
+        {
+            add('b');
+            add('f');
+            add('m');
+            add('l');
+            add('p');
+            add('s');
+            add('v');
+            add('z');
+        }
+    };
+
+    private static List<Character> SOUHLASKY_OBOJETNE = new ArrayList<Character>() {
+        private static final long serialVersionUID = -5168958512388483898L;
+
+        {
+            add('ž');
+            add('š');
+            add('č');
+            add('ř');
+            add('j');
+            add('d');
+            add('t');
+            add('n');
+        }
+    };
+
+    private static List<Character> SOUHLASKY_TVRDE = new ArrayList<Character>() {
+        private static final long serialVersionUID = -9072492081551227855L;
+
+        {
+            add('h');
+            add('k');
+            add('r');
+            add('d');
+            add('t');
+            add('n');
+        }
+    };
+
+    private static List<Character> SOUHLASKY_MEKKE_A_OBOJETNE = new ArrayList<Character>() {
+        private static final long serialVersionUID = -9072492081551227855L;
+
+        {
+            addAll(SOUHLASKY_MEKKE);
+            addAll(SOUHLASKY_OBOJETNE);
+        }
+    };
+
+    private static final Set<String> PREDPONY_SLOVESNE_A_OSTATNI = new HashSet<String>() {
         private static final long serialVersionUID = -8448191116229404359L;
 
         {
@@ -1143,15 +1195,31 @@ public class CorrectorRulesStaticLists {
         return ADJEKTIVA_ZAKONCENA_NI_NY_JINE_ZAKLADY;
     }
 
-    public static List<String> getKONSONANTY() {
+    public static List<Character> getKONSONANTY() {
         return KONSONANTY;
     }
 
-    public static List<String> getVOKALY() {
+    public static List<Character> getVOKALY() {
         return VOKALY;
     }
 
-    public static List<String> getPredponySlovesneAOstatni() {
+    public static List<Character> getSouhlaskyMekke() {
+        return SOUHLASKY_MEKKE;
+    }
+
+    public static List<Character> getSouhlaskyObojetne() {
+        return SOUHLASKY_OBOJETNE;
+    }
+
+    public static List<Character> getSouhlaskyTvrde() {
+        return SOUHLASKY_TVRDE;
+    }
+
+    public static List<Character> getSouhlaskyMekkeAObojetne() {
+        return SOUHLASKY_MEKKE_A_OBOJETNE;
+    }
+
+    public static Set<String> getPredponySlovesneAOstatni() {
         return PREDPONY_SLOVESNE_A_OSTATNI;
     }
 }
