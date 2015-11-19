@@ -12,7 +12,7 @@ import java.util.Set;
  * Implementation of non-contextual corrector rules
  * Only shows description for mistakes that are non-contextual (without a context of by-standing words)
  * <p> TODO how to choose priority number
- *  TODO consider moving definitions somewhere else to not have that much data in mistake
+ * TODO consider moving definitions somewhere else to not have that much data in mistake
  */
 public class CorrectorRulesNoContext implements CorrectorRules {
 
@@ -28,7 +28,8 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
         char[] precedingCharacters = new char[]{'b', 'l', 'm', 'p', 's', 'v', 'z'};
 
-        for (char precedingCharacter : precedingCharacters) {
+
+        for (char precedingCharacter : precedingCharacters) { // vyjmenovana slova
 
             if ((description = vyjmenovaneSlovoDubletOrNull(mistake, precedingCharacter)) != null ||
                     (description = vyjmenovaneSlovoOrNull(mistake, precedingCharacter)) != null) {
@@ -39,50 +40,127 @@ public class CorrectorRulesNoContext implements CorrectorRules {
             }
         }
 
-        if ((description = iyPoPismenuCOrNull(mistake)) != null) {
+        if ((description = iyPoPismenuCOrNull(mistake)) != null) { // Psaní i/y po písmenu c
             mistake.setMistakeType(MistakeType.IY_po_C);
             mistake.setMistakeDescription(description);
             mistake.setPriority(10);
             return mistake;
 
-        } else if ((description = predponySZOrNull(mistake)) != null) {
+        } else if ((description = predponySZOrNull(mistake)) != null) { // Psaní předpon s-, z-
             mistake.setMistakeType(MistakeType.PREDPONY_S_Z);
             mistake.setMistakeDescription(description);
             mistake.setPriority(7);
             return mistake;
 
-        } else if ((description = predlozkySZOrNull(mistake)) != null) {
+        } else if ((description = predlozkySZOrNull(mistake)) != null) { // Psaní předložek s, z (z postele, s knihou, s sebou)
             mistake.setMistakeType(MistakeType.PREDLOZKY_S_Z);
             mistake.setMistakeDescription(description);
             mistake.setPriority(7);
             return mistake;
 
-        } else if ((description = prejataSlovaSZOrNull(mistake)) != null) {
+        } else if ((description = prejataSlovaSZOrNull(mistake)) != null) { // Pravopis a výslovnost přejatých slov se s – z
             mistake.setMistakeType(MistakeType.PREJATA_SLOVA_S_Z);
             mistake.setMistakeDescription(description);
             mistake.setPriority(7);
             return mistake;
 
-        } else if ((description = psaniDisDysOrNull(mistake)) != null) {
+        } else if ((description = psaniDisDysOrNull(mistake)) != null) { // Psaní dis-, dys-
             mistake.setMistakeType(MistakeType.DIS_DYS);
             mistake.setMistakeDescription(description);
             mistake.setPriority(8);
             return mistake;
 
-        } else if ((description = psaniSeZakoncenimManieOrNull(mistake)) != null) {
+        } else if ((description = psaniSeZakoncenimManieOrNull(mistake)) != null) { // Psaní slov se zakončením -manie
             mistake.setMistakeType(MistakeType.SLOVA_ZAKONCENE_MANIE);
             mistake.setMistakeDescription(description);
             mistake.setPriority(6);
             return mistake;
 
-        } else if ((description = psaniNnNOrNull(mistake)) != null) {
+        } else if ((description = psaniNnNOrNull(mistake)) != null) { // Psaní n – nn
             mistake.setMistakeType(MistakeType.PSANI_N_NN);
             mistake.setMistakeDescription(description);
             mistake.setPriority(5);
             return mistake;
 
+        } else if ((description = psaniSprezekSprahovaniOrNull(mistake)) != null) { // Psaní spřežek a spřahování
+            mistake.setMistakeType(MistakeType.SPREZKY_SPRAHOVANI);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = slozenaPridavniJmenaOrNull(mistake)) != null) { //Složená přídavná jména - První část přídavného jména je zakončena na -sko, -cko, -ně nebo –ově
+            mistake.setMistakeType(MistakeType.SLOZENA_ADJEKTIVA);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = velkaPismenaOrNull(mistake)) != null) { // Psaní spřežek a spřahování
+            mistake.setMistakeType(MistakeType.VELKA_PISMENA);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+        } else if ((description = adjZakoncenaIciOrNull(mistake)) != null) { // Přídavná jména zakončená na -icí – -ící
+            mistake.setMistakeType(MistakeType.ADJEKTIVA_ICI);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = adjZakoncenaNiOrNull(mistake)) != null) { // Přídavná jména zakončená na -ní – -ný
+            mistake.setMistakeType(MistakeType.ADJEKTIVA_NI_NY);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = typAckoliAckolivOrNull(mistake)) != null) { // Typ ačkoli – ačkoliv, kdokoli – kdokoliv
+            mistake.setMistakeType(MistakeType.TYP_ACKOLI_ACKOLIV);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = vokalizacePredlozekOrNull(mistake)) != null) { // Vokalizace předložek
+            mistake.setMistakeType(MistakeType.VOKALIZACE_PREDLOZEK);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = zajmenaVasiJiNiOrNull(mistake)) != null) { // Zájmena typu vaši/vaší, ji/jí, ni/ní
+            mistake.setMistakeType(MistakeType.ZAJMENA_VASI_JI_NI);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = psaniBeBjeVeVjePeOrNull(mistake)) != null) { // Psaní bě/bje, vě/vje, pě
+            mistake.setMistakeType(MistakeType.PSANI_BE_VE_PE);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = souhlaskyParoveOrNull(mistake)) != null) { // Souhlásky párové
+            mistake.setMistakeType(MistakeType.SOUHLASKY_PAROVE);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = diakritikaOrNull(mistake)) != null) { // Diakritika
+            mistake.setMistakeType(MistakeType.DIAKRITIKA);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = iPoMekkychaObojetnychSouhlaskachOrNull(mistake)) != null) { // i/í po měkkých a obojetných souhláskách
+            mistake.setMistakeType(MistakeType.I_PO_MEKKYCH_OBOJETNYCH_SOUHLASKACH);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
+        } else if ((description = zajmenaMneMeASlovaJeObsahujiciOrNull(mistake)) != null) { // zájmena mně x mě a slova obsahující mě a mně
+            mistake.setMistakeType(MistakeType.ZAJMENA_A_SLOVA_OBSAHUJICI_MNE_ME);
+            mistake.setMistakeDescription(description);
+            mistake.setPriority(5);
+            return mistake;
+
         } else {
-            mistake.setMistakeType(MistakeType.OSTATNI);
+            mistake.setMistakeType(MistakeType.OSTATNI); // mistake is not found
             mistake.setMistakeDescription(mostGeneralRule);
             mistake.setPriority(0);
             return mistake;
@@ -435,7 +513,7 @@ public class CorrectorRulesNoContext implements CorrectorRules {
                     "Hned nato začala předstírat, že se nic neděje. " +
                     "Zvlášť píšeme spojení předložky a zájmena: Jdeme na to. (IJP)";
 
-        }  else if ((writtenWord.equals("přitom") && (correctWord.equals("pŕi tom")))
+        } else if ((writtenWord.equals("přitom") && (correctWord.equals("pŕi tom")))
                 || (writtenWord.equals("pŕi tom") && (correctWord.equals("přitom")))
                 || (writtenWord.equals("potom") && (correctWord.equals("po tom")))
                 || (writtenWord.equals("po tom") && (correctWord.equals("potom")))) {
