@@ -1024,6 +1024,17 @@ public class CorrectorRulesStaticLists {
         }
     };
 
+    private static List<Character> IY = new ArrayList<Character>() {
+        private static final long serialVersionUID = -4345503155013116207L;
+
+        {
+            add('y');
+            add('i');
+            add('í');
+            add('ý');
+        }
+    };
+
     private static final Set<String> PREDPONY_SLOVESNE_A_OSTATNI = new HashSet<String>() {
         private static final long serialVersionUID = -8448191116229404359L;
 
@@ -1094,7 +1105,6 @@ public class CorrectorRulesStaticLists {
             add("euro");
         }
     };
-
 
     public CorrectorRulesStaticLists() {
     }
@@ -1217,6 +1227,10 @@ public class CorrectorRulesStaticLists {
 
     public static List<Character> getSouhlaskyMekkeAObojetne() {
         return SOUHLASKY_MEKKE_A_OBOJETNE;
+    }
+
+    public static List<Character> getIY() {
+        return IY;
     }
 
     public static Set<String> getPredponySlovesneAOstatni() {
