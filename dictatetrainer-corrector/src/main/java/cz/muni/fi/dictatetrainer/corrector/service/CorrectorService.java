@@ -25,9 +25,9 @@ public interface CorrectorService {
 
     String[] tokenizeAndReturnTokens(String markedText, String delimiter);
 
-    List<String> sentencizedAndReturnSentences(String markedText, String languageCode);
+    String[] sentencizedAndReturnSentences(String markedText);
 
-    List<Mistake> createMistakeObjectsAndApplyCorrectorRules(String[] tokens, List<String> sentences, CorrectorRules rules);
+    List<Mistake> createMistakeObjectsAndApplyCorrectorRules(String[] tokens, String[] sentences, CorrectorRules rules);
 
     String[] getLemmaAndTagForMistake(String correctWord);
 

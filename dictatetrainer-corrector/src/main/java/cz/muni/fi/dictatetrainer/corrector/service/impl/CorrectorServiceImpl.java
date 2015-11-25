@@ -1,6 +1,7 @@
 package cz.muni.fi.dictatetrainer.corrector.service.impl;
 
 import cz.muni.fi.dictatetrainer.corrector.model.Mistake;
+import cz.muni.fi.dictatetrainer.corrector.model.MistakeType;
 import cz.muni.fi.dictatetrainer.corrector.rules.CorrectorRules;
 import cz.muni.fi.dictatetrainer.corrector.service.CorrectorService;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
@@ -14,8 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Implementation of CorrectorService
@@ -63,25 +62,14 @@ public class CorrectorServiceImpl implements CorrectorService {
     }
 
     /**
-     * Method that takes marked input and create list of sentences for future use
+     * Method that takes marked input and create list of sentences
      *
      * @param markedText   text with marked mistakes
-     * @param languageCode language code according to IANA Language Subtag Registry (see language)
      * @return List of sentences
      */
     @Override
-    public List<String> sentencizedAndReturnSentences(String markedText, String languageCode) {
-        List<String> sentences = new ArrayList<String>();
-        BreakIterator iterator = BreakIterator.getSentenceInstance(new Locale(languageCode));
-        iterator.setText(markedText);
-        int start = iterator.first();
-
-        for (int end = iterator.next();
-             end != BreakIterator.DONE;
-             start = end, end = iterator.next()) {
-            sentences.add(markedText.substring(start, end));
-        }
-        return sentences;
+    public String[] sentencizedAndReturnSentences(String markedText) {
+        return markedText.split("(?=\\.)|(?=!)|(?=\\?)");
     }
 
     /**
@@ -92,88 +80,196 @@ public class CorrectorServiceImpl implements CorrectorService {
      * @return list of mistake objects
      */
     @Override
-    public List<Mistake> createMistakeObjectsAndApplyCorrectorRules(String[] tokens, List<String> sentences,
+    public List<Mistake> createMistakeObjectsAndApplyCorrectorRules(String[] tokens, String[] sentences,
                                                                     CorrectorRules correctorRules) {
 
         List<Mistake> mistakeList = new ArrayList<>();
         int sentenceCounter = 0;
+        int numberOfSurplusWords = 0;
+        int numberOfMissingWords = 0;
 
-        for (int tokenNumber = 0; tokenNumber < tokens.length; tokenNumber++) {
+        for (int wordNumber = 0; wordNumber < tokens.length; wordNumber++) {
 
             //initialize variables
-            String markedWord = tokens[tokenNumber];
+            String markedWord = tokens[wordNumber];
             String nextWord;
             String previousWord;
 
             //to prevent failing at the first token
-            if (tokenNumber > 0) {
-                previousWord = tokens[tokenNumber - 1];
+            if (wordNumber > 0) {
+                previousWord = tokens[wordNumber - 1];
             } else {
                 previousWord = "";
             }
 
             // to prevent failing at the last token
-            if (tokenNumber + 1 < tokens.length) {
-                nextWord = tokens[tokenNumber + 1];
+            if (wordNumber + 1 < tokens.length) {
+                nextWord = tokens[wordNumber + 1];
             } else {
                 nextWord = "";
             }
 
 
             // suppose that these three are the only end-of-sentence characters and that there is no abbreviations in dictate
-            if (tokenNumber > 0 && (previousWord.contains(".") || previousWord.contains("!") || previousWord.contains("?"))) {
+            if (wordNumber > 0 && (previousWord.contains(".") || previousWord.contains("!") || previousWord.contains("?"))) {
                 sentenceCounter++;
             }
 
-            if (!markedWord.contains("<") && !markedWord.contains("(")) { //everything is ok, word is correct
+            if (!markedWord.contains("<") && !markedWord.contains("(")) {
+                //everything is ok, word is correct
+
             } else {
-                if (markedWord.contains("(") && !markedWord.contains("<")) { //surplus word
-                    while (!markedWord.contains(")")) {
-                        //Add mistake creation here for surplus word
-                        tokenNumber++;
-                    }
-                    //Add mistake creation here...last surplus word
 
-                } else if (!markedWord.contains("(") && markedWord.contains("<")) { //missing word
-                    //TODO can be also missing character!!! FIX
-                    while (!markedWord.contains(">")) {
-                        //Add mistake creation here for missing word
-                        tokenNumber++;
-                    }
-                    //Add mistake creation here...last missing word
+                if ((markedWord.indexOf('(') == 0) && (markedWord.indexOf(')') == markedWord.length())) {
+                    // missing word
+                    Mistake mistake = new Mistake();
+                    mistake.setMistakeCharPosInWord(0);
+                    mistake.setCorrectChars(getCorrectWordForMistake(markedWord));
+                    mistake.setWrittenChars(""); //between < and >
+                    mistake.setCorrectWord(getCorrectWordForMistake(markedWord));
+                    mistake.setWrittenWord("");
+                    mistake.setPreviousWord(previousWord);
+                    mistake.setNextWord(nextWord);
+                    mistake.setWordPosition(-1);
+                    mistake.setSentence(sentences[sentenceCounter]);
+                    mistake.setLemma("");
+                    mistake.setPosTag("");
+                    mistake.setMistakeType(MistakeType.CHYBEJICI_SLOVO);
+                    mistake.setPriority(5);
+                    mistake.setMistakeDescription("Tohle slovo chybí.");
 
-                } else if (markedWord.contains("<~>")) { //missing space character
+                    mistakeList.add(mistake);
+                    numberOfMissingWords++;
 
-                    //Add mistake creation here for missing space character
+                } else if ((markedWord.indexOf('<') == 0) && (markedWord.indexOf('>') == markedWord.length())) {
+                    //surplus word
+                    Mistake mistake = new Mistake();
+                    mistake.setMistakeCharPosInWord(0);
+                    mistake.setCorrectChars("");
+                    mistake.setWrittenChars(getWrittenWordForMistake(markedWord)); //between < and >
+                    mistake.setCorrectWord("");
+                    mistake.setWrittenWord(getWrittenWordForMistake(markedWord));
+                    mistake.setPreviousWord(previousWord);
+                    mistake.setNextWord(nextWord);
+                    mistake.setWordPosition(0);
+                    mistake.setSentence(sentences[sentenceCounter]);
+                    mistake.setLemma("");
+                    mistake.setPosTag("");
+                    mistake.setMistakeType(MistakeType.NADBYTECNE_SLOVO);
+                    mistake.setPriority(5);
+                    mistake.setMistakeDescription("Tohle slovo je navíc.");
 
-                } else if ((markedWord.contains("(") && markedWord.contains(")") //one word or part of the word is incorrect
-                        && (markedWord.contains("<") && markedWord.contains(">")))
-                        | (((markedWord.contains("<") && markedWord.contains(">"))
-                        && (((markedWord.indexOf(">") - markedWord.indexOf("<")) < (markedWord.length() - 1)))))
-                        | (((markedWord.contains("(") && markedWord.contains(")"))
-                        && (((markedWord.indexOf(")") - markedWord.indexOf("(")) < (markedWord.length() - 1)))))
-                        | (markedWord.contains(")<"))) {
+                    mistakeList.add(mistake);
+                    numberOfSurplusWords++;
 
-                    for (int mistakeInWordIterator = 0; mistakeInWordIterator < getMistakeCharPosInWordForMistake(markedWord).size(); mistakeInWordIterator++) {
-                        Mistake mistake = new Mistake(
-                                getMistakeCharPosInWordForMistake(markedWord).get(mistakeInWordIterator),
-                                getCorrectCharsForMistake(markedWord).get(mistakeInWordIterator),
-                                getWrittenCharsForMistake(markedWord).get(mistakeInWordIterator),
-                                getCorrectWordForMistake(markedWord),
-                                getWrittenWordForMistake(markedWord),
-                                getCorrectWordForMistake(previousWord),
-                                getCorrectWordForMistake(nextWord),
-                                tokenNumber,
-                                getLemmaForMistake(getCorrectWordForMistake(markedWord)),
-                                getTagForMistake(getCorrectWordForMistake(markedWord)),
-                                sentences.get(sentenceCounter)
-                        );
+                } else {
 
-                        // pass the mistake to CorrectorRules to get priority, mistakeType and mistakeDescription
-                        mistake = correctorRules.applyRules(mistake);
+                    int parenthPosition = 0;
+                    int chevronPosition = 0;
+                    String corectWord = getCorrectWordForMistake(markedWord);
 
-                        // add mistakes to the List
-                        mistakeList.add(mistake);
+                    while (chevronPosition != -1 && parenthPosition != -1) {
+
+                        parenthPosition = markedWord.indexOf('(');
+                        int parenthClosingPosition = markedWord.indexOf(')');
+                        chevronPosition = markedWord.indexOf('<');
+                        int chevronClosingPosition = markedWord.indexOf('>');
+
+                        if (parenthPosition == -1) {
+                            if (parenthClosingPosition - parenthPosition == 1) {
+                                // missing space between words
+                                Mistake mistake = new Mistake();
+                                mistake.setMistakeCharPosInWord(0);
+                                mistake.setCorrectChars(" ");
+                                mistake.setWrittenChars(""); //between < and >
+                                mistake.setCorrectWord(getCorrectWordForMistake(markedWord));
+                                mistake.setWrittenWord(getWrittenWordForMistake(markedWord));
+                                mistake.setPreviousWord(previousWord);
+                                mistake.setNextWord(nextWord);
+                                mistake.setWordPosition(wordNumber - numberOfSurplusWords + numberOfMissingWords);
+                                mistake.setSentence(sentences[sentenceCounter]);
+                                mistake.setLemma(getLemmaForMistake(corectWord));
+                                mistake.setPosTag(getTagForMistake(corectWord));
+
+                                mistakeList.add(correctorRules.applyRules(mistake));
+
+                            } else {
+                                //surplus characters
+                                Mistake mistake = new Mistake();
+                                mistake.setMistakeCharPosInWord((chevronPosition * (-1)) - 1);
+                                mistake.setCorrectChars("");
+                                mistake.setWrittenChars(markedWord.substring(chevronPosition + 1, chevronClosingPosition)); //between < and >
+                                mistake.setCorrectWord(getCorrectWordForMistake(markedWord));
+                                mistake.setWrittenWord(getWrittenWordForMistake(markedWord));
+                                mistake.setPreviousWord(previousWord);
+                                mistake.setNextWord(nextWord);
+                                mistake.setWordPosition(wordNumber - numberOfSurplusWords + numberOfMissingWords);
+                                mistake.setSentence(sentences[sentenceCounter]);
+                                mistake.setLemma(getLemmaForMistake(corectWord));
+                                mistake.setPosTag(getTagForMistake(corectWord));
+
+                                mistakeList.add(correctorRules.applyRules(mistake));
+                            }
+
+                            markedWord = markedWord.replace(markedWord.substring(chevronPosition, chevronClosingPosition + 1), "");
+
+                        } else if (parenthClosingPosition + 1 == chevronPosition) {
+                            //normal mistake
+                            Mistake mistake = new Mistake();
+                            mistake.setMistakeCharPosInWord(parenthPosition + 1);
+                            mistake.setCorrectChars(markedWord.substring(parenthPosition + 1, parenthClosingPosition));
+                            mistake.setWrittenChars(markedWord.substring(chevronPosition + 1, chevronClosingPosition)); //between < and >
+                            mistake.setCorrectWord(getCorrectWordForMistake(markedWord));
+                            mistake.setWrittenWord(getWrittenWordForMistake(markedWord));
+                            mistake.setPreviousWord(previousWord);
+                            mistake.setNextWord(nextWord);
+                            mistake.setWordPosition(wordNumber - numberOfSurplusWords + numberOfMissingWords);
+                            mistake.setSentence(sentences[sentenceCounter]);
+                            mistake.setLemma(getLemmaForMistake(corectWord));
+                            mistake.setPosTag(getTagForMistake(corectWord));
+
+                            mistakeList.add(correctorRules.applyRules(mistake));
+
+                            markedWord = markedWord.replace(markedWord.substring(parenthClosingPosition, chevronClosingPosition + 1), "").replaceFirst("\\(", "");
+                        } else {
+                            if (chevronClosingPosition - chevronPosition == 1) {
+                                // surplus space between words
+                                Mistake mistake = new Mistake();
+                                mistake.setMistakeCharPosInWord(0);
+                                mistake.setCorrectChars("");
+                                mistake.setWrittenChars(" "); //between < and >
+                                mistake.setCorrectWord(getCorrectWordForMistake(markedWord));
+                                mistake.setWrittenWord(getWrittenWordForMistake(markedWord));
+                                mistake.setPreviousWord(previousWord);
+                                mistake.setNextWord(nextWord);
+                                mistake.setWordPosition(wordNumber - numberOfSurplusWords + numberOfMissingWords);
+                                mistake.setSentence(sentences[sentenceCounter]);
+                                mistake.setLemma(getLemmaForMistake(corectWord));
+                                mistake.setPosTag(getTagForMistake(corectWord));
+
+                                mistakeList.add(correctorRules.applyRules(mistake));
+
+                            } else {
+                                //missing character
+                                Mistake mistake = new Mistake();
+                                mistake.setMistakeCharPosInWord((parenthPosition * (-1)) - 1);
+                                mistake.setCorrectChars(markedWord.substring(parenthPosition + 1, parenthClosingPosition));
+                                mistake.setWrittenChars(""); //between < and >
+                                mistake.setCorrectWord(getCorrectWordForMistake(markedWord));
+                                mistake.setWrittenWord(getWrittenWordForMistake(markedWord));
+                                mistake.setPreviousWord(previousWord);
+                                mistake.setNextWord(nextWord);
+                                mistake.setWordPosition(wordNumber - numberOfSurplusWords + numberOfMissingWords);
+                                mistake.setSentence(sentences[sentenceCounter]);
+                                mistake.setLemma(getLemmaForMistake(corectWord));
+                                mistake.setPosTag(getTagForMistake(corectWord));
+
+                                mistakeList.add(correctorRules.applyRules(mistake));
+                            }
+                            markedWord = markedWord.replaceFirst("\\(", "").replaceFirst("\\)", "");
+                        }
+                        parenthPosition = markedWord.indexOf('(');
+                        chevronPosition = markedWord.indexOf('<');
                     }
                 }
             }
@@ -234,84 +330,6 @@ public class CorrectorServiceImpl implements CorrectorService {
     //------------Mistake attribute definition----------------------------------
 
     /**
-     * Get position of mistaken characters
-     * for example ab(cd)e(fg)h the given positions are c=2, f=5
-     * If there is surplus or missing character, it returns negative number representing position
-     *
-     * @param markedWord
-     * @return
-     */
-    public List<Integer> getMistakeCharPosInWordForMistake(String markedWord) {
-
-        List<Integer> charPos = new ArrayList<>();
-
-        int bracketPosition = 0;
-        int bracesPosition = 0;
-
-        while (bracesPosition != -1 && bracketPosition != -1) {
-            bracketPosition = markedWord.indexOf('(');
-            int bracketClosingPosition = markedWord.indexOf(')');
-            bracesPosition = markedWord.indexOf('<');
-            int bracesClosingPosition = markedWord.indexOf('>');
-
-            if (bracketPosition == -1) {
-                charPos.add((bracesPosition * (-1)) - 1);
-                markedWord = markedWord.replace(markedWord.substring(bracesPosition, bracesClosingPosition+1), "");
-            } else if (bracketClosingPosition + 1 == bracesPosition) {
-                charPos.add(bracketPosition + 1);
-                markedWord = markedWord.replace(markedWord.substring(bracketClosingPosition, bracesClosingPosition+1), "").replaceFirst("\\(","");
-            } else {
-                charPos.add((bracketPosition * (-1)) - 1);
-                markedWord = markedWord.replaceFirst("\\(", "").replaceFirst("\\)","");
-            }
-
-            bracketPosition = markedWord.indexOf('(');
-            bracesPosition = markedWord.indexOf('<');
-
-        }
-
-        return charPos;
-    }
-
-    /**
-     * Get the correct characters for mistake
-     * for example if correct word is <dobrý> and written word is <dobrí>
-     * the correct char for mistake will be "ý"
-     *
-     * @param markedWord marked word
-     * @return List of correct chars for one token
-     */
-    public List<String> getCorrectCharsForMistake(String markedWord) {
-        List<String> correctChars = new ArrayList<>();
-
-        //get all Strings between '(' and ')'
-        Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(markedWord);
-        while (m.find()) {
-            correctChars.add(m.group(1));
-        }
-        return correctChars;
-    }
-
-    /**
-     * Get the characters for mistake written by user
-     * for example if correct word is <dobrý> and written word is <dobrí>
-     * the correct char for mistake will be "í"
-     *
-     * @param markedWord marked word
-     * @return List of written chars for one token
-     */
-    public List<String> getWrittenCharsForMistake(String markedWord) {
-        List<String> writtenChars = new ArrayList<>();
-
-        //get all Strings between '<' and '>'
-        Matcher m = Pattern.compile("\\<([^>]+)\\>").matcher(markedWord);
-        while (m.find()) {
-            writtenChars.add(m.group(1));
-        }
-        return writtenChars;
-    }
-
-    /**
      * Get the correct version of marked word
      * For example, if marked word is dobr(ý)<í>, then the correct version is "dobrý"
      *
@@ -319,6 +337,7 @@ public class CorrectorServiceImpl implements CorrectorService {
      * @return correct word
      */
     public String getCorrectWordForMistake(String markedWord) {
+        markedWord = markedWord.replaceAll("\\(\\)", " "); //because of missing space
         return markedWord.replaceAll("<[" + charWithDiac + "]*>", "").replaceAll("\\(", "").replaceAll("\\)", "");
     }
 
@@ -330,6 +349,7 @@ public class CorrectorServiceImpl implements CorrectorService {
      * @return correct word
      */
     public String getWrittenWordForMistake(String markedWord) {
+        markedWord = markedWord.replaceAll("<>", " ");
         return markedWord.replaceAll("\\([" + charWithDiac + "]*\\)", "").replaceAll("<", "").replaceAll(">", "");
     }
 

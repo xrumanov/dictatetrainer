@@ -5,7 +5,6 @@ import cz.muni.fi.dictatetrainer.corrector.rules.CorrectorRules;
 import cz.muni.fi.dictatetrainer.corrector.rules.impl.CorrectorRulesNoContext;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -15,118 +14,118 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CorrectorServiceUnitTest {
 
     CorrectorServiceImpl correctorService = new CorrectorServiceImpl();
-
-    @Test
-    public void mistakeCharPosInWordSimpleCase() {
-        // TODO add hamcrest to pom.xml?
-        String markedWord = "Okamžit(ě)<e>";
-        List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
-
-        assertThat(positions.size(), is(equalTo(1)));
-        assertThat(positions.get(0), is(equalTo(8)));
-    }
-
-    @Test
-    public void mistakeCharPosInWordSurplusChar() {
-        String markedWord = "Ran<n>ý";
-        List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
-
-        assertThat(positions.size(), is(equalTo(1)));
-        assertThat(positions.get(0), is(equalTo(-4)));
-    }
-
-    @Test
-    public void mistakeCharPosInWordMissingChar() {
-        String markedWord = "Strun(n)ý";
-        List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
-
-        assertThat(positions.size(), is(equalTo(1)));
-        assertThat(positions.get(0), is(equalTo(-6)));
-    }
-
-    @Test
-    public void mistakeCharPosInWordMoreCharsMistake() {
-        String markedWord = "(O)<o>kamžit(ě)<e>";
-        List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
-
-        assertThat(positions.size(), is(equalTo(2)));
-        assertThat(positions.get(0), is(equalTo(1)));
-        assertThat(positions.get(1), is(equalTo(8)));
-    }
-
-    @Test
-    public void correctCharsOneMistake() {
-        String markedWord = "Okamžit(ě)<e>";
-        List<String> correctChars = correctorService.getCorrectCharsForMistake(markedWord);
-
-        assertThat(correctChars.size(), is(equalTo(1)));
-        assertThat(correctChars.get(0), is(equalTo("ě")));
-    }
-
-    @Test
-    public void correctCharsMoreMistakes() {
-        String markedWord = "(O)<o>kamžit(ě)<e>";
-        List<String> correctChars = correctorService.getCorrectCharsForMistake(markedWord);
-
-        assertThat(correctChars.size(), is(equalTo(2)));
-        assertThat(correctChars.get(0), is(equalTo("O")));
-        assertThat(correctChars.get(1), is(equalTo("ě")));
-    }
-
-    @Test
-    public void correctCharsMissingChars() {
-        String markedWord = "Strun(n)ý";
-        List<String> correctChars = correctorService.getCorrectCharsForMistake(markedWord);
-
-        assertThat(correctChars.size(), is(equalTo(1)));
-        assertThat(correctChars.get(0), is(equalTo("n")));
-    }
-
-    @Test
-    public void correctCharsSurplusChars() {
-        //TODO make Error correctChars field NotNull=false
-        String markedWord = "Ran<n>ý";
-        List<String> correctChars = correctorService.getCorrectCharsForMistake(markedWord);
-
-        assertThat(correctChars.size(), is(equalTo(0)));
-    }
-
-    @Test
-    public void writtenCharsOneMistake() {
-        String markedWord = "Okamžit(ě)<e>";
-        List<String> writtenChars = correctorService.getWrittenCharsForMistake(markedWord);
-
-        assertThat(writtenChars.size(), is(equalTo(1)));
-        assertThat(writtenChars.get(0), is(equalTo("e")));
-    }
-
-    @Test
-    public void writtenCharsMoreMistakes() {
-        String markedWord = "(O)<o>kamžit(ě)<e>";
-        List<String> writtenChars = correctorService.getWrittenCharsForMistake(markedWord);
-
-        assertThat(writtenChars.size(), is(equalTo(2)));
-        assertThat(writtenChars.get(0), is(equalTo("o")));
-        assertThat(writtenChars.get(1), is(equalTo("e")));
-    }
-
-    @Test
-    public void writtenCharsSurplusChars() {
-        String markedWord = "Ran<n>ý";
-        List<String> writtenChars = correctorService.getWrittenCharsForMistake(markedWord);
-
-        assertThat(writtenChars.size(), is(equalTo(1)));
-        assertThat(writtenChars.get(0), is(equalTo("n")));
-    }
-
-    @Test
-    public void writtenCharsMissingChars() {
-        //TODO make Error writtenChars field NotNull=false
-        String markedWord = "Strun(n)ý";
-        List<String> writtenChars = correctorService.getWrittenCharsForMistake(markedWord);
-
-        assertThat(writtenChars.size(), is(equalTo(0)));
-    }
+//
+//    @Test
+//    public void mistakeCharPosInWordSimpleCase() {
+//        // TODO add hamcrest to pom.xml?
+//        String markedWord = "Okamžit(ě)<e>";
+//        List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
+//
+//        assertThat(positions.size(), is(equalTo(1)));
+//        assertThat(positions.get(0), is(equalTo(8)));
+//    }
+//
+//    @Test
+//    public void mistakeCharPosInWordSurplusChar() {
+//        String markedWord = "Ran<n>ý";
+//        List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
+//
+//        assertThat(positions.size(), is(equalTo(1)));
+//        assertThat(positions.get(0), is(equalTo(-4)));
+//    }
+//
+//    @Test
+//    public void mistakeCharPosInWordMissingChar() {
+//        String markedWord = "Strun(n)ý";
+//        List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
+//
+//        assertThat(positions.size(), is(equalTo(1)));
+//        assertThat(positions.get(0), is(equalTo(-6)));
+//    }
+//
+//    @Test
+//    public void mistakeCharPosInWordMoreCharsMistake() {
+//        String markedWord = "(O)<o>kamžit(ě)<e>";
+//        List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
+//
+//        assertThat(positions.size(), is(equalTo(2)));
+//        assertThat(positions.get(0), is(equalTo(1)));
+//        assertThat(positions.get(1), is(equalTo(8)));
+//    }
+//
+//    @Test
+//    public void correctCharsOneMistake() {
+//        String markedWord = "Okamžit(ě)<e>";
+//        List<String> correctChars = correctorService.getCorrectCharsForMistake(markedWord);
+//
+//        assertThat(correctChars.size(), is(equalTo(1)));
+//        assertThat(correctChars.get(0), is(equalTo("ě")));
+//    }
+//
+//    @Test
+//    public void correctCharsMoreMistakes() {
+//        String markedWord = "(O)<o>kamžit(ě)<e>";
+//        List<String> correctChars = correctorService.getCorrectCharsForMistake(markedWord);
+//
+//        assertThat(correctChars.size(), is(equalTo(2)));
+//        assertThat(correctChars.get(0), is(equalTo("O")));
+//        assertThat(correctChars.get(1), is(equalTo("ě")));
+//    }
+//
+//    @Test
+//    public void correctCharsMissingChars() {
+//        String markedWord = "Strun(n)ý";
+//        List<String> correctChars = correctorService.getCorrectCharsForMistake(markedWord);
+//
+//        assertThat(correctChars.size(), is(equalTo(1)));
+//        assertThat(correctChars.get(0), is(equalTo("n")));
+//    }
+//
+//    @Test
+//    public void correctCharsSurplusChars() {
+//        //TODO make Error correctChars field NotNull=false
+//        String markedWord = "Ran<n>ý";
+//        List<String> correctChars = correctorService.getCorrectCharsForMistake(markedWord);
+//
+//        assertThat(correctChars.size(), is(equalTo(0)));
+//    }
+//
+//    @Test
+//    public void writtenCharsOneMistake() {
+//        String markedWord = "Okamžit(ě)<e>";
+//        List<String> writtenChars = correctorService.getWrittenCharsForMistake(markedWord);
+//
+//        assertThat(writtenChars.size(), is(equalTo(1)));
+//        assertThat(writtenChars.get(0), is(equalTo("e")));
+//    }
+//
+//    @Test
+//    public void writtenCharsMoreMistakes() {
+//        String markedWord = "(O)<o>kamžit(ě)<e>";
+//        List<String> writtenChars = correctorService.getWrittenCharsForMistake(markedWord);
+//
+//        assertThat(writtenChars.size(), is(equalTo(2)));
+//        assertThat(writtenChars.get(0), is(equalTo("o")));
+//        assertThat(writtenChars.get(1), is(equalTo("e")));
+//    }
+//
+//    @Test
+//    public void writtenCharsSurplusChars() {
+//        String markedWord = "Ran<n>ý";
+//        List<String> writtenChars = correctorService.getWrittenCharsForMistake(markedWord);
+//
+//        assertThat(writtenChars.size(), is(equalTo(1)));
+//        assertThat(writtenChars.get(0), is(equalTo("n")));
+//    }
+//
+//    @Test
+//    public void writtenCharsMissingChars() {
+//        //TODO make Error writtenChars field NotNull=false
+//        String markedWord = "Strun(n)ý";
+//        List<String> writtenChars = correctorService.getWrittenCharsForMistake(markedWord);
+//
+//        assertThat(writtenChars.size(), is(equalTo(0)));
+//    }
 
     @Test
     public void correctWordOneMistakeMissingChars() {
@@ -164,7 +163,7 @@ public class CorrectorServiceUnitTest {
     @Test
     public void numberOfMistakesSimpleCase() {
         String[] tokens = new String[6];
-        List<String> markedSentences = new ArrayList<>();
+        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
 
         tokens[0] = "Okamžitě";
         tokens[1] = "m(n)ě";
@@ -172,8 +171,6 @@ public class CorrectorServiceUnitTest {
         tokens[3] = "dej";
         tokens[4] = "na";
         tokens[5] = "židli!";
-
-        markedSentences.add("Okamžitě m(n)ě to dej na židli!");
 
         CorrectorRules cs = new CorrectorRulesNoContext();
 
@@ -186,7 +183,7 @@ public class CorrectorServiceUnitTest {
     @Test
     public void wordPositionSimpleCase() {
         String[] tokens = new String[6];
-        List<String> markedSentences = new ArrayList<>();
+        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
 
         tokens[0] = "Okamžitě";
         tokens[1] = "m(n)ě";
@@ -194,8 +191,6 @@ public class CorrectorServiceUnitTest {
         tokens[3] = "dej";
         tokens[4] = "na";
         tokens[5] = "židli!";
-
-        markedSentences.add("Okamžitě m(n)ě to dej na židli!");
 
         CorrectorRules cs = new CorrectorRulesNoContext();
 
@@ -208,7 +203,7 @@ public class CorrectorServiceUnitTest {
     @Test
     public void wordPositionSurplusWord() {
         String[] tokens = new String[7];
-        List<String> markedSentences = new ArrayList<>();
+        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
 
         tokens[0] = "Okamžitě";
         tokens[1] = "mně";
@@ -218,12 +213,10 @@ public class CorrectorServiceUnitTest {
         tokens[5] = "na";
         tokens[6] = "židl(i)<y>!";
 
-        markedSentences.add("Okamžitě mně to <už> dej na židl(i)<y>!");
-
-        CorrectorRules cs = new CorrectorRulesNoContext();
+        CorrectorRules cr = new CorrectorRulesNoContext();
 
         List<Mistake> mistakes =
-                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
+                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cr);
 
         assertThat(mistakes.size(), is(equalTo(2)));
         assertThat(mistakes.get(0).getWordPosition(), is(equalTo(0)));
@@ -233,7 +226,7 @@ public class CorrectorServiceUnitTest {
     @Test
     public void wordPositionMissingWord() {
         String[] tokens = new String[6];
-        List<String> markedSentences = new ArrayList<>();
+        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
 
         tokens[0] = "Okamžitě";
         tokens[1] = "(mně)";
@@ -241,8 +234,6 @@ public class CorrectorServiceUnitTest {
         tokens[3] = "dej";
         tokens[4] = "na";
         tokens[5] = "židl(i)<y>!";
-
-        markedSentences.add("Okamžitě (mně) to dej na židl(i)<y>!");
 
         CorrectorRules cs = new CorrectorRulesNoContext();
 
@@ -257,21 +248,24 @@ public class CorrectorServiceUnitTest {
     @Test
     public void sentencesSplitting() {
         String markedText = "Jsem doma. Já va(ř)<r>ím! Co?";
-        String LANGUAGE = "cs";
 
-        List<String> sentences = correctorService.sentencizedAndReturnSentences(markedText, LANGUAGE);
+        String[] sentences = correctorService.sentencizedAndReturnSentences(markedText);
 
-        assertThat(sentences.size(), is(equalTo(3)));
-        assertThat(sentences.get(0), is(equalTo("Jsem doma. ")));
-        assertThat(sentences.get(1), is(equalTo("Já va(ř)<r>ím! ")));
-        assertThat(sentences.get(2), is(equalTo("Co?")));
+        assertThat(sentences.length, is(equalTo(3)));
+        assertThat(sentences[0], is(equalTo("Jsem doma. ")));
+        assertThat(sentences[1], is(equalTo("Já va(ř)<r>ím! ")));
+        assertThat(sentences[2], is(equalTo("Co?")));
 
     }
 
     @Test
     public void sentenceNumberOfMistake() {
         String[] tokens = new String[7];
-        List<String> markedSentences = new ArrayList<>();
+
+        String[] markedSentences = {
+                "Okamžitě m(n)ě to dej na židli!",
+                "N(e)<e>."
+        };
 
         tokens[0] = "Okamžitě";
         tokens[1] = "mně";
@@ -280,9 +274,6 @@ public class CorrectorServiceUnitTest {
         tokens[4] = "na";
         tokens[5] = "židl(i)<y>!";
         tokens[6] = "N(e)<e>.";
-
-        markedSentences.add("Okamžitě mně to dej na židl(i)<y>!");
-        markedSentences.add("N(e)<e>.");
 
         CorrectorRules cs = new CorrectorRulesNoContext();
 
