@@ -32,7 +32,7 @@ public class CorrectorServiceUnitTest {
         List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
 
         assertThat(positions.size(), is(equalTo(1)));
-        assertThat(positions.get(0), is(equalTo(0)));
+        assertThat(positions.get(0), is(equalTo(-4)));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class CorrectorServiceUnitTest {
         List<Integer> positions = correctorService.getMistakeCharPosInWordForMistake(markedWord);
 
         assertThat(positions.size(), is(equalTo(1)));
-        assertThat(positions.get(0), is(equalTo(-1)));
+        assertThat(positions.get(0), is(equalTo(-6)));
     }
 
     @Test
