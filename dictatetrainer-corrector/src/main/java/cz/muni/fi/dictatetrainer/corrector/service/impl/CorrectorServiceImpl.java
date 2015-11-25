@@ -44,6 +44,7 @@ public class CorrectorServiceImpl implements CorrectorService {
         dmp.diffCleanupSemantic(diffList);
 
         // create markup text and then perform some cleanup on it
+        // TODO if mistake is missing or surplus blankspace, mark it like za()to or za<>to
         String markedInput = cleanupMarkedText(createMarkupFromDiffList(diffList, dmp));
 
         return markedInput;
@@ -112,7 +113,7 @@ public class CorrectorServiceImpl implements CorrectorService {
             }
 
             // to prevent failing at the last token
-            if (tokenNumber+1 < tokens.length) {
+            if (tokenNumber + 1 < tokens.length) {
                 nextWord = tokens[tokenNumber + 1];
             } else {
                 nextWord = "";
@@ -235,24 +236,40 @@ public class CorrectorServiceImpl implements CorrectorService {
     /**
      * Get position of mistaken characters
      * for example ab(cd)e(fg)h the given positions are c=2, f=5
-     * TODO 0 if character is surplus, -1 if character is missing
+     * If there is surplus or missing character, it returns negative number representing position
      *
      * @param markedWord
      * @return
      */
     public List<Integer> getMistakeCharPosInWordForMistake(String markedWord) {
-        // delete all characters between <> to ease the counting
-        markedWord = markedWord.replaceAll("\\s*\\<[^\\>]*\\>\\s*", " ");
-
-        // auxillary integer to help to cope with ()
-        // first index is index of brace, second is behind two braces (-2)
-        int n = 0;
 
         List<Integer> charPos = new ArrayList<>();
-        for (int i = -1; (i = markedWord.indexOf("(", i + 1)) != -1; ) {
-            charPos.add(i - n + 1);
-            n = n + 3;
+
+        int bracketPosition = 0;
+        int bracesPosition = 0;
+
+        while (bracesPosition != -1 && bracketPosition != -1) {
+            bracketPosition = markedWord.indexOf('(');
+            int bracketClosingPosition = markedWord.indexOf(')');
+            bracesPosition = markedWord.indexOf('<');
+            int bracesClosingPosition = markedWord.indexOf('>');
+
+            if (bracketPosition == -1) {
+                charPos.add((bracesPosition * (-1)) - 1);
+                markedWord = markedWord.replace(markedWord.substring(bracesPosition, bracesClosingPosition+1), "");
+            } else if (bracketClosingPosition + 1 == bracesPosition) {
+                charPos.add(bracketPosition + 1);
+                markedWord = markedWord.replace(markedWord.substring(bracketClosingPosition, bracesClosingPosition+1), "").replaceFirst("\\(","");
+            } else {
+                charPos.add((bracketPosition * (-1)) - 1);
+                markedWord = markedWord.replaceFirst("\\(", "").replaceFirst("\\)","");
+            }
+
+            bracketPosition = markedWord.indexOf('(');
+            bracesPosition = markedWord.indexOf('<');
+
         }
+
         return charPos;
     }
 
