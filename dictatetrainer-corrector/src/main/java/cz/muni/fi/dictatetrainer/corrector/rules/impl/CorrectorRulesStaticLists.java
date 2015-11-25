@@ -107,9 +107,7 @@ public class CorrectorRulesStaticLists {
         private static final long serialVersionUID = 5076158331930372261L;
         private final String DEF_BYT = "být (bych, bys, by, bychom, byste, abych, abys, aby, …, kdybych, kdybys, " +
                 "kdyby, …, bytí, živobytí, bývat, bývalý, byt, bytná, bytový, bytelný, bytost, bydlit, bydliště, " +
-                "obydlí, bydlo (příbytek, živobytí), dobýt, dobyvatel, dobytek, dobytče, dobytkářství, nabýt, nabývat, " +
-                "nábytek, obývat, obyvatel, obyvatelstvo, odbýt, odbyt, neodbytný, pozbýt, přebýt, přebývat, přebytek, " +
-                "přibýt, přibývat, příbytek, ubýt, ubývat, úbytek, zbývat, zbytek, zabývat se)";
+                "obydlí)";
 
         {
             put("být", DEF_BYT);
@@ -136,36 +134,36 @@ public class CorrectorRulesStaticLists {
             put("bydlit", DEF_BYT);
             put("bydliště", DEF_BYT);
             put("obydlí", DEF_BYT);
-            put("bydlo", DEF_BYT);
-            put("příbytek", DEF_BYT);
-            put("živobytí", DEF_BYT);
-            put("dobýt", DEF_BYT);
-            put("dobyvatel", DEF_BYT);
-            put("dobytek", DEF_BYT);
-            put("dobytče", DEF_BYT);
-            put("dobytkářství", DEF_BYT);
-            put("nabýt", DEF_BYT);
-            put("nabývat", DEF_BYT);
-            put("nábytek", DEF_BYT);
-            put("obývat", DEF_BYT);
-            put("obyvatel", DEF_BYT);
-            put("obyvatelstvo", DEF_BYT);
-            put("odbýt", DEF_BYT);
-            put("odbyt", DEF_BYT);
-            put("neodbytný", DEF_BYT);
-            put("pozbýt", DEF_BYT);
-            put("přebýt", DEF_BYT);
-            put("přebývat", DEF_BYT);
-            put("přebytek", DEF_BYT);
-            put("přibýt", DEF_BYT);
-            put("přibývat", DEF_BYT);
-            put("příbytek", DEF_BYT);
-            put("ubýt", DEF_BYT);
-            put("ubývat", DEF_BYT);
-            put("úbytek", DEF_BYT);
-            put("zbývat", DEF_BYT);
-            put("zbytek", DEF_BYT);
-            put("zabývat", DEF_BYT);
+
+            put("bydlo", "bydlo (příbytek, živobytí)");
+            put("příbytek", "bydlo (příbytek, živobytí)");
+            put("živobytí", "bydlo (příbytek, živobytí)");
+            put("dobýt", "dobýt");
+            put("dobyvatel", "dobyvatel");
+            put("dobytek", "dobytek");
+            put("dobytče", "dobytče");
+            put("dobytkářství", "dobytkářství");
+            put("nabýt", "nabýt");
+            put("nabývat", "nabývat");
+            put("nábytek", "nábytek");
+            put("obývat", "obývat");
+            put("obyvatel", "obyvatel");
+            put("obyvatelstvo", "obyvatelstvo");
+            put("odbýt", "odbýt");
+            put("neodbytný", "neodbytný");
+            put("pozbýt", "pozbýt");
+            put("přebýt", "přebýt");
+            put("přebývat", "přebývat");
+            put("přebytek", "přebytek");
+            put("přibýt", "přibýt");
+            put("přibývat", "přibývat");
+            put("příbytek", "příbytek");
+            put("ubýt", "ubýt");
+            put("ubývat", "ubývat");
+            put("úbytek", "úbytek");
+            put("zbývat", "zbývat");
+            put("zbytek", "zbytek");
+            put("zabývat", "zabývat");
             put("obyčej", "obyčej (obyčejný)");
             put("obyčejný", "obyčej (obyčejný)");
             put("bystrý", "bystrý (bystře, bystrost, bystřina, Bystřice)");
@@ -972,7 +970,7 @@ public class CorrectorRulesStaticLists {
         }
     };
 
-    private static List<Character> SOUHLASKY_MEKKE = new ArrayList<Character>() {
+    private static List<Character> SOUHLASKY_OBOJETNE = new ArrayList<Character>() {
         private static final long serialVersionUID = -8448191116229404359L;
 
         {
@@ -987,7 +985,7 @@ public class CorrectorRulesStaticLists {
         }
     };
 
-    private static List<Character> SOUHLASKY_OBOJETNE = new ArrayList<Character>() {
+    private static List<Character> SOUHLASKY_MEKKE = new ArrayList<Character>() {
         private static final long serialVersionUID = -5168958512388483898L;
 
         {

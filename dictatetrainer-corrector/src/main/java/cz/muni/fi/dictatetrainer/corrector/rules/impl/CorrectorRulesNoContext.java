@@ -171,15 +171,18 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String vyjmenovaneSlovoDubletOrNull(Mistake mistake, char precededChar) {
 
-        String tag = mistake.getPosTag();
-        String lemma = mistake.getLemma();
-        String lemmaWithoutAccentsOnIY = lemma.replaceAll("ý", "ý").replaceAll("í", "i");
-        String writtenWord = mistake.getWrittenWord();
-        Integer mistakeCharPosition = mistake.getMistakeCharPosInWord();
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
+        String tag = getTag(mistake);
+        String lemma = getLemma(mistake);
+        String lemmaWithoutAccentsOnIY = getLemmaWithoutAccentsOnIY(mistake);
+        String writtenWord = getWrittenWord(mistake);
+        Integer mistakeCharPosition = getMistakeCharPositionInWord(mistake);
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+
         Map<String, String> vyjmenovanaSlovaDublet;
         List<Character> iy = CorrectorRulesStaticLists.getIY();
+
+        if (mistakeCharPosition < 1) return null;
 
         switch (precededChar) {
             case 'b':
@@ -233,10 +236,10 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String vyjmenovaneSlovoOrNull(Mistake mistake, char precededChar) {
 
-        String lemma = mistake.getLemma();
-        String tag = mistake.getPosTag();
-        Integer mistakeCharPosition = mistake.getMistakeCharPosInWord();
-        String writtenWord = mistake.getWrittenWord();
+        String lemma = getLemma(mistake);
+        String tag = getTag(mistake);
+        Integer mistakeCharPosition = getMistakeCharPositionInWord(mistake);
+        String writtenWord = getWrittenWord(mistake);
         char correctChars;
         char writtenChars;
         if (mistake.getCorrectChars() != "" && mistake.getWrittenChars() != "") {
@@ -248,67 +251,72 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
         Map<String, String> vyjmenovanaSlova;
 
+        if (mistakeCharPosition < 1) return null;
+
         String generalDefinition = "Jde o vyjmenované nebo z cizího jazyka přejaté slovo. " +
                 "Tato slova mají společné psaní i/í po souhláskách (b, f, m, l, p, s, v, z), " +
                 "které jsou tzv. obojetné, a ke každému ze zmíněných písmen existuje seznam výjimek, " +
                 "u nichž se na místo i/í píše y/ý jako v tomto případě. Důvod je historický a u každého slova jiný, " +
                 "je nutné si jej pamatovat. (VOJ)";
 
-        if (lemma.startsWith("fyto")) {
+        if (((correctChars == 'y' && writtenChars == 'i'))
+                || (correctChars == 'ý' && writtenChars == 'í')) {
 
-            return "Slova s předponou fyto- patří mezi vyjmenovaná slova po f. " + generalDefinition;
+            if (lemma.startsWith("fyto")) {
 
-        } else if (lemma.startsWith("vý") || lemma.startsWith("vy")) {
+                return "Slova s předponou fyto- patří mezi vyjmenovaná slova po f. " + generalDefinition;
 
-            return "Slova s předponou vy-/vý- patří mezi vyjmenovaná slova po v. " + generalDefinition;
-        } else {
+            } else if (lemma.startsWith("vý") || lemma.startsWith("vy")) {
 
-            switch (precededChar) {
-                case 'b':
-                    vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoB();
-                    break;
-                case 'l':
-                    vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoL();
-                    break;
-                case 'm':
-                    vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoM();
-                    break;
-                case 'p':
-                    vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoP();
-                    break;
-                case 's':
-                    vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoS();
-                    break;
-                case 'v':
-                    vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoV();
-                    break;
-                case 'z':
-                    vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoZ();
-                    break;
-                default:
-                    return null; //invalid character - not supported
+                return "Slova s předponou vy-/vý- patří mezi vyjmenovaná slova po v. " + generalDefinition;
+            } else {
+
+                switch (precededChar) {
+                    case 'b':
+                        vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoB();
+                        break;
+                    case 'l':
+                        vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoL();
+                        break;
+                    case 'm':
+                        vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoM();
+                        break;
+                    case 'p':
+                        vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoP();
+                        break;
+                    case 's':
+                        vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoS();
+                        break;
+                    case 'v':
+                        vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoV();
+                        break;
+                    case 'z':
+                        vyjmenovanaSlova = CorrectorRulesStaticLists.getVyjmenovanaSlovaPoZ();
+                        break;
+                    default:
+                        return null; //invalid character - not supported
+                }
+
+                if (lemma.charAt(mistakeCharPosition - 2) == precededChar && vyjmenovanaSlova.containsKey(lemma)
+                        && ((writtenWord.charAt(mistakeCharPosition - 1) == writtenChars) && (lemma.charAt(mistakeCharPosition - 1)) == correctChars)
+                        && (writtenWord.charAt(mistakeCharPosition - 2) == (lemma.charAt(mistakeCharPosition - 2)))
+                        && (!tag.startsWith("k2") || tag.startsWith("k2") && mistakeCharPosition != mistake.getCorrectWord().length())) {
+
+                    return vyjmenovanaSlova.get(lemma) + " " + generalDefinition;
+
+                }
             }
 
-            if ((((correctChars == 'y' && writtenChars == 'i'))
-                    || (correctChars == 'ý' && writtenChars == 'í'))
-                    && lemma.charAt(mistakeCharPosition - 2) == precededChar && vyjmenovanaSlova.containsKey(lemma)
-                    && ((writtenWord.charAt(mistakeCharPosition - 1) == writtenChars) && (lemma.charAt(mistakeCharPosition - 1)) == correctChars)
-                    && (writtenWord.charAt(mistakeCharPosition - 2) == (lemma.charAt(mistakeCharPosition - 2)))
-                    && (!tag.startsWith("k2") || tag.startsWith("k2") && mistakeCharPosition != mistake.getCorrectWord().length())) {
-
-                return vyjmenovanaSlova.get(lemma) + " " + generalDefinition;
-
-            }
-            return null;
         }
+        return null;
     }
 
     private String iyPoPismenuCOrNull(Mistake mistake) {
 
-        String lemma = mistake.getLemma();
-        String tag = mistake.getPosTag();
-        Integer mistakeCharPosition = mistake.getMistakeCharPosInWord();
-        String writtenWord = mistake.getWrittenWord();
+        String lemma = getLemma(mistake);
+        String tag = getTag(mistake);
+        Integer mistakeCharPosition = getMistakeCharPositionInWord(mistake);
+        String writtenWord = getWrittenWord(mistake);
         char correctChars;
         char writtenChars;
         if (mistake.getCorrectChars() != "" && mistake.getWrittenChars() != "") {
@@ -318,6 +326,8 @@ public class CorrectorRulesNoContext implements CorrectorRules {
             return null;
         }
 
+
+        if (mistakeCharPosition < 1) return null;
 
         if (((((correctChars == 'y') && (writtenChars == 'i'))
                 || ((correctChars == 'ý') && (writtenChars == 'í'))
@@ -339,12 +349,15 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String predponySZOrNull(Mistake mistake) {
 
-        Integer mistakeCharPosition = mistake.getMistakeCharPosInWord();
+        Integer mistakeCharPosition = getMistakeCharPositionInWord(mistake);
+        String lemma = getLemma(mistake);
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+
         List<String> predponySZ = CorrectorRulesStaticLists.getPredponySZ();
         Map<String, String> predponySZdublet = CorrectorRulesStaticLists.getPredponySZDublet();
-        String lemma = mistake.getLemma();
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
+
+        if (mistakeCharPosition < 1) return null;
 
         if (mistakeCharPosition == 1 && ((correctChars.equals("s") && writtenChars.equals("z"))
                 || (correctChars.equals("z") && writtenChars.equals("s"))) && (lemma.length() > 2)) {
@@ -384,9 +397,9 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String predlozkySZOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        int correctWordLength = mistake.getCorrectWord().length();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        int correctWordLength = getCorrectWordLength(mistake);
 
         if (((correctChars.equals("s") && writtenChars.equals("z"))
                 || (correctChars.equals("z") && writtenChars.equals("s")))
@@ -401,10 +414,10 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String prejataSlovaSZOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        Integer mistakeCharPosition = mistake.getMistakeCharPosInWord();
-        String lemma = mistake.getLemma();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        Integer mistakeCharPosition = getMistakeCharPositionInWord(mistake);
+        String lemma = getLemma(mistake);
 
         List<String> prejataSlovaSZ = CorrectorRulesStaticLists.getPrejataSlovaSZ();
         List<String> prejateSlovaSZDublet = CorrectorRulesStaticLists.getPrejataSlovaSZDvojice();
@@ -441,10 +454,11 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String psaniDisDysOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord().toLowerCase(); //TODO consider move the toLower methods to serviceImpl
-        String lemma = mistake.getLemma();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        String lemma = getLemma(mistake);
+
         Map<String, String> psaniDisDys = CorrectorRulesStaticLists.getDisDys();
 
 // TODO chyba je přítomna i v lemmatickém tvaru AND lemma chybného slova je přítomno v seznamu
@@ -465,9 +479,9 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String psaniSeZakoncenimManieOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String lemma = mistake.getLemma();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String lemma = getLemma(mistake);
 
         if ((correctChars.equals("a") && writtenChars.equals("á"))
                 || (correctChars.equals("á") && writtenChars.equals("a"))) {
@@ -490,10 +504,12 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String psaniNnNOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+
+        if (mistakeCharPosInWord < 1) return null;
 
         if ((correctChars.equals("n") && writtenChars.equals(""))
                 || (correctChars.equals("") && writtenChars.equals("n"))
@@ -517,8 +533,9 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String psaniSprezekSprahovaniOrNull(Mistake mistake) {
 
-        String correctWord = mistake.getCorrectWord().toLowerCase();
-        String writtenWord = mistake.getWrittenWord().toLowerCase();
+        String correctWord = getCorrectWord(mistake);
+        String writtenWord = getWrittenWord(mistake);
+
         List<String> sprezkySeznam = CorrectorRulesStaticLists.getSprezkyASprahovani();
 
         if ((writtenWord.equals("zato") && (correctWord.equals("za to"))) ||
@@ -569,10 +586,12 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String slozenaPridavniJmenaOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+
+        if (mistakeCharPosInWord < 1) return null;
 
         if ((correctChars.equals("-") && writtenChars.equals(""))
                 && (mistakeCharPosInWord != 1) && (mistakeCharPosInWord != correctWord.length())
@@ -592,10 +611,11 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
         String correctChars = mistake.getCorrectChars();
         String writtenChars = mistake.getWrittenChars();
-        String writtenWord = mistake.getWrittenWord();
+        Integer wordPosition = getWordPosition(mistake);
+        String previousWord = getPreviousWord(mistake);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
 
-        String sentence = mistake.getSentence();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
+        if (mistakeCharPosInWord < 1) return null;
 
         if ((correctChars.length() == 1 && writtenChars.length() == 1)
                 && (Character.isLowerCase(correctChars.toCharArray()[0])
@@ -604,7 +624,8 @@ public class CorrectorRulesNoContext implements CorrectorRules {
                 && (Character.isLowerCase(writtenChars.toCharArray()[0])))
                 && writtenChars.toLowerCase().equals(correctChars.toLowerCase())) {
 
-            if (sentence.split("\\s+")[0].equals(writtenWord)) {
+            if (previousWord.endsWith(".") || previousWord.endsWith("!")
+                    || previousWord.endsWith("?") || wordPosition == 1) {
                 String definition = "Věta vždy začíná velkým písmenem.";
 
                 return definition;
@@ -625,14 +646,14 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String adjZakoncenaIciOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        String lemma = mistake.getLemma();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+        String lemma = getLemma(mistake);
 
-        if ((correctChars.equals("i") && writtenChars.equals("í"))
-                || (correctChars.equals("í") && writtenChars.equals("i"))
+        if (((correctChars.equals("i") && writtenChars.equals("í"))
+                || (correctChars.equals("í") && writtenChars.equals("i")))
                 && (lemma.endsWith("icí") || lemma.endsWith("ící"))
                 && mistakeCharPosInWord == correctWord.length() - 2) {
 
@@ -650,21 +671,25 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String adjZakoncenaNiOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        String lemma = mistake.getLemma();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+        String lemma = getLemma(mistake);
+
         Map<String, String> adjektivaZakoncenaNiNyList = CorrectorRulesStaticLists.getAdjektivaZakoncenaNiNy();
         Map<String, String> adjektivaZakoncenaNiNyVyznamoveTotozneList
                 = CorrectorRulesStaticLists.getAdjektivaZakoncenaNiNyVyznamoveTotozne();
         Map<String, String> adjektivaZakoncenaNiNyJineZakladyList
                 = CorrectorRulesStaticLists.getAdjektivaZakoncenaNiNyJineZaklady();
 
+
         if ((correctChars.equals("í") && writtenChars.equals("ý"))
                 || (correctChars.equals("ý") && writtenChars.equals("í"))
-                && mistakeCharPosInWord == correctWord.length()
-                && (correctWord.charAt(mistakeCharPosInWord - 1) == 'n')) {
+                && ((mistakeCharPosInWord == correctWord.length())
+                || (mistakeCharPosInWord == correctWord.length() - 1)
+                && ((correctWord.endsWith(".")) || ((correctWord.endsWith(".")) || ((correctWord.endsWith("."))))))
+                && (correctWord.charAt(mistakeCharPosInWord - 2) == 'n')) {
 
             if (adjektivaZakoncenaNiNyList.containsKey(lemma)) {
                 String definition = "Nevelká skupina jmen, u nichž si -ní a -ný buď konkurují, nebo slouží k rozlišení " +
@@ -689,11 +714,11 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String typAckoliAckolivOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        String tag = mistake.getPosTag();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+        String tag = getTag(mistake);
 
         if ((correctChars.equals("v") && writtenChars.equals(""))
                 || (correctChars.equals("") && writtenChars.equals("v"))
@@ -711,12 +736,12 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String vokalizacePredlozekOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        String nextWord = mistake.getNextWord();
-        char precedingChar = writtenChars.charAt(mistakeCharPosInWord - 2);
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        String nextWord = getNextWord(mistake);
+        char precedingChar = getPrecedingChar(mistake);
+
         List<Character> vokaly = CorrectorRulesStaticLists.getVOKALY();
         List<Character> konsonanty = CorrectorRulesStaticLists.getKONSONANTY();
 
@@ -729,13 +754,13 @@ public class CorrectorRulesNoContext implements CorrectorRules {
                     return "Před slovem, které začíná stejnou souhláskou jako předložka, " +
                             "vokalizujeme vždy. Např.: ke kořenům, se sestrou. (IJP)";
                 } else if (((precedingChar == 's')
-                        && ((nextWord.charAt(0) == 'z') || (nextWord.charAt(0) == 'ž') || (nextWord.charAt(0) == 'š')))
+                        && ((nextWord.startsWith("z")) || (nextWord.startsWith("ž")) || (nextWord.startsWith("š"))))
                         || ((precedingChar == 'z')
-                        && ((nextWord.charAt(0) == 's') || (nextWord.charAt(0) == 'š') || (nextWord.charAt(0) == 'ž')))
+                        && ((nextWord.startsWith("s")) || (nextWord.startsWith("š")) || (nextWord.startsWith("ž"))))
                         || ((precedingChar == 'v')
-                        && ((nextWord.charAt(0) == 'f')))
+                        && ((nextWord.startsWith("f"))))
                         || ((precedingChar == 'k')
-                        && ((nextWord.charAt(0) == 'g')))) {
+                        && ((nextWord.startsWith("g"))))) {
 
                     return "Tendence k vokalizaci je silná, pokud předložka stojí před slovem začínajícím podobnou " +
                             "souhláskou, tedy s před z-, ž-, š-; z před s-, š-, ž-; v před f-; k před g-. " +
@@ -745,12 +770,12 @@ public class CorrectorRulesNoContext implements CorrectorRules {
             }
         } else if ((writtenChars.equals("e") && correctChars.equals(""))) {
             if ((correctWord.length() == 1)
-                    && (precedingChar == 'k' || precedingChar == 's' || precedingChar == 'v' || precedingChar == 'z')) {
+                    && (correctWord.equals("k") || correctWord.equals("s") || correctWord.equals("v") || correctWord.equals("z"))) {
                 if (vokaly.contains(nextWord.charAt(0))) {
                     return "Před slovem začínajícím samohláskou se neslabičné předložky nevokalizují " +
                             "(z \"k\" se nestane \"ke\" atp.). Např.: k ústavě, s ementálem. (IJP)";
 
-                } else if ((precedingChar == 's') && (nextWord.equals("sebou"))) {
+                } else if ((correctWord.equals("s")) && (nextWord.equals("sebou"))) {
                     return "Výjimka, jde o ustálené spojení. Vyskytuje se pouze v instrumentálu. " +
                             "Např. brát s sebou, vzít s sebou. Sebou vyjadřuje pohyb těla (mrskat sebou, …). (IJP)";
                 } else if ((konsonanty.contains(nextWord.charAt(0))) && (vokaly.contains(nextWord.charAt(1)))
@@ -758,26 +783,28 @@ public class CorrectorRulesNoContext implements CorrectorRules {
                     return "Před jednou souhláskou se neslabičné předložky nevokalizují. Např.: k řece, s pentličkami. (IJP)";
                 }
             }
-        } else if ((writtenChars.equals("u") && correctChars.equals(""))
+        } else if (((writtenChars.equals("u") && correctChars.equals(""))
+                || (writtenChars.equals("") && correctChars.equals("u")))
                 && (precedingChar == 'k')
                 && ((correctWord.length() == 1) || (correctWord.length() == 2))) {
             return "Ku se dochovalo pouze v některých ustálených spojeních, " +
                     "a to jen před slovy začínajícími retnou souhláskou, zejména p " +
                     "(např. ku příkladu, ku prospěchu) a ve vyjadřování poměrnosti (např. pět ku sedmi). (IJP)";
         }
+
         return null;
     }
 
     private String zajmenaVasiJiNiOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
 
         if (((writtenChars.equals("i") && correctChars.equals("í"))
                 || (writtenChars.equals("í") && correctChars.equals("i"))) &&
-                ((correctWord.length() == 2 && ((correctWord.charAt(0) == 'j') || correctWord.charAt(0) == 'n'))
-                        || ((correctWord.length()) == 4 && ((correctWord.startsWith("vaš")) || (correctWord.startsWith("naš")))))) {
+                (((getCorrectWordLength(mistake) == 2) && ((correctWord.startsWith("z")) || (correctWord.startsWith("n"))))
+                        || ((correctWord.length() == 4) && ((correctWord.startsWith("vaš")) || (correctWord.startsWith("naš")))))) {
 
             return "Krátké varianty ji/ni, vaši/naši apod. jsou vázány pouze ke 4. pádu, " +
                     "ostatní pády jsou jí/ní vaší/naší. Pomůcka: Za dané zájmeno dosadit " +
@@ -790,10 +817,9 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String psaniBeBjeVeVjePeOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        char precedingChar = writtenChars.charAt(mistakeCharPosInWord - 2);
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        char precedingChar = getPrecedingChar(mistake);
 
         if ((writtenChars.equals("ě") && correctChars.equals("je"))
                 || (writtenChars.equals("je") && correctChars.equals("ě"))
@@ -810,31 +836,33 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String souhlaskyParoveOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        String writtenWord = mistake.getWrittenWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        char nextChar = writtenWord.charAt(mistakeCharPosInWord);
+        char correctCharsFirstChar = getCorrectChars(mistake).charAt(0);
+        char writtenCharsFirstChar = getWrittenChars(mistake).charAt(0);
+        String correctWord = getCorrectWord(mistake);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+        char nextChar = getNextChar(mistake);
 
-        if ((writtenChars.equals("b") && correctChars.equals("p"))
-                || (writtenChars.equals("p") && correctChars.equals("b"))
-                || (writtenChars.equals("d") && correctChars.equals("t"))
-                || (writtenChars.equals("t") && correctChars.equals("d"))
-                || (writtenChars.equals("ď") && correctChars.equals("ť"))
-                || (writtenChars.equals("ť") && correctChars.equals("ď"))
-                || (writtenChars.equals("g") && correctChars.equals("k"))
-                || (writtenChars.equals("k") && correctChars.equals("g"))
-                || (writtenChars.equals("v") && correctChars.equals("f"))
-                || (writtenChars.equals("f") && correctChars.equals("v"))
-                || (writtenChars.equals("ž") && correctChars.equals("š"))
-                || (writtenChars.equals("š") && correctChars.equals("ž"))
-                || (writtenChars.equals("c") && correctChars.equals(""))
-                || (writtenChars.equals("") && correctChars.equals("c"))
+        if ((writtenCharsFirstChar == 'b' && correctCharsFirstChar == 'p')
+                || (writtenCharsFirstChar == 'p' && correctCharsFirstChar == 'b')
+                || (writtenCharsFirstChar == 'd' && correctCharsFirstChar == 't')
+                || (writtenCharsFirstChar == 't'  && correctCharsFirstChar == 'd')
+                || (writtenCharsFirstChar == 'ď'  && correctCharsFirstChar == 'ť')
+                || (writtenCharsFirstChar == 'ť'  && correctCharsFirstChar == 'ď')
+                || (writtenCharsFirstChar == 'g'  && correctCharsFirstChar == 'k')
+                || (writtenCharsFirstChar == 'k'  && correctCharsFirstChar == 'g')
+                || (writtenCharsFirstChar == 'v'  && correctCharsFirstChar == 'f')
+                || (writtenCharsFirstChar == 'f'  && correctCharsFirstChar == 'v')
+                || (writtenCharsFirstChar == 'ž'  && correctCharsFirstChar == 'š')
+                || (writtenCharsFirstChar == 'š'  && correctCharsFirstChar == 'ž')
+                || (writtenCharsFirstChar == 'c'  && correctCharsFirstChar == 'h')
+                || (writtenCharsFirstChar == 'h'  && correctCharsFirstChar == 'c')
                 ) {
 
-            if ((mistakeCharPosInWord == correctWord.length()) || ((writtenChars.equals("c") && correctChars.equals(""))
-                    && (mistakeCharPosInWord == (correctWord.length() - 1)) && nextChar == 'h')) {
+            if (((mistakeCharPosInWord == getCorrectWordLength(mistake))
+                    || (mistakeCharPosInWord == getCorrectWordLength(mistake) - 1)
+                    && ((correctWord.endsWith(".")) || ((correctWord.endsWith(".")) || ((correctWord.endsWith("."))))))
+                    || (((writtenCharsFirstChar == 'c') && (correctCharsFirstChar == 'h')))
+                    && ((mistakeCharPosInWord == (correctWord.length() - 1)) && nextChar == 'h')) {
 
                 return "Souhlásky rozdělujeme na znělé (b, d, ď, g, h, v, z, ž) a neznělé (p, t, ť, k, ch, f, s, š). " +
                         "Na konci slov je každá souhláska vyslovována nezněle. Pomůcka: Říci si slovo v jiném tvaru. " +
@@ -853,15 +881,14 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String diakritikaOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        String lemma = mistake.getLemma();
-        Set<String> predpony = CorrectorRulesStaticLists.getPredponySlovesneAOstatni();
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
         String writtenWord = mistake.getWrittenWord();
-        char nextChar = writtenWord.charAt(mistakeCharPosInWord);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+        String lemma = getLemma(mistake);
+        char nextChar = getNextChar(mistake);
 
+        Set<String> predpony = CorrectorRulesStaticLists.getPredponySlovesneAOstatni();
 
         if ((writtenChars.equals("u") && correctChars.equals("ú"))
                 || (writtenChars.equals("ů") && correctChars.equals("ú"))) {
@@ -904,17 +931,20 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String iPoMekkychaObojetnychSouhlaskachOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        char precedingChar = writtenChars.charAt(mistakeCharPosInWord - 2);
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+        String lemma = getLemma(mistake);
+        String tag = getTag(mistake);
+        char precedingChar = getPrecedingChar(mistake);
+
+        if (mistakeCharPosInWord < 1) return null;
+
         List<Character> souhlaskyMekkeObojetne = CorrectorRulesStaticLists.getSouhlaskyMekkeAObojetne();
         List<Character> souhlaskyMekke = CorrectorRulesStaticLists.getSouhlaskyMekke();
         List<Character> souhlaskyObojetne = CorrectorRulesStaticLists.getSouhlaskyObojetne();
         List<Character> souhlaskyTvrde = CorrectorRulesStaticLists.getSouhlaskyTvrde();
-        String lemma = mistake.getLemma();
-        String tag = mistake.getPosTag();
 
         if ((writtenChars.equals("ý") && correctChars.equals("í"))
                 || (writtenChars.equals("y") && correctChars.equals("i"))
@@ -949,16 +979,14 @@ public class CorrectorRulesNoContext implements CorrectorRules {
 
     private String zajmenaMneMeASlovaJeObsahujiciOrNull(Mistake mistake) {
 
-        String correctChars = mistake.getCorrectChars().toLowerCase();
-        String writtenChars = mistake.getWrittenChars().toLowerCase();
-        String correctWord = mistake.getCorrectWord();
-        Integer mistakeCharPosInWord = mistake.getMistakeCharPosInWord();
-        String writtenWord = mistake.getWrittenWord();
-        char precedingChar = writtenWord.charAt(mistakeCharPosInWord - 2);
-        char nextChar = writtenWord.charAt(mistakeCharPosInWord);
+        String correctChars = getCorrectChars(mistake);
+        String writtenChars = getWrittenChars(mistake);
+        String correctWord = getCorrectWord(mistake);
+        char precedingChar = getPrecedingChar(mistake);
+        char nextChar = getNextChar(mistake);
 
-        if ((correctChars.equals("n") && writtenChars.equals(""))
-                || (correctChars.equals("") && writtenChars.equals("n"))
+        if ((correctChars.equals("ně") && writtenChars.equals("ě"))
+                || (correctChars.equals("ě") && writtenChars.equals("ně"))
                 && (precedingChar == 'm') && (nextChar == 'ě')) {
             if (correctWord.length() <= 3) {
                 return "Tvar mě se používá ve 2. a 4. pádu (Na mě nezbylo nic). " +
@@ -986,5 +1014,85 @@ public class CorrectorRulesNoContext implements CorrectorRules {
         }
 
         return null;
+    }
+
+    private String getCorrectChars(Mistake mistake) {
+        return mistake.getCorrectChars().toLowerCase();
+    }
+
+    private String getWrittenChars(Mistake mistake) {
+        return mistake.getWrittenChars().toLowerCase();
+    }
+
+    private String getCorrectWord(Mistake mistake) {
+        return mistake.getCorrectWord().toLowerCase();
+    }
+
+    private String getWrittenWord(Mistake mistake) {
+        return mistake.getWrittenWord().toLowerCase();
+    }
+
+    private String getLemmaWithoutAccentsOnIY(Mistake mistake) {
+        String lemma = mistake.getLemma();
+        return lemma.replaceAll("ý", "ý").replaceAll("í", "i");
+    }
+
+    private String getLemma(Mistake mistake) {
+        return mistake.getLemma();
+    }
+
+    private String getTag(Mistake mistake) {
+        return mistake.getPosTag();
+    }
+
+    private Integer getMistakeCharPositionInWord(Mistake mistake) {
+        if (mistake.getMistakeCharPosInWord() < 0) {
+            return mistake.getMistakeCharPosInWord() * (-1);
+        } else {
+            return mistake.getMistakeCharPosInWord();
+        }
+    }
+
+    private int getCorrectWordLength(Mistake mistake) {
+        String correctWordWithoutInterpunction = getCorrectWord(mistake)
+                .replace(".", "").replace("!", "").replace("?", "").replace("?", "");
+
+        return correctWordWithoutInterpunction.length();
+    }
+
+
+    private Integer getWordPosition(Mistake mistake) {
+        return mistake.getWordPosition();
+    }
+
+    private String getPreviousWord(Mistake mistake) {
+        return mistake.getPreviousWord().toLowerCase().replace(".", "").replace("!", "").replace("?", "").replace(",", "");
+    }
+
+    private String getNextWord(Mistake mistake) {
+        return mistake.getNextWord().toLowerCase().replace(".", "").replace("!","").replace("?","").replace(",", "");
+    }
+
+    private char getNextChar(Mistake mistake) {
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+        if (mistakeCharPosInWord > (getCorrectWordLength(mistake) - 1)
+                || mistakeCharPosInWord == 0) {
+            return '#';
+        } else {
+            return getCorrectWord(mistake).charAt(mistakeCharPosInWord);
+        }
+    }
+
+    private char getPrecedingChar(Mistake mistake) {
+        Integer mistakeCharPosInWord = getMistakeCharPositionInWord(mistake);
+        if (mistakeCharPosInWord < 2) {
+            return '#';
+        } else {
+            return getWrittenWord(mistake).charAt(mistakeCharPosInWord - 2);
+        }
+    }
+
+    private char getCorrectChar(Mistake mistake) {
+        return 0;
     }
 }
