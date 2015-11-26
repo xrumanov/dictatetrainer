@@ -29,6 +29,10 @@ public class DictatesForTestRepository {
         dictate.setCategory(CategoriesForTestRepository.vybraneSlovaCat());
         dictate.setFilename("dictate1.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
+        dictate.setDefaultRepetitionForSentences(2);
+        dictate.setDefaultRepetitionForDictate(2);
+        dictate.setDefaultPauseBetweenSentences(2);
+        dictate.setSentenceEndings("10;20;30");
         dictate.setUploader(UsersForTestRepository.admin());
 
         return dictate;
@@ -41,6 +45,10 @@ public class DictatesForTestRepository {
         dictate.setCategory(CategoriesForTestRepository.vybraneSlovaCat());
         dictate.setFilename("dictate2.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
+        dictate.setDefaultRepetitionForSentences(2);
+        dictate.setDefaultRepetitionForDictate(2);
+        dictate.setDefaultPauseBetweenSentences(2);
+        dictate.setSentenceEndings("10;20;30");
         dictate.setUploader(UsersForTestRepository.admin());
 
         return dictate;
@@ -53,6 +61,10 @@ public class DictatesForTestRepository {
         dictate.setCategory(CategoriesForTestRepository.velkeMalePismenaCat());
         dictate.setFilename("dictate3.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
+        dictate.setDefaultRepetitionForSentences(2);
+        dictate.setDefaultRepetitionForDictate(2);
+        dictate.setDefaultPauseBetweenSentences(2);
+        dictate.setSentenceEndings("10;20;30");
         dictate.setUploader(UsersForTestRepository.admin());
 
         return dictate;
@@ -65,6 +77,10 @@ public class DictatesForTestRepository {
         dictate.setCategory(CategoriesForTestRepository.interpunkciaCat());
         dictate.setFilename("dictate4.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
+        dictate.setDefaultRepetitionForSentences(2);
+        dictate.setDefaultRepetitionForDictate(2);
+        dictate.setDefaultPauseBetweenSentences(2);
+        dictate.setSentenceEndings("10;20;30");
         dictate.setUploader(UsersForTestRepository.admin());
 
         return dictate;
