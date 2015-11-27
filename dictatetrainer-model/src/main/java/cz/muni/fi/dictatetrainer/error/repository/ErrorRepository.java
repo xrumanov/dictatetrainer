@@ -33,7 +33,7 @@ public class ErrorRepository extends GenericRepository<Error> {
         final StringBuilder clause = new StringBuilder("Where e.id is not null");
         final Map<String, Object> queryParameters = new HashMap<>();
         if (errorFilter.getStudentId() != null) {
-            clause.append(" AND e.user.id = :studentId");
+            clause.append(" AND e.student.id = :studentId");
             queryParameters.put("studentId", errorFilter.getStudentId());
         }
         if (errorFilter.getDictateId() != null) {

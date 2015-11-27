@@ -38,7 +38,7 @@ public class ErrorsForTestRepository {
         error.setSentence("(S)<Z>práva domu.");
         error.setLemma("správa");
         error.setPosTag("k5eAaPmFrD");
-        error.setErrorDescription( "Některá slova lze psát jak s předponou s-, tak s předponou z-. " +
+        error.setErrorDescription("Některá slova lze psát jak s předponou s-, tak s předponou z-. " +
                 "U většiny z nich je mezi oběma podobami zřetelný významový rozdíl. (IJP) správa (domu) x (novinová) zpráva");
         error.setErrorType(Error.ErrorType.PREDPONY_S_Z);
         error.setErrorPriority(7);
@@ -67,7 +67,7 @@ public class ErrorsForTestRepository {
         error.setErrorType(Error.ErrorType.VYJMENOVANA_SLOVA);
         error.setErrorPriority(10);
         error.setStudent(UsersForTestRepository.mrkvicka());
-        error.setDictate(DictatesForTestRepository.vybraneSlova1());
+        error.setDictate(DictatesForTestRepository.velkePismena());
         error.setTrial(TrialsForTestRepository.trialPerformed2());
 
         return error;
@@ -94,7 +94,7 @@ public class ErrorsForTestRepository {
         error.setErrorType(Error.ErrorType.PREDLOZKY_S_Z);
         error.setErrorPriority(7);
         error.setStudent(UsersForTestRepository.mrkvicka());
-        error.setDictate(DictatesForTestRepository.velkePismena());
+        error.setDictate(DictatesForTestRepository.vybraneSlova1());
         error.setTrial(TrialsForTestRepository.trialPerformed3());
 
         return error;
