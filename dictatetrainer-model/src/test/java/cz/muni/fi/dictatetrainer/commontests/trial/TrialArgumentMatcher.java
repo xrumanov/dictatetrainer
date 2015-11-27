@@ -31,7 +31,6 @@ public class TrialArgumentMatcher extends ArgumentMatcher<Trial> {
         assertThat(actual.getStudent(), is(equalTo(expected.getStudent())));
         assertThat(actual.getDictate(), is(equalTo(expected.getDictate())));
         assertThat(actual.getTrialText(), is(equalTo(expected.getTrialText())));
-        assertThat(actual.getPerformed(), is(equalTo(expected.getPerformed())));
 
         return true;
     }

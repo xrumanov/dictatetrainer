@@ -95,21 +95,17 @@ public class TrialServicesUnitTest {
 
         addTrialWithInvalidField(trial, "dictate");
     }
-//
-//    @Test
-//    public void addValidTrial() {
-//        when(userServices.findByEmail(LOGGED_EMAIL)).thenReturn(gates());
-//        when(dictateServices.findById(1L)).thenReturn(dictateWithId(interpunkcia(), 1L));
-//        when(trialRepository.add(trialEq(trialPerformed1()))).thenReturn(trialWithId(trialPerformed1(), 1L));
-//
-//        final Trial trial = new Trial();
-//        trial.setTrialText("Nechce sa mi to pisat");
-//        trial.setDictate(dictateServices.findById(1L));
-//        trial.setStudent((Student) userServices.findByEmail(LOGGED_EMAIL));
-//        final Long id = trialServices.add(trial).getId();
-//
-//        assertThat(id, is(notNullValue()));
-//    }
+
+    @Test
+    public void addValidTrial() {
+        when(userServices.findByEmail(LOGGED_EMAIL)).thenReturn(gates());
+        when(dictateServices.findById(anyLong())).thenReturn(trialPerformed1().getDictate());
+        when(trialRepository.add(trialEq(trialPerformed1()))).thenReturn(trialWithId(trialPerformed1(), 1L));
+
+        final Trial trialAdded = trialServices.add(trialPerformed1());
+
+        assertThat(trialAdded.getId(), is(notNullValue()));
+    }
 
     @Test(expected = TrialNotFoundException.class)
     public void findTrialByIdNotFound() {

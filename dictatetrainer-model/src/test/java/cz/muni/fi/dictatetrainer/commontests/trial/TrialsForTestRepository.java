@@ -11,9 +11,10 @@ import cz.muni.fi.dictatetrainer.user.model.Student;
 import org.junit.Ignore;
 
 import javax.persistence.EntityManager;
+import java.util.Arrays;
+import java.util.List;
 
-import static cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository.interpunkcia;
-import static cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository.vybraneSlova1;
+import static cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.gates;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.mrkvicka;
 import static cz.muni.fi.dictatetrainer.commontests.utils.TestRepositoryUtils.findByPropertyNameAndValue;
@@ -42,6 +43,24 @@ public class TrialsForTestRepository {
         return trial;
     }
 
+    public static Trial trialPerformed3() {
+        final Trial trial = new Trial();
+        trial.setStudent((Student) gates());
+        trial.setDictate(velkePismena());
+        trial.setTrialText("Toto je diktat ktory je testovy.");
+
+        return trial;
+    }
+
+    public static Trial trialPerformed4() {
+        final Trial trial = new Trial();
+        trial.setStudent((Student) mrkvicka());
+        trial.setDictate(vybraneSlova2());
+        trial.setTrialText("Lorem Ipsum dva.");
+
+        return trial;
+    }
+
     public static Trial trialWithId(final Trial trial, final Long id) {
         trial.setId(id);
         return trial;
@@ -50,6 +69,10 @@ public class TrialsForTestRepository {
     public static Trial trialPerformedAt(final Trial trial, final String dateTime) {
         trial.setPerformed(DateUtils.getAsDateTime(dateTime));
         return trial;
+    }
+
+    public static List<Trial> allTrials() {
+        return Arrays.asList(trialPerformed1(), trialPerformed2(), trialPerformed3(), trialPerformed4());
     }
 
     public static Trial normalizeDependencies(final Trial trial, final EntityManager em) {

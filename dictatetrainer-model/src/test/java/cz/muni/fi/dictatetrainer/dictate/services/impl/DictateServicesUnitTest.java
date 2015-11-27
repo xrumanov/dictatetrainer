@@ -143,7 +143,7 @@ public class DictateServicesUnitTest {
     }
 
     @Test(expected = CategoryNotFoundException.class)
-    public void updateDictateWithInexistentCategory() throws Exception {
+    public void updateDictateWithNonexistentCategory() throws Exception {
         when(dictateRepository.existsById(1L)).thenReturn(true);
         when(categoryServices.findById(1L)).thenThrow(new CategoryNotFoundException());
 
