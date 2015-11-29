@@ -24,9 +24,14 @@ public class ErrorFilterExtractorFromUrl extends AbstractFilterExtractorFromUrl 
             errorFilter.setStudentId(Long.valueOf(studentIdStr));
         }
 
-        final String dictateIdStr = getUriInfo().getQueryParameters().getFirst("categoryId");
+        final String dictateIdStr = getUriInfo().getQueryParameters().getFirst("dictateId");
         if (dictateIdStr != null) {
             errorFilter.setDictateId(Long.valueOf(dictateIdStr));
+        }
+
+        final String trialIdStr = getUriInfo().getQueryParameters().getFirst("trialId");
+        if (trialIdStr != null) {
+            errorFilter.setTrialId(Long.valueOf(trialIdStr));
         }
 
         return errorFilter;

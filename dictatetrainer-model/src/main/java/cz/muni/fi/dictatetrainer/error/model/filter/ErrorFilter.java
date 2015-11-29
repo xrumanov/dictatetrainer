@@ -8,12 +8,13 @@ import cz.muni.fi.dictatetrainer.common.model.filter.GenericFilter;
  * Available params:
  *  studentId: shows only errors written by student with given id
  *  dictateId: shows only errors in a dictate with given id
+ *  trialId: shows only errors in a trial with given id
  *
  */
 public class ErrorFilter extends GenericFilter {
     private Long studentId;
     private Long dictateId;
-    //TODO add filter for trials
+    private Long trialId;
 
     public Long getStudentId() {
         return studentId;
@@ -31,9 +32,20 @@ public class ErrorFilter extends GenericFilter {
         this.dictateId = dictateId;
     }
 
-    @Override
-    public String toString() {
-        return "ErrorFilter [studentId=" + studentId + ", dictateId=" + dictateId + ", toString()=" + super.toString() + "]";
+    public Long getTrialId() {
+        return trialId;
     }
 
+    public void setTrialId(Long trialId) {
+        this.trialId = trialId;
+    }
+
+    @Override
+    public String toString() {
+        return "ErrorFilter{" +
+                "studentId=" + studentId +
+                ", dictateId=" + dictateId +
+                ", trialId=" + trialId +
+                '}';
+    }
 }
