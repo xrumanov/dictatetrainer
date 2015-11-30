@@ -31,7 +31,8 @@ public class ErrorArgumentMatcher extends ArgumentMatcher<Error> {
         assertThat(actual.getMistakeCharPosInWord(), is(equalTo(expected.getMistakeCharPosInWord())));
         assertThat(actual.getCorrectChars(), is(equalTo(expected.getCorrectChars())));
         assertThat(actual.getWrittenChars(), is(equalTo(expected.getWrittenChars())));
-        assertThat(actual.getCorrectWord(), is(equalTo(expected.getWrittenWord())));
+        assertThat(actual.getCorrectWord(), is(equalTo(expected.getCorrectWord())));
+        assertThat(actual.getWrittenWord(), is(equalTo(expected.getWrittenWord())));
         assertThat(actual.getPreviousWord(), is(equalTo(expected.getPreviousWord())));
         assertThat(actual.getNextWord(), is(equalTo(expected.getNextWord())));
         assertThat(actual.getSentence(), is(equalTo(expected.getSentence())));
