@@ -23,7 +23,7 @@ import java.io.Serializable;
  * defaultRepetitionForDictate: default number of times dictate will be repeated
  * defaultRepetitionForSentences: default number of times each sentence will be repeated
  * defaultPauseBetweenSentences: default pause length between sentences
- * sentenceEndings: list of endtimes for each sentence
+ * sentenceEndings: list of endtimes for each sentence devided by semicolon
  *
  */
 @Entity
