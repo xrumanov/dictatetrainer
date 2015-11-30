@@ -845,17 +845,17 @@ public class CorrectorRulesNoContext implements CorrectorRules {
         if ((writtenCharsFirstChar == 'b' && correctCharsFirstChar == 'p')
                 || (writtenCharsFirstChar == 'p' && correctCharsFirstChar == 'b')
                 || (writtenCharsFirstChar == 'd' && correctCharsFirstChar == 't')
-                || (writtenCharsFirstChar == 't'  && correctCharsFirstChar == 'd')
-                || (writtenCharsFirstChar == 'ď'  && correctCharsFirstChar == 'ť')
-                || (writtenCharsFirstChar == 'ť'  && correctCharsFirstChar == 'ď')
-                || (writtenCharsFirstChar == 'g'  && correctCharsFirstChar == 'k')
-                || (writtenCharsFirstChar == 'k'  && correctCharsFirstChar == 'g')
-                || (writtenCharsFirstChar == 'v'  && correctCharsFirstChar == 'f')
-                || (writtenCharsFirstChar == 'f'  && correctCharsFirstChar == 'v')
-                || (writtenCharsFirstChar == 'ž'  && correctCharsFirstChar == 'š')
-                || (writtenCharsFirstChar == 'š'  && correctCharsFirstChar == 'ž')
-                || (writtenCharsFirstChar == 'c'  && correctCharsFirstChar == 'h')
-                || (writtenCharsFirstChar == 'h'  && correctCharsFirstChar == 'c')
+                || (writtenCharsFirstChar == 't' && correctCharsFirstChar == 'd')
+                || (writtenCharsFirstChar == 'ď' && correctCharsFirstChar == 'ť')
+                || (writtenCharsFirstChar == 'ť' && correctCharsFirstChar == 'ď')
+                || (writtenCharsFirstChar == 'g' && correctCharsFirstChar == 'k')
+                || (writtenCharsFirstChar == 'k' && correctCharsFirstChar == 'g')
+                || (writtenCharsFirstChar == 'v' && correctCharsFirstChar == 'f')
+                || (writtenCharsFirstChar == 'f' && correctCharsFirstChar == 'v')
+                || (writtenCharsFirstChar == 'ž' && correctCharsFirstChar == 'š')
+                || (writtenCharsFirstChar == 'š' && correctCharsFirstChar == 'ž')
+                || (writtenCharsFirstChar == 'c' && correctCharsFirstChar == 'h')
+                || (writtenCharsFirstChar == 'h' && correctCharsFirstChar == 'c')
                 ) {
 
             if (((mistakeCharPosInWord == getCorrectWordLength(mistake))
@@ -1070,7 +1070,7 @@ public class CorrectorRulesNoContext implements CorrectorRules {
     }
 
     private String getNextWord(Mistake mistake) {
-        return mistake.getNextWord().toLowerCase().replace(".", "").replace("!","").replace("?","").replace(",", "");
+        return mistake.getNextWord().toLowerCase().replace(".", "").replace("!", "").replace("?", "").replace(",", "");
     }
 
     private char getNextChar(Mistake mistake) {
@@ -1090,9 +1090,5 @@ public class CorrectorRulesNoContext implements CorrectorRules {
         } else {
             return getWrittenWord(mistake).charAt(mistakeCharPosInWord - 2);
         }
-    }
-
-    private char getCorrectChar(Mistake mistake) {
-        return 0;
     }
 }

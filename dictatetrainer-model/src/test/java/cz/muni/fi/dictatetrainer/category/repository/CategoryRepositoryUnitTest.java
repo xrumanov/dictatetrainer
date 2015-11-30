@@ -31,14 +31,14 @@ public class CategoryRepositoryUnitTest extends TestBaseRepository {
     @Test
     public void addCategoryAndFindIt() {
         final Long categoryAddedId = dbCommandExecutor.executeCommand(() -> {
-            return categoryRepository.add(interpunkciaCat()).getId();
+            return categoryRepository.add(interpunkce()).getId();
         });
 
         assertThat(categoryAddedId, is(notNullValue()));
 
         final Category category = categoryRepository.findById(categoryAddedId);
         assertThat(category, is(notNullValue()));
-        assertThat(category.getName(), is(equalTo(interpunkciaCat().getName())));
+        assertThat(category.getName(), is(equalTo(interpunkce().getName())));
     }
 
     @Test
@@ -56,20 +56,20 @@ public class CategoryRepositoryUnitTest extends TestBaseRepository {
     @Test
     public void updateCategory() {
         final Long categoryAddedId = dbCommandExecutor.executeCommand(() -> {
-            return categoryRepository.add(interpunkciaCat()).getId();
+            return categoryRepository.add(interpunkce()).getId();
         });
 
         final Category categoryAfterAdd = categoryRepository.findById(categoryAddedId);
-        assertThat(categoryAfterAdd.getName(), is(equalTo(interpunkciaCat().getName())));
+        assertThat(categoryAfterAdd.getName(), is(equalTo(interpunkce().getName())));
 
-        categoryAfterAdd.setName(velkeMalePismenaCat().getName());
+        categoryAfterAdd.setName(velkaPismena().getName());
         dbCommandExecutor.executeCommand(() -> {
             categoryRepository.update(categoryAfterAdd);
             return null;
         });
 
         final Category categoryAfterUpdate = categoryRepository.findById(categoryAddedId);
-        assertThat(categoryAfterUpdate.getName(), is(equalTo(velkeMalePismenaCat().getName())));
+        assertThat(categoryAfterUpdate.getName(), is(equalTo(velkaPismena().getName())));
     }
 
     @Test
@@ -81,42 +81,42 @@ public class CategoryRepositoryUnitTest extends TestBaseRepository {
 
         final List<Category> categories = categoryRepository.findAll("name");
         assertThat(categories.size(), is(equalTo(3)));
-        assertThat(categories.get(0).getName(), is(equalTo(interpunkciaCat().getName())));
-        assertThat(categories.get(1).getName(), is(equalTo(velkeMalePismenaCat().getName())));
-        assertThat(categories.get(2).getName(), is(equalTo(vybraneSlovaCat().getName())));
+        assertThat(categories.get(0).getName(), is(equalTo(interpunkce().getName())));
+        assertThat(categories.get(1).getName(), is(equalTo(velkaPismena().getName())));
+        assertThat(categories.get(2).getName(), is(equalTo(vyjmenovanaSlovaCat().getName())));
     }
 
     @Test
     public void alreadyExistsWhileAdding() {
         dbCommandExecutor.executeCommand(() -> {
-            categoryRepository.add(interpunkciaCat());
+            categoryRepository.add(interpunkce());
             return null;
         });
 
-        assertThat(categoryRepository.alreadyExists(interpunkciaCat()), is(equalTo(true)));
-        assertThat(categoryRepository.alreadyExists(velkeMalePismenaCat()), is(equalTo(false)));
+        assertThat(categoryRepository.alreadyExists(interpunkce()), is(equalTo(true)));
+        assertThat(categoryRepository.alreadyExists(velkaPismena()), is(equalTo(false)));
     }
 
     @Test
     public void categoryWithIdAlreadyExists() {
         final Category interpunkcia = dbCommandExecutor.executeCommand(() -> {
-            categoryRepository.add(velkeMalePismenaCat());
-            return categoryRepository.add(interpunkciaCat());
+            categoryRepository.add(velkaPismena());
+            return categoryRepository.add(interpunkce());
         });
 
         assertThat(categoryRepository.alreadyExists(interpunkcia), is(equalTo(false)));
 
-        interpunkcia.setName(velkeMalePismenaCat().getName());
+        interpunkcia.setName(velkaPismena().getName());
         assertThat(categoryRepository.alreadyExists(interpunkcia), is(equalTo(true)));
 
-        interpunkcia.setName(vybraneSlovaCat().getName());
+        interpunkcia.setName(vyjmenovanaSlovaCat().getName());
         assertThat(categoryRepository.alreadyExists(interpunkcia), is(equalTo(false)));
     }
 
     @Test
     public void existsById() {
         final Long categoryAddedId = dbCommandExecutor.executeCommand(() -> {
-            return categoryRepository.add(interpunkciaCat()).getId();
+            return categoryRepository.add(interpunkce()).getId();
         });
 
         assertThat(categoryRepository.existsById(categoryAddedId), is(equalTo(true)));

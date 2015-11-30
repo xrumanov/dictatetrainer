@@ -56,17 +56,17 @@ public class CategoryServicesUnitTest {
 
         @Test(expected = CategoryExistentException.class)
         public void addCategoryWithExistentName() {
-            when(categoryRepository.alreadyExists(vybraneSlovaCat())).thenReturn(true);
+            when(categoryRepository.alreadyExists(vyjmenovanaSlovaCat())).thenReturn(true);
 
-            categoryServices.add(vybraneSlovaCat());
+            categoryServices.add(vyjmenovanaSlovaCat());
         }
 
         @Test
         public void addValidCategory() {
-            when(categoryRepository.alreadyExists(vybraneSlovaCat())).thenReturn(false);
-            when(categoryRepository.add(vybraneSlovaCat())).thenReturn(categoryWithId(vybraneSlovaCat(), 1L));
+            when(categoryRepository.alreadyExists(vyjmenovanaSlovaCat())).thenReturn(false);
+            when(categoryRepository.add(vyjmenovanaSlovaCat())).thenReturn(categoryWithId(vyjmenovanaSlovaCat(), 1L));
 
-            final Category categoryAdded = categoryServices.add(vybraneSlovaCat());
+            final Category categoryAdded = categoryServices.add(vyjmenovanaSlovaCat());
             assertThat(categoryAdded.getId(), is(equalTo(1L)));
         }
 
@@ -87,37 +87,37 @@ public class CategoryServicesUnitTest {
 
         @Test(expected = CategoryExistentException.class)
         public void updateCategoryWithExistentName() {
-            when(categoryRepository.alreadyExists(categoryWithId(vybraneSlovaCat(), 1L))).thenReturn(true);
+            when(categoryRepository.alreadyExists(categoryWithId(vyjmenovanaSlovaCat(), 1L))).thenReturn(true);
 
-            categoryServices.update(categoryWithId(vybraneSlovaCat(), 1L));
+            categoryServices.update(categoryWithId(vyjmenovanaSlovaCat(), 1L));
         }
 
         @Test(expected = CategoryNotFoundException.class)
         public void updateCategoryNotFound() {
-            when(categoryRepository.alreadyExists(categoryWithId(vybraneSlovaCat(), 1L))).thenReturn(false);
+            when(categoryRepository.alreadyExists(categoryWithId(vyjmenovanaSlovaCat(), 1L))).thenReturn(false);
             when(categoryRepository.existsById(1L)).thenReturn(false);
 
-            categoryServices.update(categoryWithId(vybraneSlovaCat(), 1L));
+            categoryServices.update(categoryWithId(vyjmenovanaSlovaCat(), 1L));
         }
 
         @Test
         public void updateValidCategory() {
-            when(categoryRepository.alreadyExists(categoryWithId(vybraneSlovaCat(), 1L))).thenReturn(false);
+            when(categoryRepository.alreadyExists(categoryWithId(vyjmenovanaSlovaCat(), 1L))).thenReturn(false);
             when(categoryRepository.existsById(1L)).thenReturn(true);
 
-            categoryServices.update(categoryWithId(vybraneSlovaCat(), 1L));
+            categoryServices.update(categoryWithId(vyjmenovanaSlovaCat(), 1L));
 
-            verify(categoryRepository).update(categoryWithId(vybraneSlovaCat(), 1L));
+            verify(categoryRepository).update(categoryWithId(vyjmenovanaSlovaCat(), 1L));
         }
 
         @Test
         public void findCategoryById() {
-            when(categoryRepository.findById(1L)).thenReturn(categoryWithId(vybraneSlovaCat(), 1L));
+            when(categoryRepository.findById(1L)).thenReturn(categoryWithId(vyjmenovanaSlovaCat(), 1L));
 
             final Category category = categoryServices.findById(1L);
             assertThat(category, is(notNullValue()));
             assertThat(category.getId(), is(equalTo(1L)));
-            assertThat(category.getName(), is(equalTo(vybraneSlovaCat().getName())));
+            assertThat(category.getName(), is(equalTo(vyjmenovanaSlovaCat().getName())));
         }
 
         @Test(expected = CategoryNotFoundException.class)
@@ -138,13 +138,13 @@ public class CategoryServicesUnitTest {
         @Test
         public void findAllCategories() {
             when(categoryRepository.findAll("name")).thenReturn(
-                    Arrays.asList(categoryWithId(vybraneSlovaCat(), 1L), categoryWithId(velkeMalePismenaCat(), 2L), categoryWithId(interpunkciaCat(), 3L)));
+                    Arrays.asList(categoryWithId(vyjmenovanaSlovaCat(), 1L), categoryWithId(velkaPismena(), 2L), categoryWithId(interpunkce(), 3L)));
 
             final List<Category> categories = categoryServices.findAll();
             assertThat(categories.size(), is(equalTo(3)));
-            assertThat(categories.get(0).getName(), is(equalTo(vybraneSlovaCat().getName())));
-            assertThat(categories.get(1).getName(), is(equalTo(velkeMalePismenaCat().getName())));
-            assertThat(categories.get(2).getName(), is(equalTo(interpunkciaCat().getName())));
+            assertThat(categories.get(0).getName(), is(equalTo(vyjmenovanaSlovaCat().getName())));
+            assertThat(categories.get(1).getName(), is(equalTo(velkaPismena().getName())));
+            assertThat(categories.get(2).getName(), is(equalTo(interpunkce().getName())));
         }
 
         private void addCategoryWithInvalidName(final String name) {

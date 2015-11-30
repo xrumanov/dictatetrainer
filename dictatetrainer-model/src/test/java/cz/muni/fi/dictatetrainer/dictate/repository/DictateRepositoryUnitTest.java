@@ -3,7 +3,6 @@ package cz.muni.fi.dictatetrainer.dictate.repository;
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
 import cz.muni.fi.dictatetrainer.common.model.filter.PaginationData;
 import cz.muni.fi.dictatetrainer.common.model.filter.PaginationData.OrderMode;
-import cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository;
 import cz.muni.fi.dictatetrainer.commontests.utils.TestBaseRepository;
 import cz.muni.fi.dictatetrainer.dictate.model.Dictate;
 import cz.muni.fi.dictatetrainer.dictate.model.filter.DictateFilter;
@@ -12,11 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static cz.muni.fi.dictatetrainer.commontests.category.CategoriesForTestRepository.allCategories;
-import static cz.muni.fi.dictatetrainer.commontests.category.CategoriesForTestRepository.vybraneSlovaCat;
+import static cz.muni.fi.dictatetrainer.commontests.category.CategoriesForTestRepository.vyjmenovanaSlovaCat;
 import static cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.admin;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.allUsers;
-import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.mrkvicka;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -135,7 +133,7 @@ public class DictateRepositoryUnitTest extends TestBaseRepository {
         loadDictatesForFindByFilter();
 
         final Dictate dictate = new Dictate();
-        dictate.setCategory(vybraneSlovaCat());
+        dictate.setCategory(vyjmenovanaSlovaCat());
         dictate.setUploader(admin());
 
         final DictateFilter dictateFilter = new DictateFilter();

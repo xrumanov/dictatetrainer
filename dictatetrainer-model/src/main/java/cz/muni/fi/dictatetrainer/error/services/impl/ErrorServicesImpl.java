@@ -11,7 +11,6 @@ import cz.muni.fi.dictatetrainer.error.repository.ErrorRepository;
 import cz.muni.fi.dictatetrainer.error.services.ErrorServices;
 import cz.muni.fi.dictatetrainer.trial.model.Trial;
 import cz.muni.fi.dictatetrainer.trial.services.TrialServices;
-import cz.muni.fi.dictatetrainer.user.model.Student;
 import cz.muni.fi.dictatetrainer.user.model.User;
 import cz.muni.fi.dictatetrainer.user.services.UserServices;
 

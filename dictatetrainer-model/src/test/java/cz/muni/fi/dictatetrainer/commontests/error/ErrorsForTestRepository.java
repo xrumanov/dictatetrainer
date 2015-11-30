@@ -55,8 +55,8 @@ public class ErrorsForTestRepository {
         error.setMistakeCharPosInWord(2);
         error.setCorrectChars("ý");
         error.setWrittenChars("í");
-        error.setCorrectWord("pýchavku");
-        error.setWrittenWord("píchavku");
+        error.setCorrectWord("pýchavku.");
+        error.setWrittenWord("píchavku.");
         error.setPreviousWord("lese");
         error.setNextWord("");
         error.setWordPosition(5);
@@ -105,7 +105,7 @@ public class ErrorsForTestRepository {
         final Error error = new Error();
         error.setMistakeCharPosInWord(2);
         error.setCorrectChars("á");
-        error.setWrittenChars("a"); //between < and >
+        error.setWrittenChars("a");
         error.setCorrectWord("mánie.");
         error.setWrittenWord("manie.");
         error.setPreviousWord("stala");
