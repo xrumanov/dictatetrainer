@@ -101,26 +101,23 @@ public class Error implements Serializable {
         SPREZKY_SPRAHOVANI,
         SLOZENA_ADJEKTIVA,
         VELKA_PISMENA,
-
         ADJEKTIVA_ICI,
         ADJEKTIVA_NI_NY,
         TYP_ACKOLI_ACKOLIV,
         VOKALIZACE_PREDLOZEK,
-
         ZAJMENA_VASI_JI_NI,
         PSANI_BE_VE_PE,
         SOUHLASKY_PAROVE,
         DIAKRITIKA,
         I_PO_MEKKYCH_OBOJETNYCH_SOUHLASKACH,
         ZAJMENA_A_SLOVA_OBSAHUJICI_MNE_ME,
-
         CHYBEJICI_SLOVO,
         NADBYTECNE_SLOVO,
-
         OSTATNI
     }
 
-    @Column(name = "error_type", insertable = false, updatable = false)
+    @NotNull
+    @Column(name = "error_type", updatable = false)
     @Enumerated(EnumType.STRING)
     private ErrorType errorType;
 
@@ -311,13 +308,12 @@ public class Error implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Error other = (Error) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+        final Error error = (Error) obj;
+
+        if (!id.equals(error.id)) return false;
+        if (!student.equals(error.student)) return false;
+        if (!trial.equals(error.trial)) return false;
+        return dictate.equals(error.dictate);
     }
 
     @Override
