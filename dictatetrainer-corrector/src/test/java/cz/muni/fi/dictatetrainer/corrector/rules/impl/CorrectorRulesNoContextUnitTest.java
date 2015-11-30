@@ -153,7 +153,7 @@ public class CorrectorRulesNoContextUnitTest {
 
     @Test
     public void psaniPredponSZDublet() { // správa - zpráva
-        mistake = new Mistake(1, "S", "Z", "Správa", "Zpráva", "", "", 1,
+        mistake = new Mistake(1, "S", "Z", "Správa", "Zpráva", "", "domu.", 1,
                 "správa", "k5eAaPmFrD", "(S)<Z>práva domu.");
 
         String description = "Některá slova lze psát jak s předponou s-, tak s předponou z-. " +
@@ -207,7 +207,7 @@ public class CorrectorRulesNoContextUnitTest {
     @Test
     public void predlozkySZ() { // z - s
         mistake = new Mistake(1, "z", "s", "z", "s", "Vstal", "postele.", 2,
-                "z", "k7c2", "Vstal (z)<s> postele");
+                "z", "k7c2", "Vstal (z)<s> postele.");
 
         String description = "S druhým pádem se pojí předložka z (ze). " +
                 "Např. vstal z postele; vyšel z banky. Se sedmým pádem se pojí jedině předložka s (se). " +
