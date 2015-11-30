@@ -9,15 +9,16 @@ import java.util.concurrent.atomic.AtomicLong;
  * Holds this fields:
  * -------------------
  * id: id of the object
- * mistakeCharPosInWord: position of first mistaken character (beginning with 1) TODO 0=surplus char, -1=missing char
- * correctChars: correct characters from transcript TODO empty if surplus char
- * writtenChars: incorrect characters written by student TODO empty if missing char
+ * mistakeCharPosInWord: position of first mistaken character (beginning with 1),
+ *  if missing or surplus character, negative position is shown (-6 for position 6)
+ * correctChars: correct characters from transcript
+ * writtenChars: incorrect characters written by student
  * correctWord: word from the dictate transcript
  * writtenWord: word written by the student
  * previousWord: correct word from transcript that precede the mistaken word
  * nextWord: correct word from transcript that is next to the mistaken word
  * wordPosition: position of the word in the dictate counted as token number from begining of the transcript
- * (beginning with 1) TODO how to deal with surplus and missing words? There are more tokens or less tokens then
+ * (beginning with 1)
  * 0 = surplus word, -1 = missing word
  * lemma: lemma of the error word
  * posTag: part of speech tag
@@ -33,6 +34,14 @@ public class Mistake implements Serializable {
     public Mistake() {
         this.id = counter.incrementAndGet();
     }
+
+    /**
+     * Constructor for the first step - adding data about mistake
+     * to use them in CorrectorRules
+     *
+     * @param definition of the parameters on the top of this class
+     */
+    private Long id;
 
     public Mistake(Integer mistakeCharPosInWord, String correctChars, String writtenChars,
                    String correctWord, String writtenWord, String previousWord, String nextWord,
@@ -51,43 +60,33 @@ public class Mistake implements Serializable {
         this.sentence = sentence;
     }
 
-    /**
-     * Constructor for the first step - adding data about mistake
-     * to use them in CorrectorRules
-     *
-     * @param definition of the parameters on the top of this class
-     */
+    private Integer mistakeCharPosInWord;
 
+    private String correctChars;
 
-    public Long id;
+    private String writtenChars;
 
-    public Integer mistakeCharPosInWord;
+    private String correctWord;
 
-    public String correctChars;
+    private String writtenWord;
 
-    public String writtenChars;
+    private String previousWord;
 
-    public String correctWord;
+    private String nextWord;
 
-    public String writtenWord;
+    private Integer wordPosition;
 
-    public String previousWord;
+    private String lemma;
 
-    public String nextWord;
+    private String posTag;
 
-    public Integer wordPosition;
+    private String sentence;
 
-    public String lemma;
+    private int priority;
 
-    public String posTag;
+    private MistakeType mistakeType;
 
-    public String sentence;
-
-    public int priority;
-
-    public MistakeType mistakeType;
-
-    public String mistakeDescription;
+    private String mistakeDescription;
 
     public Long getId() {
         return id;
