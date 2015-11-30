@@ -1,0 +1,10 @@
+{
+    "id": 1,
+    "name": "Jozko Mrkvicka",
+    "email": "mrkvicka@domain.com",
+    "type": "STUDENT",
+    "roles": [
+        "STUDENT"
+    ],
+    "createdAt": "2015-11-03T22:35:42Z"
+}

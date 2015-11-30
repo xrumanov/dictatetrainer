@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "performed": "2015-11-04T10:10:34Z",
+  "trialText": "Nebudem to pisat lebo sa mi to nechce",
+  "student": {
+    "id": 1,
+    "name": "Billi Gates",
+    "email" : "gates@domain.com"
+  },
+  "dictate": {
+    "id": 1,
+    "name": "Procvičování interpunkce",
+    "filename" : "dictate4.mp3"
+  }
+}

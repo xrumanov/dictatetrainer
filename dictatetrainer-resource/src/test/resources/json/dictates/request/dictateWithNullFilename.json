@@ -1,0 +1,12 @@
+{
+  "name": "Trénování interpunkce.",
+  "categoryId": 1,
+  "uploaderId": 1,
+  "description": "Toto je testovací diktát",
+  "filename": null,
+  "transcript": "Lorem ipsum.",
+  "defaultRepetitionForDictate": 2,
+  "defaultRepetitionForSentences": 2,
+  "defaultPauseBetweenSentences": 2,
+  "sentenceEndings": "10;20;30"
+}

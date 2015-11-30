@@ -1,0 +1,20 @@
+{
+  "id": 1,
+  "mistakeCharPosInWord": 2,
+  "correctChars": "á",
+  "writtenChars": "a",
+  "correctWord": "mánie.",
+  "writtenWord": "manie.",
+  "previousWord": "stala",
+  "nextWord": "",
+  "wordPosition": 6,
+  "lemma": "mánie",
+  "posTag": "k1gFnPc1",
+  "sentence": "Z jeho cestom(á)<a>nie se stala m(á)<a>nie.",
+  "errorPriority": 6,
+  "errorType": "SLOVA_ZAKONCENE_MANIE",
+  "errorDescription": null,
+  "studentId": 1,
+  "dictateId": 1,
+  "trialId": 1
+}

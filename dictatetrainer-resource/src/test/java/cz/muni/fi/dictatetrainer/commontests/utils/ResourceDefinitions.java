@@ -7,7 +7,8 @@ public enum ResourceDefinitions {
     CATEGORY("categories"),
     USER("users"),
     DICTATE("dictates"),
-    TRIAL("trials");
+    TRIAL("trials"),
+    ERROR("errors");
 
     private String resourceName;
 

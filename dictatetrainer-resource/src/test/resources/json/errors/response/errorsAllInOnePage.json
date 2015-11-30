@@ -1,0 +1,83 @@
+{
+  "paging": {
+    "totalRecords": 2
+  },
+  "entries": [
+    {
+      "id": 1,
+      "mistakeCharPosInWord": 2,
+      "correctChars": "á",
+      "writtenChars": "a",
+      "correctWord": "mánie.",
+      "writtenWord": "manie.",
+      "previousWord": "stala",
+      "nextWord": "",
+      "wordPosition": 6,
+      "lemma": "mánie",
+      "posTag": "k1gFnPc1",
+      "sentence": "Z jeho cestom(á)<a>nie se stala m(á)<a>nie.",
+      "errorPriority": 6,
+      "errorType": "SLOVA_ZAKONCENE_MANIE",
+      "errorDescription": "Přípustná je pouze varianta mánie. Pouze pokud jde o slovo složené (např. cestománie, pokemanie) je možné psát krátce i dlouze. (VOJ)",
+      "student": {
+        "id": 2
+      },
+      "dictate": {
+        "id": 2
+      },
+      "trial": {
+        "id": 1,
+        "performed": "2015-11-04T10:10:34Z",
+        "trialText": "Lorem Ipsum dva.",
+        "student": {
+          "id": 2,
+          "name": "Jozko Mrkvicka",
+          "email" : "mrkvicka@domain.com"
+        },
+        "dictate": {
+          "id": 2,
+          "name": "Vyjmenovana slova 2",
+          "filename" : "dictate2.mp3"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "mistakeCharPosInWord": 1,
+      "correctChars": "z",
+      "writtenChars": "s",
+      "correctWord": "z",
+      "writtenWord": "z",
+      "previousWord": "Vstal",
+      "nextWord": "postele.",
+      "wordPosition": 2,
+      "lemma": "z",
+      "posTag": "k7c2",
+      "sentence": "Vstal (z)<s> postele.",
+      "errorPriority": 7,
+      "errorType": "PREDLOZKY_S_Z",
+      "errorDescription": "S druhým pádem se pojí předložka z (ze). Např. vstal z postele; vyšel z banky. Se sedmým pádem se pojí jedině předložka s (se). Např. trávil čas s knihou; s pilinami si lze hrát. (IJP)",
+      "student": {
+        "id": 2
+      },
+      "dictate": {
+        "id": 1
+      },
+      "trial": {
+        "id": 3,
+        "performed": "2015-11-04T10:10:34Z",
+        "trialText": "Toto je diktat ktory je testovy.",
+        "student": {
+          "id": 2,
+          "name": "Billi Gates",
+          "email" : "gates@domain.com"
+        },
+        "dictate": {
+          "id": 1,
+          "name": "Velke pismena",
+          "filename" : "dictate3.mp3"
+        }
+      }
+    }
+  ]
+}

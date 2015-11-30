@@ -1,0 +1,37 @@
+{
+  "paging": {
+    "totalRecords": 2
+  },
+  "entries": [
+    {
+      "id": 1,
+      "performed": "2015-11-04T10:10:34Z",
+      "trialText": "Nebudem to pisat lebo sa mi to nechce",
+      "student": {
+        "id": 1,
+        "name": "Billi Gates",
+        "email": "gates@domain.com"
+      },
+      "dictate": {
+        "id": 1,
+        "name": "Procvičování interpunkce",
+        "filename": "dictate4.mp3"
+      }
+    },
+    {
+      "id": 2,
+      "performed": "2015-11-04T10:10:34Z",
+      "trialText": "Lorem Ipsum blablabla",
+      "student": {
+        "id": 2,
+        "name": "Jozko Mrkvicka",
+        "email": "mrkvicka@domain.com"
+      },
+      "dictate": {
+        "id": 2,
+        "name": "Vyjmenovana slova 1",
+        "filename": "dictate1.mp3"
+      }
+    }
+  ]
+}

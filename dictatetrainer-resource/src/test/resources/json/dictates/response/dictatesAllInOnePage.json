@@ -1,0 +1,59 @@
+{
+  "paging": {
+    "totalRecords": 2
+  },
+  "entries": [
+    {
+      "id": 1,
+      "name": "Procvičování interpunkce",
+      "description": "Diktat na procvičování interpunkce",
+      "filename": "dictate4.mp3",
+      "transcript": "Lorem Ipsum bla bla bla bla.",
+      "defaultRepetitionForDictate": 2,
+      "defaultRepetitionForSentences": 2,
+      "defaultPauseBetweenSentences": 2,
+      "sentenceEndings": "10;20;30",
+      "category": {
+        "id": 1,
+        "name": "Interpunkce"
+      },
+      "uploader": {
+        "id": 1,
+        "name": "Admin",
+        "email": "admin@domain.com",
+        "type": "TEACHER",
+        "roles": [
+          "ADMINISTRATOR",
+          "TEACHER"
+        ],
+        "createdAt": "2015-11-03T22:35:42Z"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Vyjmenovana slova 1",
+      "description": "Toto je testovací diktát na vyjmenovaná slova.",
+      "filename": "dictate1.mp3",
+      "transcript": "Lorem ipsum bla bla.",
+      "defaultRepetitionForDictate": 3,
+      "defaultRepetitionForSentences": 1,
+      "defaultPauseBetweenSentences": 2,
+      "sentenceEndings": "15;25;35",
+      "category": {
+        "id": 2,
+        "name": "Vyjmenovana slova"
+      },
+      "uploader": {
+        "id": 1,
+        "name": "Admin",
+        "email": "admin@domain.com",
+        "type": "TEACHER",
+        "roles": [
+          "ADMINISTRATOR",
+          "TEACHER"
+        ],
+        "createdAt": "2015-11-03T22:35:42Z"
+      }
+    }
+  ]
+}
