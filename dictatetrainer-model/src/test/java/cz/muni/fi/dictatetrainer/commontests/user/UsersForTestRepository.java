@@ -50,7 +50,7 @@ public class UsersForTestRepository {
 
     public static User userWithIdAndCreatedAt(final User user, final Long id) {
         user.setId(id);
-        user.setCreatedAt(DateUtils.getAsDateTime("2015-01-03T22:35:42Z"));
+        user.setCreatedAt(DateUtils.getAsDateTime("2015-11-03T22:35:42Z"));
 
         return user;
     }
