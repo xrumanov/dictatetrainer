@@ -21,9 +21,9 @@ constraint fk_trial_student foreign key(student_id) references dt_user(id),
 constraint fk_trial_dictate foreign key(dictate_id) references dt_dictate(id));
 
 create table dt_error (id bigserial not null primary key,	char_position int not null, correct_chars varchar(10) not null,
-written_chars varchar(10) not null, correct_word varchar not null, written_word varchar(40), previous_word varchar(40),
-next_word varchar(40), word_position int not null, lemma varchar(35) not null, pos_tag varchar(15) not null,
-sentence varchar(35) not null, error_priority int not null, error_type VARCHAR(30) not null, description text not null,
+written_chars varchar(10) not null, correct_word varchar not null, written_word varchar not null, previous_word varchar not null,
+next_word varchar not null, word_position int not null, lemma varchar not null, pos_tag varchar(20) not null,
+sentence varchar not null, error_priority int not null, error_type varchar(50) not null, description varchar not null,
 student_id bigint not null, dictate_id bigint not null, trial_id bigint not null,
 constraint fk_err_student foreign key(student_id) references dt_user(id),
 constraint fk_err_dictate foreign key(dictate_id) references dt_dictate(id),

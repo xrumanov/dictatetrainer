@@ -51,21 +51,27 @@ public class Error implements Serializable {
     @Column(name = "char_position")
     private Integer mistakeCharPosInWord;
 
+    @NotNull
     @Column(name = "correct_chars")
     private String correctChars;
 
+    @NotNull
     @Column(name = "written_chars")
     private String writtenChars;
 
+    @NotNull
     @Column(name = "correct_word")
     private String correctWord;
 
+    @NotNull
     @Column(name = "written_word")
     private String writtenWord;
 
+    @NotNull
     @Column(name = "previous_word")
     public String previousWord;
 
+    @NotNull
     @Column(name = "next_word")
     public String nextWord;
 
