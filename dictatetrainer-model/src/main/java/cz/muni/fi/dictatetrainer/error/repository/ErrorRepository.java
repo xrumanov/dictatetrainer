@@ -2,8 +2,8 @@ package cz.muni.fi.dictatetrainer.error.repository;
 
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
 import cz.muni.fi.dictatetrainer.common.repository.GenericRepository;
-import cz.muni.fi.dictatetrainer.error.model.filter.ErrorFilter;
 import cz.muni.fi.dictatetrainer.error.model.Error;
+import cz.muni.fi.dictatetrainer.error.model.filter.ErrorFilter;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,6 +39,10 @@ public class ErrorRepository extends GenericRepository<Error> {
         if (errorFilter.getDictateId() != null) {
             clause.append(" AND e.dictate.id = :dictateId");
             queryParameters.put("dictateId", errorFilter.getDictateId());
+        }
+        if (errorFilter.getTrialId() != null) {
+            clause.append(" AND e.trial.id = :trialId");
+            queryParameters.put("trialId", errorFilter.getTrialId());
         }
 
         return findByParameters(clause.toString(), errorFilter.getPaginationData(), queryParameters, "id ASC");
