@@ -25,7 +25,7 @@ public final class JsonUtils {
 
         final JsonObject jsonUser = (JsonObject) userJsonConverter.convertToJsonElement(user);
         final String jwt = userJsonConverter.generateJWT(user);
-        jsonWithJWT.addProperty("token", jwt);
+        //jsonWithJWT.addProperty("token", jwt);
         jsonWithJWT.add("user", jsonUser);
 
         return jsonWithJWT;
