@@ -87,13 +87,24 @@ public class TrialServicesUnitTest {
     }
 
     @Test
-    public void addTrialWithNullDictate() throws Exception {
+    public void addTrialWithNullDictate() {
         when(userServices.findByEmail(LOGGED_EMAIL)).thenReturn(gates());
 
         final Trial trial = trialPerformed1();
         trial.setDictate(null);
 
         addTrialWithInvalidField(trial, "dictate");
+    }
+
+
+    @Test
+    public void addTrialWithNullStudent() {
+        when(userServices.findByEmail(LOGGED_EMAIL)).thenReturn(gates());
+
+        final Trial trial = trialPerformed1();
+        trial.setStudent(null);
+
+        addTrialWithInvalidField(trial, "student");
     }
 
     @Test
