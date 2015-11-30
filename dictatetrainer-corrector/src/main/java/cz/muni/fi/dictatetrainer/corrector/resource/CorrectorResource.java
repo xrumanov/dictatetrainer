@@ -91,7 +91,7 @@ public class CorrectorResource {
 
             String markedText = correctorSerivce.markInput(transcript, userText);
             String[] tokens = correctorSerivce.tokenizeAndReturnTokens(markedText, "\\s+");
-            List<String> sentences = correctorSerivce.sentencizedAndReturnSentences(markedText, "cs");
+            String[] sentences = correctorSerivce.sentencizedAndReturnSentences(markedText);
             List<Mistake> mistakes = correctorSerivce.createMistakeObjectsAndApplyCorrectorRules(tokens, sentences,
                     new CorrectorRulesNoContext());
 
