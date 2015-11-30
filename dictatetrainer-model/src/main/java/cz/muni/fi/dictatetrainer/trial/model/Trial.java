@@ -16,10 +16,8 @@ import java.util.Date;
  * id: id of the object
  * performed: date on which the trial was performed
  * trialText: text written by a student
- * errors: set of Error entity object, definition of every Error is encapsulated in the Entity
  * student: student who accessed the dictate to test him/herself
  * dictate: dictate accessed
- * TODO errors: errors done in this trial
  */
 @Entity
 @Table(name = "dt_trial")
@@ -51,6 +49,12 @@ public class Trial implements Serializable {
     public Trial() {
         this.performed = new Date();
     }
+
+    public Trial(final Long id) {
+        this.performed = new Date();
+        this.id = id;
+    }
+
 
     public Long getId() {
         return id;
@@ -93,16 +97,20 @@ public class Trial implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Trial trial = (Trial) o;
-
-        if (!id.equals(trial.id)) return false;
-        if (!student.equals(trial.student)) return false;
-        return dictate.equals(trial.dictate);
-
+    public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Trial other = (Trial) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 
     @Override
