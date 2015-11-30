@@ -59,7 +59,7 @@ public class TrialJsonConverter implements EntityJsonConverter<Trial> {
         jsonObject.addProperty("id", trial.getId());
         jsonObject.add("student", getStudentAsJsonElement(trial.getStudent()));
         jsonObject.add("dictate", getDictateAsJsonElement(trial.getDictate()));
-        jsonObject.addProperty("text", trial.getTrialText());
+        jsonObject.addProperty("trialText", trial.getTrialText());
         jsonObject.addProperty("performed", DateUtils.formatDateTime(trial.getPerformed()));
         return jsonObject;
     }
@@ -68,6 +68,7 @@ public class TrialJsonConverter implements EntityJsonConverter<Trial> {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id", user.getId());
         jsonObject.addProperty("name", user.getName());
+        jsonObject.addProperty("email", user.getEmail());
 
         return jsonObject;
     }
@@ -77,10 +78,7 @@ public class TrialJsonConverter implements EntityJsonConverter<Trial> {
 
         jsonObject.addProperty("id", dictate.getId());
         jsonObject.addProperty("name", dictate.getName());
-        jsonObject.addProperty("category", dictate.getCategory().toString());
-        jsonObject.addProperty("transcript", dictate.getTranscript());
         jsonObject.addProperty("filename", dictate.getFilename());
-        jsonObject.addProperty("description", dictate.getDescription());
 
         return jsonObject;
     }
