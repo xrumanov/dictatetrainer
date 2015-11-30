@@ -24,15 +24,15 @@ public class DictatesForTestRepository {
 
     public static Dictate vybraneSlova1() {
         final Dictate dictate = new Dictate();
-        dictate.setName("Vybrane slova 1");
-        dictate.setDescription("Diktat na precvicovanie vybranych slov po B");
-        dictate.setCategory(CategoriesForTestRepository.vybraneSlovaCat());
+        dictate.setName("Vyjmenovana slova 1");
+        dictate.setDescription("Toto je testovací diktát na vyjmenovaná slova.");
+        dictate.setCategory(CategoriesForTestRepository.vyjmenovanaSlovaCat());
         dictate.setFilename("dictate1.mp3");
-        dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
-        dictate.setDefaultRepetitionForSentences(2);
-        dictate.setDefaultRepetitionForDictate(2);
+        dictate.setTranscript("Lorem ipsum bla bla.");
+        dictate.setDefaultRepetitionForSentences(1);
+        dictate.setDefaultRepetitionForDictate(3);
         dictate.setDefaultPauseBetweenSentences(2);
-        dictate.setSentenceEndings("10;20;30");
+        dictate.setSentenceEndings("15;25;35");
         dictate.setUploader(UsersForTestRepository.admin());
 
         return dictate;
@@ -40,9 +40,9 @@ public class DictatesForTestRepository {
 
     public static Dictate vybraneSlova2() {
         final Dictate dictate = new Dictate();
-        dictate.setName("Vybrane slova 2");
+        dictate.setName("Vyjmenovana slova 2");
         dictate.setDescription("Diktat na precvicovanie vybranych slov po S");
-        dictate.setCategory(CategoriesForTestRepository.vybraneSlovaCat());
+        dictate.setCategory(CategoriesForTestRepository.vyjmenovanaSlovaCat());
         dictate.setFilename("dictate2.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
         dictate.setDefaultRepetitionForSentences(2);
@@ -58,7 +58,7 @@ public class DictatesForTestRepository {
         final Dictate dictate = new Dictate();
         dictate.setName("Velke pismena");
         dictate.setDescription("Diktat na precvicovanie velkych pismen na zaciatkoch slov");
-        dictate.setCategory(CategoriesForTestRepository.velkeMalePismenaCat());
+        dictate.setCategory(CategoriesForTestRepository.velkaPismena());
         dictate.setFilename("dictate3.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
         dictate.setDefaultRepetitionForSentences(2);
@@ -72,9 +72,9 @@ public class DictatesForTestRepository {
 
     public static Dictate interpunkcia() {
         final Dictate dictate = new Dictate();
-        dictate.setName("Interpunkcia");
-        dictate.setDescription("Diktat na precvicovanie interpunkcie");
-        dictate.setCategory(CategoriesForTestRepository.interpunkciaCat());
+        dictate.setName("Procvičování interpunkce");
+        dictate.setDescription("Diktat na procvičování interpunkce");
+        dictate.setCategory(CategoriesForTestRepository.interpunkce());
         dictate.setFilename("dictate4.mp3");
         dictate.setTranscript("Lorem Ipsum bla bla bla bla.");
         dictate.setDefaultRepetitionForSentences(2);
