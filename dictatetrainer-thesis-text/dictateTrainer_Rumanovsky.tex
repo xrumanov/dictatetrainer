@@ -68,8 +68,12 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
     
     \chapter{Analýza systému}
        \section{Definícia problému}
+
+
        \section{Existujúce riešenia}       
        		\subsection{Štruktúra existujúcich riešení}
+       				\par Ako bolo zmienené vyššie, pri výuke gramatiky hrá ešte stále významnú úlohu zbierky diktátov, z ktorých je potom diktát diktovaný učiteľom v triede počas vyučovania. Taktiež existuje veľká skupina cvičení zadarmo dostupných na internete. Prášilová\cite{prasilova14} ich však vo svojej diplomovej práci nazýva skôr ako diktátmi doplňovacími cvičeniami. Výhodou takejto formy je podľa nej okamžité vyhodnotenie, ktoré však nemusí byť príliš dobrý motivačný prvok. V svojej diplomovej práci tiež uvádza, že by doplňovacie cvičenia mali slúžiť hlavne k precvičovaniu, nie ku klasifikácii. Ďalšou skupinou existujúcich riešení sú audiodiktáty, ktoré sú postavené na rovnakých textoch ako zbierky diktátov. Nevýhodou týchto diktátov sú technické problémy, ku ktorým môže dochádzať počas diktovania (napr. šum, zaseknutie pásky, preskakovanie). Ku komplikáciám môže podľa Prášilovej tiež dochádzať vo chvíli keď žiak zle rozumel, chce sa spýtať, tým sa dostane do sklzu a stráca pozornosť. Hlavnú nevýhodu však vidí v nemožnosti prispôsobiť tempo danej skupine. Výhodu potom vidí v zvýšenej pozornosti, ktorú môže učiteľ žiakom venovať namiesto čítania textu.
+		\par V súčasnosti sa na internete objavujú aj celé portály zamerané na precvičovanie gramatických javov. Jedným z zo zástupcov je portál \textit{pravopisne.cz}, ktorý ponúka širokú paletu rôznych možností zahŕňajúcu doplňovačky, gramatickú teóriu, hry na precvičovanie pravopisu a gramatických javov ako aj tzv. audiodiktáty. Tieto však fungujú tak, že si žiak zvukový súbor cez prehliadač spustí a píše na papier a potom ho porovná so správnym riešením dostupným na stránke pri skončení cvičenia. Ďalším portálom dostupným na internete je web \textit{umimcesky.cz}. Na tomto portáli si žiak precvičuje gramatické javy pomocou testových otázok (väčšinou typu vyber správnu možnosť) a po označení odpovede sa zobrazí, či bola správna a ak áno, prečo boli ostatné nesprávne.
        		\subsection{Problémy v existujúcich riešeniach}
        		\subsection{Výhody a nevýhody existujúcich riešení}
        \section{Navrhovaný systém}
@@ -96,23 +100,36 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
        		\subsection{Výhody a nevýhody navrhovaného systému}
     \chapter{Návrh a implementácia systému}
     
-    \par Webový systém bude rozdelený na dve úplne oddelené časti.
+    \par Webový systém bude rozdelený na tri úplne oddelené časti.
 
-\par Vrstvu prístupu k dátam, označovaná anglickým slovom backend, ktorá sa bude starať o ukladanie dát a navonok bude možné k nej pristupovať pomocou tzv. REST endpointov – známych adries, ktoré po prijatí dát v správnom formáte v JSON vrátia požadované údaje v definovanej forme. Rovnakým spôsobom sa bude pristupovať aj k samostatnému modulu slúžiacemu na opravu chýb. Adresy budú zdokumentované v jednej z následujúcich kapitol, rovnako ako správny formát vstupných respektíve výstupných dát. 
-	\par Druhou časťou bude prezentačná vrstva, známa aj pod anglickým ekvivalentom frontend, ktorá bude komunikovať s vrstvou prístupu k dátam skrz REST rozhrania. Tieto budú zabezpečené aj na strane backendu aj na strane front-endu proti neoprávnenému prístupu neautorizovaného používateľa. Ten sa bude musieť na získanie oprávnenia zaregistrovať. Registrovať sa budú môcť iba užívatelia role STUDENT (žiaci), učiteľ (rola TEACHER) bude musieť požiadať o vytvorenie účtu administrátora (rola ADMINISTRATOR). Overenie prístupu bude prebiehať zavolaním špeciálnej adresy, definovanej v jednej z následujúcich kapitol spolu s užívateľským menom a heslom a následným povolením/odmietnutím prístupu na základe týchto údajov. Prezentačná vrstva bude navrhnutá ako tzv. jednostránková aplikácia\footnote{Single Page Application, skrátene SPA}.
+\par Dátovú vrstvu, označovaná anglickým slovom backend, ktorá sa bude starať o ukladanie dát a navonok bude možné k nej pristupovať pomocou tzv. REST endpointov – známych adries, ktoré po obdržaní dát v správnom formáte v JSON vrátia požadované údaje v definovanej forme.
+	\par Druhou časťou bude prezentačná vrstva, známa aj pod anglickým ekvivalentom frontend, ktorá bude komunikovať s vrstvou prístupu k dátam skrz REST rozhrania. Tieto budú zabezpečené aj na strane backendu aj na strane frontendu proti neoprávnenému prístupu neautorizovaného používateľa. Ten sa bude musieť na získanie oprávnenia zaregistrovať. Registrovať bude možné iba užívateľov role STUDENT (žiaci), učiteľ (rola TEACHER) bude musieť požiadať o vytvorenie účtu administrátora (rola ADMINISTRATOR). Overenie prístupu bude prebiehať zavolaním špeciálnej adresy, definovanej v jednej z následujúcich kapitol spolu s užívateľským menom a heslom a následným povolením/odmietnutím prístupu na základe týchto údajov. Prezentačná vrstva bude navrhnutá ako tzv. jednostránková aplikácia\footnote{Single Page Application, skrátene SPA}.
 	    \par Pri implementácii systému bol kladený dôraz na použitie moderných technológií a štruktúra je navrhnutá tak, aby sa ktorákoľvek súčasť dala v prípade potreby rýchlo nahradiť inou bez nutnosti zásahu do iných vrstiev systému. V následujúcich sekciách sú postupne uvedené použité technológie podľa príslušnosti k vrstve systému.
+	    \par Poslednou časťou bude samostatný modul nasadený spoločne s aplikáciou, slúžiaci na opravu chýb. Takisto ako k backendu je k nemu možné pristupovať skrz REST rozhranie. Jeho úlohou bude vo vstupnom texte od užívateľa odhaliť chyby, označiť ich, zozbierať o každej chybe čo najviac informácií a na základe týchto potom zaradiť chyby do kategórií (definovaných v prílohe \ref{typy-chyb}) a priradiť k ním zodpovedajúci popis. Rozhranie bude možné použiť aj aplikáciami tretích strán. Štruktúra modulu je do hĺbky rozobratá v kapitole \ref{modul-diktaty} a popis rozhrania vrátane správneho vstupu a výstupu je popísaný v prílohe \ref{navod_oprava}.
 	    
 	\pagebreak
 	   	\section{Rozdelenie aplikácie na moduly}
-      	\par Systém je rozdelený na 6 modulov. Prvý s názvom \texttt{dictatetrainer-model} obsahuje prístup k databáze, servisnú vrstvu aplikácie a k nim prislúchajúce testy, modul \texttt{dictatetrainer-resource} obsahuje verejne prístupné rozhrania spolu s ich testami, \texttt{dictatetrainer-corrector} je zvláštny modul zabezpečujúci opravu diktátu a poskytuje verejne prístupné rozhranie. Modul \texttt{dictatetrainer-int-tests}, ako je už z názvu patrné, združuje integračné testy systému. \texttt{dictatetrainer-resource-war} pozostáva s prezentačnej vrstvy aplikácie a nakoniec modul \texttt{dictatetrainer-ear} zabezpečuje správne zabalenie celého systému, oddeľuje závislosti do zvláštneho adresára a backend do zvláštneho archívu tak, aby bola štruktúra aplikácie čo najprehľadnejšia.
+      	\par Systém je rozdelený na 6 modulov. Prvý s názvom \texttt{dictatetrainer-model} obsahuje triedy zabezpečujúce prístup k databáze, byznis vrstvu aplikácie a k nim prislúchajúce testy. Modul \texttt{dictatetrainer-resource} obsahuje verejne prístupné rozhrania spolu s ich testami, \texttt{dictatetrainer-corrector} je zvláštny modul zabezpečujúci opravu diktátu a poskytuje verejne prístupné rozhranie. Modul \texttt{dictatetrainer-int-tests}, ako je už z názvu patrné, združuje integračné testy systému. \texttt{dictatetrainer-resource-war} pozostáva s prezentačnej vrstvy aplikácie a nakoniec modul \texttt{dictatetrainer-ear} zabezpečuje správne zbalenie celého systému, oddeľuje závislosti do zvláštneho adresára a backend do zvláštneho archívu tak, aby bola štruktúra aplikácie čo najprehľadnejšia.
     \section{Štruktúra aplikácie}
           \subsection{Vrstva prístupu k databáze}
       
-      \par Aby bolo možné abstrahovať definíciu tabuliek a relácii medzi nimi od konkrétnej implementácie databázového systému (ako je napr. Postgres, MySQL, Oracle a pod.), je nutné použiť framework umožňujúci objektovo relačné mapovanie tabuliek v databáze na Java objekty, tzv. entity. Entita je trieda reprezentujúca typicky jednu tabuľku v databáze. Obsahuje atribúty, ktoré sú ekvivalentné stĺpcom v databázovej tabuľke, bezparametrický konštruktor a, ak chceme definovať aj vzťahy medzi entitami, musí obsahovať aj preťažené metódy \texttt{equals} a \texttt{hashCode}. Štandardný framework umožňujúci ORM je Java Persistence API (skrátene JPA). Je to vlastne sada rozhraní definujúcich ako by malo ORM fungovať. Existuje viacero implementácií JPA - ako napr. EclipseLink, OpenJPA alebo Hibernate. Aplikácia je postavená na poslednej spomínanej knižnici.
+      \par Aby bolo možné abstrahovať definíciu tabuliek a relácii medzi nimi od konkrétnej implementácie databázového systému (ako je napr. Postgres, MySQL, Oracle a pod.), je nutné použiť framework umožňujúci objektovo-relačné mapovanie (skrátene ORM) tabuliek v databáze na Java objekty, tzv. entity. Entita je trieda typicky reprezentujúca jednu tabuľku v databáze. Obsahuje atribúty, ktoré sú ekvivalentné stĺpcom v tabuľke, bezparametrický konštruktor a, ak chceme definovať aj vzťahy medzi entitami, musí obsahovať aj preťažené metódy \texttt{equals} a \texttt{hashCode}. Štandardný framework umožňujúci ORM je Java Persistence API (skrátene JPA). Je to vlastne sada rozhraní definujúcich ako by malo ORM fungovať. Existuje viacero implementácií JPA - ako napr. EclipseLink, OpenJPA alebo Hibernate. Aplikácia používa poslednú spomínanú knižnicu.
       
-      \pagebreak
-
+      \subsubsection{Entity}
+      \par Navrhovaný webový systém pozostáva z piatich navzájom prepojených entít (OBRÁZOK). Ich zoznam je jedným z výstupov analýzy aplikácie. Sú to \texttt{Category}, \texttt{Dictate}, \texttt{User}, \texttt{Trial} a \texttt{Error}. Nižšie je uvedený krátky popis.
+      \begin{itemize}
+	\item \texttt{Category} reprezentuje kategóriu diktátu, teda gramatický jav, ktorý má diktát v prvom rade precvičiť. Napr. vybrané slová, veľké a malé písmená, spodobovanie atď. Kategórie definuje správca systému.
+	\item \texttt{Dictate} reprezentuje samotný diktát. Obsahuje základné informácie o diktáte: meno, krátky popis diktátu, názov súboru, pod ktorým je uložený na serveri a odkaz na kategóriu, do ktorej diktát spadá. Keďže jedna z požiadaviek na systém bola možnosť nahrávať diktáty, obsahuje tiež odkaz na používateľa, ktorý diktát vytvoril. Entita \texttt{Dictate} tiež ukladá dáta popisujúce samotný zvukový súbor s diktátom, menovite časové značky koncov viet, počet opakovaní diktátu a jednotlivých viet, pauzy medzi vetami a textový prepis diktátu, podľa ktorého potom bude prebiehať oprava.
+	\item Entita \texttt{User} nesie základné informácie o používateľovi. Pod tým sa rozumie časová známka registrácie používateľa, meno, adresa elektronickej pošty (ktorá je unikátna, aby bolo možné sa pomocou nej prihlásiť), heslo v zašifrovanom tvare, typ používateľa a pridelená rola v systéme. Pretože má byť aplikácia rozdelená na používateľskú časť a časť pre učiteľov, delí sa entita na dva podtypy: študent a učiteľ, ktoré sa líšia tým, akého je používateľ typu (USER resp. STUDENT) a aké role môže zastávať (rola ADMINISTRATOR a TEACHER pre učiteľa resp. STUDENT pre študenta). 
+	\item Entita \texttt{Trial} obsahuje informácie o každom dokončenom diktáte. Pozostáva s neopraveného textu napísaného študentom, časovej známky vykonania pokusu, odkazu na trénovaný diktát a rovnako odkazu na trénujúceho študenta. Tieto informácie môžu byť použité predovšetkým za účelom vytvárania štatistických dát.
+	\item Entita \texttt{Error} reprezentuje jednu chybu používateľa v diktáte. Chyba nesie jednak všetky popisné informácie o konkrétnej chybe (ktoré sú totožné s výstupom modulu \texttt{Corrector}, pretože ho k svojmu vytvoreniu využíva). K tomu obsahuje odkaz na entitu \texttt{Trial}, odkaz na diktát, v ktorom sa chyba vyskytla a odkaz na používateľa, ktorý ju urobil. Rovnako ako u predchádzajúcej entity, aj tieto dáta sú predovšetkým určené na účely štatistiky. 
+		\end{itemize}
+      \par 
+	\subsubsection{Prístup k entitám}
+	\par Entity je nutné nielen vytvoriť, ale k nim aj vedieť pristúpiť a vykonať s nimi základné operácie. Základnými operáciami rozumieme tzv. CRUD operácie\footnote{\textbf{C}reate = vytvorenie, \textbf{R}ead = čítanie, \textbf{U}pdate = aktualizácia, \textbf{D}elete = zmazanie}. Tieto operácie sú definované v špeciálnej triede vlastnej pre každú entitu, ktorá tvorí akýsi medzičlánok spájajúci entity a databázu. K základným operáciám je pre každú entitu pridaná možnosť filtrovania výsledkov na základe určených atribútov (resp. z databázového pohľadu stĺpcov tabuľky).
       \subsection{Bussiness vrstva aplikácie}
+      
+      \par Servisná vrstva aplikácie vytvára ďalší stupeň abstrakcie aplikácie. Spolupracuje s vrstvou prístupu k dátam a poskytuje svoje rozhranie vrstve nad ňou.
       \subsection{Vrstva rozhraní - REST}
          \subsubsection{Nahrávanie diktátov}
    \par Jednou zo zadaných požiadaviek na aplikáciu bolo umožniť učiteľom nahrávať diktáty pomocou užívateľského grafického rozhrania a pridať k nim pomocné dáta, ktoré budú diktát popisovať (počet opakovaní jednotlivých viet, počet opakovaní celého diktátu, dĺžka pauzy medzi vetami...). Ako je spomenuté v kapitole \ref{ukladanie}, samotný súbor s diktátom je uložený oddelene od metadát.
@@ -160,9 +177,9 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
       		\par Riešenie spĺňajúce obmedzenia aplikácie využíva externú knižnicu\cite{dzhuvinov15}, ktorá definuje prístupové hlavičky priamo v súbore \texttt{web.xml}. Tento postup jednak ponúka možnosť vybrať z dostupných zdrojov tie, ktoré budú povolené, a taktiež funguje s HTTP metódou POST\cite{sof2}.
 \pagebreak
 
-      \section{Modul na opravu diktátov} \label{modul-diktaty}
+      \chapter{Modul na opravu diktátov} \label{modul-diktaty}
       
-      \subsection{Návrh}
+      \section{Návrh}
       \par Modul na opravu diktátov je nezávislý od ostatných modulov aplikácie a pozostáva zo značkovača vstupného používateľského textu a definície pravidiel. Prístup k modulu zabezpečuje verejné REST rozhranie. Vstupom je správny text diktátu z databázy a text vložený používateľom. Výstup vo formáte JSON obsahuje celkový počet chýb a list jednotlivých chýb zoradených podľa pozície chyby v diktáte (viac o definícii rozhrania, formáte vstupu a výstupu v prílohe \ref{navod_oprava}). 
       \par Opravu diktátu možno rozdeliť do niekoľkých fáz. Najprv sa vstupné reťazce porovnajú za pomoci knižnice \texttt{diff-match-patch}\cite{diffmatchpatch} a vytvorí sa označkovaný text. Z takto predspracovaného textu sa v ďalšom kroku vygeneruje pre každú chybu objekt typu \texttt{Mistake}. Tento objekt je určený na uchovanie dát popisujúcich jednotlivé chyby. Štruktúra atribútov vychádza z návrhu popísaného v bakalárskej práci Vojtěcha Škvařila \cite{skvaril14}. V nasledujúcom texte bude ako správny označený znak alebo slovo vyskytujúce sa v správnom texte diktátu z databázy a chybným znakom alebo slovom rozumieme podreťazec textu vloženého používateľom, ktorý sa nezhoduje so správnym znakom resp. slovom. Slovo je v tomto texte synonymum k výrazu token\footnote{Token je kategorizovaný blok textu, obyčajne pozostáva z nedeliteľných znakov} s výnimkou, že slovo môže pozostávať s dvoch tokenov, vlastného slova a interpunkčného znaku. Posledná fáza aplikuje definované pravidlá a na ich základe pridáva definíciu chyby, typ chyby a prioritu.
 \par Každá inštancia chyby obsahuje nasledovné atribúty:
@@ -173,6 +190,8 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
 	\item \texttt{writtenChars} - chybný znak resp. podreťazec označený ako jedna chyba. Ak sa jedná o chýbajúci znak, môže byť prázdny
 	\item \texttt{correctWord} - správne slovo
 	\item \texttt{writtenWord} - chybné slovo bez značiek označujúcich chybu
+	\item \texttt{previousWord} - slovo bezprostredne predchádzajúce chybnému slovu
+	\item \texttt{nextWord} - slovo bezprostredne nasledujúce po chybnom slove
 	\item \texttt{wordPosition} - pozíciu chyby v diktáte, použiteľnú napr. pri výpise chýb konkrétneho slova. Pozícia je definovaná ako číslo tokenu vrámci diktátu, číslovaná od 1, 0 znamená nadbytočné slovo, -1 chýbajúce slovo
 	\item \texttt{lemma} - základný tvar slova získaný z výstupu morfologického analyzátoru Majka\cite{majka}, ak je vo výstupe viac ako jeden tvar, berie sa vždy prvý v poradí
 	\item \texttt{posTag} - značka popisujúca slovné druhy a iné morfologické(?) kategórie, rovnako získané z výstupu analyzátoru Majka. Popis značiek je dostupný na webovej stránke NLP FI\cite{nlpfi}, pričom znova platí, že ak je z výstupu dostupných viacero možností, je braná vždy prvá v poradí
@@ -183,7 +202,7 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
 \end{itemize}
       \par Celý modul je navrhnutý s dôrazom na modifikovateľnosť a nahraditeľnosť jednotlivých častí. Stačí vymeniť implementácie daných Java rozhraní. Modul je používaný aj samotnou navrhovanou aplikáciou, kde využíva objekty typu \texttt{Mistake} z popisovaného modulu a ukladá ich do databázy spolu s informáciami o používateľovi, diktáte a prístupe k diktátu ako objekt typu \texttt{Error}. Návrh bol zvolený z toho dôvodu, aby bolo rozhranie opravy diktátu čo najjednoduchšie použiteľné aplikáciami tretích strán (preto má objekt typu \texttt{Mistake} iba atribúty, ktoré je možné vyčítať z daných vstupných dát). Zamýšľané použitie objektu typu \texttt{Error} je na generovanie štatistických dát o jednotlivých používateľoch a diktátoch.
       
-      \subsection{Značkovanie chýb}
+      \section{Značkovanie chýb}
       \par Formát značkovania vychádza z návrhu prezentovanom v mojej bakalárskej práci \cite{rumanov12}. Je definovaný nasledujúcim spôsobom:
       \begin{itemize}
 	\item Ak sa v slove vyskytuje chyba, prípadne je chybné celé slovo či slová, označí sa znak, reťazec, slovo alebo slová špeciálnymi značkami definovanými nižšie
@@ -193,11 +212,12 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
 	\item Chýbajúce slovo alebo slová sú celé uzavreté do zátvoriek a za ním nenasledujú párové zátvorky \textit{<} a \textit{>}, ale koniec slova, prípadne interpunkčný znak\footnote{Interpunkčným znakom rozumieme znak označujúci koniec vety (\textit{. ! ?}) a špeciálne znaky (\textit{" , ; :})} (napr. \textit{Stěhuje se (z domu).})
 	\item Nadbytočné slovo resp. slová sú uzavreté do zátvoriek \textit{<} a \textit{>} a za uzavieracou zátvorkou nasleduje koniec slova, prípadne interpunkčný znak (napr. \textit{Mává <s> kapesníkem.})
 	\end{itemize}
-	\par Slovo je v mojej práci definované ako reťazec znakov v texte oddelený medzerami. Od pojmu token sa odlišuje tým, že môže pozostávať z dvoch tokenov - tokenu s vlastným slovom a interpunkčného znaku. Chybný znak, reťazec znakov, chýbajúce a nadbytočné slová sú získané zo vstupu zadaného užívateľom. Správny znak alebo reťazec znakov je daný podľa prepisu diktátu uloženého v databáze aplikácie.
-	  \subsection{Generovanie objektov typu \texttt{Mistake}}
-	  
-      \subsection{Spracovanie chýb podľa definovaných pravidiel}
-     	            
+	\par Slovo je v mojej práci definované ako reťazec znakov v texte oddelený medzerami. Slovo vo veľkej väčšine obsahuje jeden token. Existujú dve výnimky. Ak je slovo na konci vety, (Veta je definovaná ako reťazec slov ukončených interpunkčným znakom) obsahuje aj interpunkčný znak, ktorý je súčasťou slova. Ak sa v užívateľskom vstupe objaví chýbajúca alebo nadbytočná medzera, sú tokeny naľavo a napravo od chyby kvôli jednoduchšiemu spracovaniu brané ako jedno slovo. Chybný znak, reťazec znakov, chýbajúce a nadbytočné slová sú získané zo vstupu zadaného užívateľom. Správny znak alebo reťazec znakov je daný podľa prepisu diktátu uloženého v databáze aplikácie. Z označkovaného textu je pri každom výskyte chyby vytvorený nový objekt typu \texttt{Mistake}. Jeho štruktúra je popísaná vyššie.
+	
+      \section{Spracovanie chýb podľa definovaných pravidiel}
+     	  \par Po spracovaní textu a vytvorení \texttt{Mistake} objektu pre každú chybu spracovanie prechádza do ďalšej fázy. Prostredníctvom dát uložených v objekte a popisujúcich chybu sa ju systém pokúsi čo najpresnejšie zaradiť do jednej z kategórií (popísaných v prílohe \ref{typy-chyb}) a priradiť mu odpovedajúce vysvetlenie a prioritu. Priorita je váha, ktorú majú jednotlivé typy chýb a je možné ju napr. použiť pri výpočte výslednej známky.
+     	  \par Implementácia pravidiel, ktoré dokážu chybu správne zaradiť, bola jednou z požiadaviek na výslednú aplikáciu. Zoznamy vyskytujúce sa vrámci definície pravidiel sú umiestnené v samostatnej statickej triede. Statická trieda bola zvolená z toho dôvodu, aby sa pri každom prístupe nevytvárala nová inštancia triedy obsahujúcej zoznamy. Trieda s pravidlami k nim potom pristupuje priamo pomocou názvu triedy a názvu zoznamu.
+     	  \par Pravidlá sú prepísané z pseudokódu, ktorý bol súčasťou bakalárskej práce Vojtěcha Škvařila\cite{skvaril14}. Bolo v nich však vykonaných zopár zmien kvôli zlepšeniu fungovania pravidiel a ich presnosti. Ak sa napr. vysvetlenie chyby skladá z viacerých častí, bolo najviac špecifické vysvetlenie presunuté na začiatok a ďalej boli zobrazené všeobecnejšie definície. V pseudokóde to nebolo vždy pravidlom. Bolo tiež zabezpečené, aby všetky dáta typu \texttt{String} popisujúce chybu začínali malým písmenom, s jedinou výnimkou, a to ak by šlo o chybu vo veľkosti písmen.
     \chapter{Testovanie systému}
       \section{Jednotkové testy}
       \par Každá entita v každej vrstve aplikácie (pridať odkaz) je otestovaná jednotkovými testami, pričom testy jednotlivých vrstiev sú od seba oddelené za použitia Mock objektov (napísať, čo to je).
@@ -367,6 +387,14 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
   		2014
   		[cit. 2015-11-02].
   		Dostupné z: <\url{http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx}>.
+  		
+  		\bibitem{prasilova14}
+  		Prášilová, Romana.
+  		\emph{Návrh algoritmu pro vyhodnocení bezkontextových pravopisných chyb}
+  		České Budějovice, 
+  		2014
+  		Dostupné z: <\url{http://theses.cz/id/29k3zb/DP-Prilov.pdf}>.
+  		Diplomová práca. Jihočeská univerzita v Českých Budějovicích.
   		
   		\bibitem{majka}
 		DOPLNIT CITACIU
