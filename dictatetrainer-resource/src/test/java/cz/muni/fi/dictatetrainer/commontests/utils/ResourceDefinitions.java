@@ -8,7 +8,9 @@ public enum ResourceDefinitions {
     USER("users"),
     DICTATE("dictates"),
     TRIAL("trials"),
-    ERROR("errors");
+    ERROR("errors"),
+    SCHOOL("schools"),
+    SCHOOLCLASS("schoolclasses");
 
     private String resourceName;
 
