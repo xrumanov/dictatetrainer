@@ -1,0 +1,15 @@
+{
+    "paging": {
+        "totalRecords": 2
+    },
+    "entries": [
+		{
+			"id": 1,
+			"name": "7. ZS, Trencin"
+		},    
+		{
+			"id": 2,
+			"name": "4. ZS, Trencin"
+		}
+    ]
+}
