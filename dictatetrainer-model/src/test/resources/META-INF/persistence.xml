@@ -12,6 +12,8 @@
         <class>cz.muni.fi.dictatetrainer.dictate.model.Dictate</class>
         <class>cz.muni.fi.dictatetrainer.trial.model.Trial</class>
         <class>cz.muni.fi.dictatetrainer.error.model.Error</class>
+        <class>cz.muni.fi.dictatetrainer.school.model.School</class>
+        <class>cz.muni.fi.dictatetrainer.schoolclass.model.SchoolClass</class>
 
         <properties>
             <property name="hibernate.show_sql" value="true" />
