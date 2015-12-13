@@ -9,15 +9,30 @@
 
 <body>
 <style>
-    .dropdown-select-class {
-        color: black;
-        background-color: whitesmoke;
+    .btn-new-class-code {
         margin-bottom: 10px !important;
-
+        background-color: whitesmoke;
     }
 
-    .have-account-return {
-        margin-left: 5px;
+    .dropdown-select-class-code {
+        color: black;
+        background-color: whitesmoke;
+    }
+
+    .dropdown-select-school {
+        margin-bottom: 10px !important;
+        width: 100%;
+        color: black;
+        background-color: whitesmoke;
+    }
+
+    .add-class {
+        background-color: transparent;
+        color: yellowgreen;
+    }
+
+    .new-class-row div {
+       width: 100%;
     }
 </style>
 
@@ -30,41 +45,37 @@
         <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Registrace</h3>
+                    <h3 class="panel-title">Vytvořit Nového Učitele</h3>
                 </div>
                 <div class="panel-body">
                     <form role="form">
                         <div class="form-group">
-                            <input type="text" name="name" id="name" class="form-control input-sm" ng-model="reg.name"
-                                   ng-model-options="{ updateOn: 'blur' }" placeholder="Jméno">
+                            <input type="text" name="name" id="name" class="form-control input-sm"
+                                   placeholder="Jméno">
                         </div>
                         <div class="form-group">
                             <input type="email" name="email" id="email" class="form-control input-sm"
-                                   ng-model="reg.email"
-                                   ng-model-options="{ updateOn: 'blur' }" placeholder="Email">
+                                   placeholder="Email">
                         </div>
 
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
                                     <input type="password" name="password" id="password" class="form-control input-sm"
-                                           ng-model="reg.password" ng-model-options="{ updateOn: 'blur' }"
                                            placeholder="Heslo">
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
                                     <input type="password" name="password_confirmation" id="password_confirmation"
-                                           class="form-control input-sm" ng-model="reg.password-conf"
-                                           ng-model-options="{ updateOn: 'blur' }"
-                                           placeholder="Potvrdit Heslo">
+                                           class="form-control input-sm" placeholder="Potvrdit Heslo">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="col-xs-3 col-sm-3 col-md-3">
                                 <div class="btn-group">
-                                    <a class="btn dropdown-toggle dropdown-select-class" data-toggle="dropdown"
+                                    <a class="btn dropdown-toggle dropdown-select-class-code" data-toggle="dropdown"
                                        href="#">
                                         Škola
                                         <span class="caret"></span>
@@ -74,9 +85,9 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="col-xs-3 col-sm-3 col-md-3">
                                 <div class="btn-group">
-                                    <a class="btn dropdown-toggle dropdown-select-class" data-toggle="dropdown"
+                                    <a class="btn dropdown-toggle dropdown-select-class-code" data-toggle="dropdown"
                                        href="#">
                                         Třída
                                         <span class="caret"></span>
@@ -86,20 +97,61 @@
                                     </ul>
                                 </div>
                             </div>
-                            <input type="submit" value="Registrovat" class="btn btn-info btn-block">
-
-                            <div>
-                                <a class="have-account-return" href="#/">Ale ja už mám účet</a>
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <div class="btn-group">
+                                    <button class="btn btn-new-class-code">Třída chybí</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-2">
+                                <div class="btn-group">
+                                    <button class="btn btn-new-class-code add-class">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        <input type="submit" value="Vytvořit učitele" class="btn btn-info btn-block">
                     </form>
+
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
+<div class="row centered-form">
+    <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Nová třída</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form">
+                    <div class="row">
+                        <div class="col-xs-9 col-sm-9 col-md-9 new-class-row">
+                            <div class="btn-group">
+                                <a class="btn dropdown-toggle dropdown-select-school" data-toggle="dropdown"
+                                   href="#">
+                                    Škola
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- dropdown menu links -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3">
+                            <input type="text" name="class" id="class" class="form-control input-sm"
+                                   placeholder="Třída">
+                        </div>
+                    </div>
+                    <input type="submit" value="Vytvořit Třídu" class="btn btn-info btn-block">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!--template END-->
 
 <div class="credits text-center">
