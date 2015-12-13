@@ -70,13 +70,13 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
        \section{Diktát}
 	\par Diktát je podľa Prášilovej\cite{prasilova14} jeden z mnohých druhov pravopisných cvičení. Je to veľmi špecifická možnosť, ako skontrolovať u žiaka úroveň jeho pravopisného prejavu. Je to podľa nej však i prostriedok cvičebný, pretože sa z jeho pomocou upevňuje prebraté učivo. 
 	\par Diktát je vo väčšine prípadov diktovaný učiteľom. Toto diktovanie má taktiež svoje zásady a predpisy. Podľa Hausera\cite{hauser94} sa riadi nasledovnými pravidlami:
-	      \begin{itemize}
+	      \begin{enumerate}
 	\item Učiteľ najprv prečíta celý text (a podľa potreby vysvetlí menej užívané výrazy)
 	\item Diktuje po vetách. Najprv prečíta celú vetu a potom diktuje po častiach. Tempo žiakov prispôsobí veku žiakov a ich výkonnosti
 	\item Diktuje presne a zreteľne, dodržuje pravidlá spisovnej výslovnosti, nezdôrazňuje nadmerne pauzy ani i/y s/z atď.
 	\item Pri diktovaní sleduje učiteľ ako žiaci píšu. Stojí pred žiakmi a neprechádza sa po triede.
 	\item Nakoniec prečíta učiteľ ešte raz pomaly celý text.
-\end{itemize}
+\end{enumerate}
 
 \par Vybrané pravidlá, ktoré dávajú zmysel aj pri precvičovaní diktátu na internete, sú uplatnené aj pri vývoji portálu.
 	
@@ -85,30 +85,64 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
        		\subsection{Štruktúra existujúcich riešení}
        				\par Ako bolo zmienené vyššie, pri výuke gramatiky hrá ešte stále významnú úlohu zbierky diktátov, z ktorých je potom diktát diktovaný učiteľom v triede počas vyučovania. Taktiež existuje veľká skupina cvičení zadarmo dostupných na internete. Prášilová\cite{prasilova14} ich však vo svojej diplomovej práci nazýva skôr ako diktátmi doplňovacími cvičeniami. Výhodou takejto formy je podľa nej okamžité vyhodnotenie, ktoré však nemusí byť príliš dobrý motivačný prvok. V svojej diplomovej práci tiež uvádza, že by doplňovacie cvičenia mali slúžiť hlavne k precvičovaniu, nie ku klasifikácii. Ďalšou skupinou existujúcich riešení sú audiodiktáty, ktoré sú postavené na rovnakých textoch ako zbierky diktátov. Nevýhodou týchto diktátov sú technické problémy, ku ktorým môže dochádzať počas diktovania (napr. šum, zaseknutie pásky, preskakovanie). Ku komplikáciám môže podľa Prášilovej tiež dochádzať vo chvíli keď žiak zle rozumel, chce sa spýtať, tým sa dostane do sklzu a stráca pozornosť. Hlavnú nevýhodu však vidí v nemožnosti prispôsobiť tempo danej skupine. Výhodu potom vidí v zvýšenej pozornosti, ktorú môže učiteľ žiakom venovať namiesto čítania textu.
 		\par V súčasnosti sa na internete objavujú aj celé portály zamerané na precvičovanie gramatických javov. Jedným z zo zástupcov je portál \textit{pravopisne.cz}, ktorý ponúka širokú paletu rôznych možností zahŕňajúcu doplňovačky, gramatickú teóriu, hry na precvičovanie pravopisu a gramatických javov ako aj tzv. audiodiktáty. Tieto však fungujú tak, že si žiak zvukový súbor cez prehliadač spustí a píše na papier a potom ho porovná so správnym riešením dostupným na stránke pri skončení cvičenia. Ďalším portálom dostupným na internete je web \textit{umimcesky.cz}. Na tomto portáli si žiak precvičuje gramatické javy pomocou testových otázok (väčšinou typu vyber správnu možnosť) a po označení odpovede sa zobrazí, či bola správna a ak áno, prečo boli ostatné nesprávne.
+		
        		\subsection{Problémy v existujúcich riešeniach}
        		\subsection{Výhody a nevýhody existujúcich riešení}
        \section{Navrhovaný systém}
-       		\subsection{Ciele navrhovaného systému} \label{spec-app}
+       		\subsection{Špecifikácia požiadaviek} \label{spec-app}
+\par Požiadavka je niečo čo by malo byť implementované. Požiadavky sa delia na funkčné a nefunkčné. Funkčné požiadavky (FP) určujú aké chovanie bude systém bude systém ponúkať. Nefunkčné požiadavky (NFP) špecifikujú vlastnosti alebo obmedzujúce podmienky daného systému. Požiadavky sú základom všetkých systémov, sú v podstate vyjadrením toho, čo by mal systém robiť, v žiadnom prípade však toho, ako by to mal robiť\cite{arlow11}.
        		
-Úlohou tejto diplomovej práce je vytvorenie webového systému na komplexnú prácu s diktátmi, pričom je vopred určená vývojová platforma Java Enterprise Edition. Tento systém bude pozostávať z:
+\bigskip
+     \textbf{NFP1 Na vývoj systému bude použitá platforma Java EE}
+     \par Je definovaná konkrétna platforma, s použitím ktorej bude portál vyvíjaný, pričom použité technológie vrámci platformy nie sú vopred dané a ich výber bude špecifikovaný neskôr v texte.
+     
+\bigskip
+     \textbf{NFP2 Jednoduchá rozšíriteľnosť}      		
+	\par Webový systém na komplexnú prácu s diktátmi by mal byť ľahko rozšíriteľný o novú funkcionalitu, najmä ďalej zmienený samostatný modul určený na opravu používateľom napísaného textu.
+	
+\bigskip
+     \textbf{FP1 Používateľské role}  
+     \par V systéme budú vytvorené nasledujúce používateľské role s rôznou úrovňou oprávnení:
+\begin{itemize}
+	\item ADMINISTRATOR - používateľská rola bude slúžiť na správu systému. Jeho hlavnou úlohou je pridávať používateľov role TEACHER (učiteľ) a priradiť im skupiny používateľov do ich správy. Budú mať tiež možnosť spravovať portál, jeho používateľov, diktáty a podobne.
+	\item TEACHER - rola reprezentujúca učiteľa. Bude mať možnosť pridávať nový diktát, spravovať priradenú skupinu používateľov.
+	\item STUDENT - bude mať možnosť listovať dostupnými diktátmi, trénovať diktát, vidieť vlastné štatistiky a upravovať vlastný profil.
+\end{itemize}
 
-\begin{enumerate}
-\item Administračnej časti pre vyučujúcich, ktorá bude obsahovať
-	\begin{itemize}
-	\item Možnosť nahrania vlastného diktátu a doplnenie anotácií k diktátu priamo v prostredí
-	\item Základné štatistiky o využívaní jednotlivých diktátov
-	\item Prácu so skupinami používateľov
-	\end{itemize}
-\item Používateľskej časti pre študentov, v ktorej bude možné
-	\begin{itemize}
-	\item Prihlásiť sa pomocou mailu alebo sociálnych sietí
-	\item Písať diktáty a nechať si ich po napísaní opraviť
-	\end{itemize}
-\item Samostatného modulu integrovaného s webovou aplikáciou, ktorá bude dostupná cez definované rozhranie a bude implementovať pravidlá nájdené počítačovými lingvistami. Tieto pravidlá detekujú a pridávajú zdôvodnenia pre vybrané jazykové javy v češtine.
-\end{enumerate}
-       		
-       		\subsection{Rozsah navrhovaného systému}
+\bigskip
+     \textbf{FP2 Správa skupín používateľov}  
+     \par Učiteľovi bude pridelená skupina, alebo skupiny používateľov (triedy vrámci školy), ktorú bude môcť spravovať a vidieť ich štatistiky chýb v diktátoch, počet pokusov a podobne.
+     
+\bigskip
+     \textbf{FP3 Nahrávanie diktátov do systému}  
+     \par V systéme bude možné nahrávať audiosúbor s diktátom a priradiť k nemu popisné informácie priamo v prostredí portálu.     
+
+\bigskip
+     \textbf{FP4 Používateľské štatistiky}  
+     \par Bude možné určeným skupinám používateľov zobraziť základné štatistiky používateľov a diktátov.
+     
+\bigskip
+     \textbf{FP5 Prihlasovanie používateľov pomocou mailu alebo sociálnych sietí}  
+	\par Každý používateľ bude mať možnosť sa prihlásiť klasicky pomocou mailovej adresy, alebo sociálnych sietí.
+	
+\bigskip
+     \textbf{FP6 Registrácia používateľov}
+     \par Používateľ musí mať možnosť sa pri prvom vstupe na portál zaregistrovať zvoleným emailom a heslom.
+     
+\bigskip
+     \textbf{FP7 Písanie diktátov a ich oprava} 
+     \par Žiak si bude môcť napísať diktát a po jeho napísaní si ho nechať systémom automaticky opraviť.
+     
+\bigskip
+     \textbf{FP8 Samostatný modul integrovaný s webovou aplikáciou určený na opravu diktátov} 
+     \par Portál bude obsahovať samostatný modul slúžiaci na opravu diktátov, ktorý bude prístupný cez známe rozhranie. Prístupný bude komukoľvek, kto ho bude chcieť použiť. Rozhranie aj kód budú riadne zdokumentované a pripravené na rozširovanie.         
+
+\bigskip
+     \textbf{FP9 Implementácia pravidiel nájdených počítačovými lingvistami}      		
+	\par Vrámci portálu budú implementované pravidlá nájdené počítačovými lingvistami, ktoré budú detekovať a pridávať zdôvodnenia pre vybrané jazykové javy v češtine.
+
        		\subsection{Výhody a nevýhody navrhovaného systému}
+       		
     \chapter{Návrh a implementácia systému}
     
     \par Webový systém bude rozdelený na tri úplne oddelené časti.
@@ -117,10 +151,13 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
 	\par Druhou časťou bude prezentačná vrstva, známa aj pod anglickým ekvivalentom frontend, ktorá bude komunikovať s vrstvou prístupu k dátam skrz REST rozhrania. Tieto budú zabezpečené aj na strane backendu aj na strane frontendu proti neoprávnenému prístupu neautorizovaného používateľa. Ten sa bude musieť na získanie oprávnenia zaregistrovať. Registrovať bude možné iba užívateľov role STUDENT (žiaci), učiteľ (rola TEACHER) bude musieť požiadať o vytvorenie účtu administrátora (rola ADMINISTRATOR). Overenie prístupu bude prebiehať zavolaním špeciálnej adresy, definovanej v jednej z následujúcich kapitol spolu s užívateľským menom a heslom a následným povolením/odmietnutím prístupu na základe týchto údajov. Prezentačná vrstva bude navrhnutá ako tzv. jednostránková aplikácia\footnote{Single Page Application, skrátene SPA}.
 	    \par Pri implementácii systému bol kladený dôraz na použitie moderných technológií a štruktúra je navrhnutá tak, aby sa ktorákoľvek súčasť dala v prípade potreby rýchlo nahradiť inou bez nutnosti zásahu do iných vrstiev systému. V následujúcich sekciách sú postupne uvedené použité technológie podľa príslušnosti k vrstve systému.
 	    \par Poslednou časťou bude samostatný modul nasadený spoločne s aplikáciou, slúžiaci na opravu chýb. Takisto ako k backendu je k nemu možné pristupovať skrz REST rozhranie. Jeho úlohou bude vo vstupnom texte od užívateľa odhaliť chyby, označiť ich, zozbierať o každej chybe čo najviac informácií a na základe týchto potom zaradiť chyby do kategórií (definovaných v prílohe \ref{typy-chyb}) a priradiť k ním zodpovedajúci popis. Rozhranie bude možné použiť aj aplikáciami tretích strán. Štruktúra modulu je do hĺbky rozobratá v kapitole \ref{modul-diktaty} a popis rozhrania vrátane správneho vstupu a výstupu je popísaný v prílohe \ref{navod_oprava}.
-	    
+	
+	\includegraphics[width=\linewidth, scale=0.5]{usecase.png}    
+	
 	\pagebreak
 	   	\section{Rozdelenie aplikácie na moduly}
       	\par Systém je rozdelený na 6 modulov. Prvý s názvom \texttt{dictatetrainer-model} obsahuje triedy zabezpečujúce prístup k databáze, byznis vrstvu aplikácie a k nim prislúchajúce testy. Modul \texttt{dictatetrainer-resource} obsahuje verejne prístupné rozhrania spolu s ich testami, \texttt{dictatetrainer-corrector} je zvláštny modul zabezpečujúci opravu diktátu a poskytuje verejne prístupné rozhranie. Modul \texttt{dictatetrainer-int-tests}, ako je už z názvu patrné, združuje integračné testy systému. \texttt{dictatetrainer-resource-war} pozostáva s prezentačnej vrstvy aplikácie a nakoniec modul \texttt{dictatetrainer-ear} zabezpečuje správne zbalenie celého systému, oddeľuje závislosti do zvláštneho adresára a backend do zvláštneho archívu tak, aby bola štruktúra aplikácie čo najprehľadnejšia.
+      	
     \section{Štruktúra aplikácie}
           \subsection{Vrstva prístupu k databáze}
       
@@ -418,6 +455,13 @@ informačných technológií. V posledných rokoch došlo k rapídnemu rozvoju t
   		2050
   		[cit. 2015-11-13].
   		Dostupné z: <\url{https://nlp.fi.muni.cz/projekty/ajka/tags.pdf}>.
+  		
+  		\bibitem{arlow11}
+  		ARLOW, J., NEUSTADT
+  		\emph{UML 2 a unifikovaný proces vývoje aplikací.}
+  		[online].
+  		I. 2011. 28 s.
+		Computer Press. ISBN 978-80-251-1503-9. 
   		
   		http://goldfirestudios.com/blog/104/howler.js-Modern-Web-Audio-Javascript-Library
   		http://stackoverflow.com/questions/22684037/how-to-configure-wildfly-to-serve-static-content-like-images
