@@ -53,7 +53,7 @@ public class Dictate implements Serializable {
     @Size(min = 10)
     private String description;
 
-    @NotNull
+    @NotNull //TODO must be unique
     private String filename;
 
     @NotNull

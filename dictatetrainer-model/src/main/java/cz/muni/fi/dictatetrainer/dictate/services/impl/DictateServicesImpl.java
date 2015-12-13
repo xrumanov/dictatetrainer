@@ -71,7 +71,7 @@ public class DictateServicesImpl implements DictateServices {
     }
 
     private void checkUserAndSetHimOnDictate(final Dictate dictate) {
-        final User uploader = userServices.findById(dictate.getUploader().getId());
+        final User uploader = userServices.findById(dictate.getUploader().getId()); //TODO zmenit na caller?
         dictate.setUploader(uploader);
 
     }
