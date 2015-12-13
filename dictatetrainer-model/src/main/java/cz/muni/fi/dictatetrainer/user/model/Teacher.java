@@ -18,6 +18,7 @@ public class Teacher extends User {
 
     public Teacher() {
         setUserType(UserType.TEACHER);
+        setSchoolClass(null);
     }
 
     @Override

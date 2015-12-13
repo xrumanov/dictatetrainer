@@ -7,9 +7,8 @@ import java.util.List;
 
 /**
  * Entity object for entity Student (subclass of User)
- *
+ * <p>
  * sets the default role to STUDENT
- *
  */
 @Entity
 @DiscriminatorValue("STUDENT")

@@ -51,14 +51,23 @@ public class UserRepository extends GenericRepository<User> {
     public PaginatedData<User> findByFilter(final UserFilter userFilter) {
         final StringBuilder clause = new StringBuilder("WHERE e.id is not null");
         final Map<String, Object> queryParameters = new HashMap<>();
+
         if (userFilter.getName() != null) {
             clause.append(" And Upper(e.name) Like Upper(:name)");
             queryParameters.put("name", "%" + userFilter.getName() + "%");
         }
+
         if (userFilter.getUserType() != null) {
             clause.append(" And e.userType = :userType");
             queryParameters.put("userType", userFilter.getUserType());
         }
+
+        if (userFilter.getSchoolClassId() != null) {
+            clause.append(" And e.schoolClass.id = :schoolClassId");
+            queryParameters.put("schoolClassId", userFilter.getSchoolClassId());
+
+        }
+
         return findByParameters(clause.toString(), userFilter.getPaginationData(), queryParameters, "name ASC");
     }
 

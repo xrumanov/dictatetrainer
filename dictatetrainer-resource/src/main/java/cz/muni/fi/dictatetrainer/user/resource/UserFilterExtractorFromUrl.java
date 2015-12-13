@@ -19,6 +19,11 @@ public class UserFilterExtractorFromUrl extends AbstractFilterExtractorFromUrl {
         final UserFilter userFilter = new UserFilter();
         userFilter.setPaginationData(extractPaginationData());
         userFilter.setName(getUriInfo().getQueryParameters().getFirst("name"));
+
+        final String schoolClassIdStr = getUriInfo().getQueryParameters().getFirst("schoolClassId");
+        if (schoolClassIdStr != null) {
+            userFilter.setSchoolClassId(Long.valueOf(schoolClassIdStr));
+        }
         final String userType = getUriInfo().getQueryParameters().getFirst("type");
         if (userType != null) {
             userFilter.setUserType(User.UserType.valueOf(userType));

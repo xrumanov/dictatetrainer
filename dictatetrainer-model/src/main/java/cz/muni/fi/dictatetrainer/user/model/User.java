@@ -1,5 +1,6 @@
 package cz.muni.fi.dictatetrainer.user.model;
 
+import cz.muni.fi.dictatetrainer.schoolclass.model.SchoolClass;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -50,6 +51,9 @@ public abstract class User implements Serializable {
 
     @NotNull
     private String password;
+
+    @ManyToOne
+    private SchoolClass schoolClass;
 
     public enum Roles {
         STUDENT, TEACHER, ADMINISTRATOR
@@ -117,6 +121,14 @@ public abstract class User implements Serializable {
         this.password = password;
     }
 
+    public SchoolClass getSchoolClass() {
+        return schoolClass;
+    }
+
+    public void setSchoolClass(SchoolClass schoolClass) {
+        this.schoolClass = schoolClass;
+    }
+
     public List<Roles> getRoles() {
         return roles;
     }
@@ -166,7 +178,15 @@ public abstract class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", createdAt=" + createdAt + ", name=" + name + ", email=" + email + ", userType="
-                + userType + "]";
+        return "User{" +
+                "id=" + id +
+                ", createdAt=" + createdAt +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", schoolClass=" + schoolClass +
+                ", roles=" + roles +
+                ", userType=" + userType +
+                '}';
     }
 }

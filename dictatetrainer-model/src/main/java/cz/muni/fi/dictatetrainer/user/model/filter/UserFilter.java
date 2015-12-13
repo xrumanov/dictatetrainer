@@ -17,6 +17,7 @@ import cz.muni.fi.dictatetrainer.user.model.User;
 public class UserFilter extends GenericFilter {
 	private String name;
 	private User.UserType userType;
+	private Long schoolClassId;
 
 	public String getName() {
 		return name;
@@ -34,9 +35,20 @@ public class UserFilter extends GenericFilter {
 		this.userType = userType;
 	}
 
-	@Override
-	public String toString() {
-		return "UserFilter [name=" + name + ", userType=" + userType + ", toString()=" + super.toString() + "]";
+	public Long getSchoolClassId() {
+		return schoolClassId;
 	}
 
+	public void setSchoolClassId(Long schoolClass) {
+		this.schoolClassId = schoolClass;
+	}
+
+	@Override
+	public String toString() {
+		return "UserFilter{" +
+				"name='" + name + '\'' +
+				", userType=" + userType +
+				", schoolClassId='" + schoolClassId + '\'' +
+				'}';
+	}
 }
