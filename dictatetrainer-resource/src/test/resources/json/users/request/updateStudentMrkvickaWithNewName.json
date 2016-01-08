@@ -1,5 +1,6 @@
 {
   "name": "New name",
   "email": "mrkvicka@domain.com",
-  "type": "STUDENT"
+  "type": "STUDENT",
+  "schoolClassId": 1
 }

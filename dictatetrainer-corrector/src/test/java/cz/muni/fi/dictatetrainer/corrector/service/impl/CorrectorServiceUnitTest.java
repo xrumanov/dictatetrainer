@@ -13,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CorrectorServiceUnitTest {
 
-    CorrectorServiceImpl correctorService = new CorrectorServiceImpl();
+//    CorrectorServiceImpl correctorService = new CorrectorServiceImpl();
 //
 //    @Test
 //    public void mistakeCharPosInWordSimpleCase() {
@@ -126,203 +126,203 @@ public class CorrectorServiceUnitTest {
 //
 //        assertThat(writtenChars.size(), is(equalTo(0)));
 //    }
-
-    @Test
-    public void correctWordOneMistakeMissingChars() {
-        String markedWord = "Strun(n)ý";
-        String correctWord = correctorService.getCorrectWordForMistake(markedWord);
-
-        assertThat(correctWord, is(equalTo("Strunný")));
-
-    }
-
-    @Test
-    public void correctWordMoreMistakesDifferentTypes() {
-        String markedWord = "(O)kamžit(ě)<e>";
-        String correctWord = correctorService.getCorrectWordForMistake(markedWord);
-
-        assertThat(correctWord, is(equalTo("Okamžitě")));
-    }
-
-    @Test
-    public void writtenWordOneMistakeSurplusChars() {
-        String markedWord = "Ran<n>ý";
-        String writtenWord = correctorService.getWrittenWordForMistake(markedWord);
-
-        assertThat(writtenWord, is(equalTo("Ranný")));
-    }
-
-    @Test
-    public void writtenWordMoreMistakesDifferentTypes() {
-        String markedWord = "(O)kamžit(ě)<e>";
-        String correctWord = correctorService.getWrittenWordForMistake(markedWord);
-
-        assertThat(correctWord, is(equalTo("kamžite")));
-    }
-
-    @Test
-    public void numberOfMistakesSimpleCase() {
-        String[] tokens = new String[6];
-        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
-
-        tokens[0] = "Okamžitě";
-        tokens[1] = "m(n)ě";
-        tokens[2] = "to";
-        tokens[3] = "dej";
-        tokens[4] = "na";
-        tokens[5] = "židli!";
-
-        CorrectorRules cs = new CorrectorRulesNoContext();
-
-        List<Mistake> mistakes =
-                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
-
-        assertThat(mistakes.get(0).getWordPosition(), is(equalTo(2)));
-    }
-
-    @Test
-    public void wordPositionSimpleCase() {
-        String[] tokens = new String[6];
-        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
-
-        tokens[0] = "Okamžitě";
-        tokens[1] = "m(n)ě";
-        tokens[2] = "to";
-        tokens[3] = "dej";
-        tokens[4] = "na";
-        tokens[5] = "židli!";
-
-        CorrectorRules cs = new CorrectorRulesNoContext();
-
-        List<Mistake> mistakes =
-                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
-
-        assertThat(mistakes.get(0).getWordPosition(), is(equalTo(2)));
-    }
-
-    @Test
-    public void wordPositionSurplusWord() {
-        String[] tokens = new String[7];
-        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
-
-        tokens[0] = "Okamžitě";
-        tokens[1] = "mně";
-        tokens[2] = "to";
-        tokens[3] = "<už>";
-        tokens[4] = "dej";
-        tokens[5] = "na";
-        tokens[6] = "židl(i)<y>!";
-
-        CorrectorRules cr = new CorrectorRulesNoContext();
-
-        List<Mistake> mistakes =
-                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cr);
-
-        assertThat(mistakes.size(), is(equalTo(2)));
-        assertThat(mistakes.get(0).getWordPosition(), is(equalTo(0)));
-        assertThat(mistakes.get(1).getWordPosition(), is(equalTo(6)));
-    }
-
-    @Test
-    public void wordPositionMissingWord() {
-        String[] tokens = new String[6];
-        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
-
-        tokens[0] = "Okamžitě";
-        tokens[1] = "(mně)";
-        tokens[2] = "to";
-        tokens[3] = "dej";
-        tokens[4] = "na";
-        tokens[5] = "židl(i)<y>!";
-
-        CorrectorRules cs = new CorrectorRulesNoContext();
-
-        List<Mistake> mistakes =
-                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
-
-        assertThat(mistakes.size(), is(equalTo(2)));
-        assertThat(mistakes.get(0).getWordPosition(), is(equalTo(-1)));
-        assertThat(mistakes.get(1).getWordPosition(), is(equalTo(6)));
-    }
-
-    @Test
-    public void sentencesSplitting() {
-        String markedText = "Jsem doma. Já va(ř)<r>ím! Co?";
-
-        String[] sentences = correctorService.sentencizedAndReturnSentences(markedText);
-
-        assertThat(sentences.length, is(equalTo(3)));
-        assertThat(sentences[0], is(equalTo("Jsem doma. ")));
-        assertThat(sentences[1], is(equalTo("Já va(ř)<r>ím! ")));
-        assertThat(sentences[2], is(equalTo("Co?")));
-
-    }
-
-    @Test
-    public void sentenceNumberOfMistake() {
-        String[] tokens = new String[7];
-
-        String[] markedSentences = {
-                "Okamžitě m(n)ě to dej na židli!",
-                "N(e)<e>."
-        };
-
-        tokens[0] = "Okamžitě";
-        tokens[1] = "mně";
-        tokens[2] = "to";
-        tokens[3] = "dej";
-        tokens[4] = "na";
-        tokens[5] = "židl(i)<y>!";
-        tokens[6] = "N(e)<e>.";
-
-        CorrectorRules cs = new CorrectorRulesNoContext();
-
-        List<Mistake> mistakes =
-                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
-
-        assertThat(mistakes.size(), is(equalTo(2)));
-        assertThat(mistakes.get(0).getSentence(), is(equalTo("Okamžitě mně to dej na židl(i)<y>!")));
-        assertThat(mistakes.get(1).getSentence(), is(equalTo("N(e)<e>.")));
-    }
-
-    @Test
-    public void lemmaAndTagForMistakeMorePossibilities() {
-        String correctWord = "dobrou"; //ADJ
-        String[] lemmaTagTuple = correctorService.getLemmaAndTagForMistake(correctWord);
-
-        assertThat(lemmaTagTuple.length, is(equalTo(2)));
-        assertThat(lemmaTagTuple[0], is(equalTo("dobrý")));
-        assertThat(lemmaTagTuple[1], is(equalTo("k2eAgFnPc1d1"))); //it should return the postag which is most probable
-    }
-
-    @Test
-    public void lemmaAndTagForMistakeWordNotFound() {
-        String correctWord = "jibberJabber"; //nonsensical word
-        String[] lemmaTagTuple = correctorService.getLemmaAndTagForMistake(correctWord);
-
-        assertThat(lemmaTagTuple.length, is(equalTo(2)));
-        assertThat(lemmaTagTuple[0], is(equalTo("NOT FOUND")));
-        assertThat(lemmaTagTuple[1], is(equalTo("NOT FOUND")));
-    }
-
-    @Test
-    public void lemmaAndTagForMistakeConnectionError() {
-        String correctWord = "jibberJabber"; //nonsensical word
-        String[] lemmaTagTuple = correctorService.getLemmaAndTagForMistake(correctWord);
-
-        assertThat(lemmaTagTuple.length, is(equalTo(2)));
-        assertThat(lemmaTagTuple[0], is(equalTo("NOT FOUND CONN")));
-        assertThat(lemmaTagTuple[1], is(equalTo("NOT FOUND CONN")));
-
-    }
-
-    @Test
-    public void lemmaAndTagForMistakeOnePossibility() {
-        String correctWord = "květinou";
-        String[] lemmaTagTuple = correctorService.getLemmaAndTagForMistake(correctWord);
-
-        assertThat(lemmaTagTuple.length, is(equalTo(2)));
-        assertThat(lemmaTagTuple[0], is(equalTo("květina")));
-        assertThat(lemmaTagTuple[1], is(equalTo("k1gFnSc7")));
-    }
+//
+//    @Test
+//    public void correctWordOneMistakeMissingChars() {
+//        String markedWord = "Strun(n)ý";
+//        String correctWord = correctorService.getCorrectWordForMistake(markedWord);
+//
+//        assertThat(correctWord, is(equalTo("Strunný")));
+//
+//    }
+//
+//    @Test
+//    public void correctWordMoreMistakesDifferentTypes() {
+//        String markedWord = "(O)kamžit(ě)<e>";
+//        String correctWord = correctorService.getCorrectWordForMistake(markedWord);
+//
+//        assertThat(correctWord, is(equalTo("Okamžitě")));
+//    }
+//
+//    @Test
+//    public void writtenWordOneMistakeSurplusChars() {
+//        String markedWord = "Ran<n>ý";
+//        String writtenWord = correctorService.getWrittenWordForMistake(markedWord);
+//
+//        assertThat(writtenWord, is(equalTo("Ranný")));
+//    }
+//
+//    @Test
+//    public void writtenWordMoreMistakesDifferentTypes() {
+//        String markedWord = "(O)kamžit(ě)<e>";
+//        String correctWord = correctorService.getWrittenWordForMistake(markedWord);
+//
+//        assertThat(correctWord, is(equalTo("kamžite")));
+//    }
+//
+//    @Test
+//    public void numberOfMistakesSimpleCase() {
+//        String[] tokens = new String[6];
+//        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
+//
+//        tokens[0] = "Okamžitě";
+//        tokens[1] = "m(n)ě";
+//        tokens[2] = "to";
+//        tokens[3] = "dej";
+//        tokens[4] = "na";
+//        tokens[5] = "židli!";
+//
+//        CorrectorRules cs = new CorrectorRulesNoContext();
+//
+//        List<Mistake> mistakes =
+//                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
+//
+//        assertThat(mistakes.get(0).getWordPosition(), is(equalTo(2)));
+//    }
+//
+//    @Test
+//    public void wordPositionSimpleCase() {
+//        String[] tokens = new String[6];
+//        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
+//
+//        tokens[0] = "Okamžitě";
+//        tokens[1] = "m(n)ě";
+//        tokens[2] = "to";
+//        tokens[3] = "dej";
+//        tokens[4] = "na";
+//        tokens[5] = "židli!";
+//
+//        CorrectorRules cs = new CorrectorRulesNoContext();
+//
+//        List<Mistake> mistakes =
+//                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
+//
+//        assertThat(mistakes.get(0).getWordPosition(), is(equalTo(2)));
+//    }
+//
+//    @Test
+//    public void wordPositionSurplusWord() {
+//        String[] tokens = new String[7];
+//        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
+//
+//        tokens[0] = "Okamžitě";
+//        tokens[1] = "mně";
+//        tokens[2] = "to";
+//        tokens[3] = "<už>";
+//        tokens[4] = "dej";
+//        tokens[5] = "na";
+//        tokens[6] = "židl(i)<y>!";
+//
+//        CorrectorRules cr = new CorrectorRulesNoContext();
+//
+//        List<Mistake> mistakes =
+//                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cr);
+//
+//        assertThat(mistakes.size(), is(equalTo(2)));
+//        assertThat(mistakes.get(0).getWordPosition(), is(equalTo(0)));
+//        assertThat(mistakes.get(1).getWordPosition(), is(equalTo(6)));
+//    }
+//
+//    @Test
+//    public void wordPositionMissingWord() {
+//        String[] tokens = new String[6];
+//        String[] markedSentences = {"Okamžitě m(n)ě to dej na židli!"};
+//
+//        tokens[0] = "Okamžitě";
+//        tokens[1] = "(mně)";
+//        tokens[2] = "to";
+//        tokens[3] = "dej";
+//        tokens[4] = "na";
+//        tokens[5] = "židl(i)<y>!";
+//
+//        CorrectorRules cs = new CorrectorRulesNoContext();
+//
+//        List<Mistake> mistakes =
+//                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
+//
+//        assertThat(mistakes.size(), is(equalTo(2)));
+//        assertThat(mistakes.get(0).getWordPosition(), is(equalTo(-1)));
+//        assertThat(mistakes.get(1).getWordPosition(), is(equalTo(6)));
+//    }
+//
+//    @Test
+//    public void sentencesSplitting() {
+//        String markedText = "Jsem doma. Já va(ř)<r>ím! Co?";
+//
+//        String[] sentences = correctorService.sentencizedAndReturnSentences(markedText);
+//
+//        assertThat(sentences.length, is(equalTo(3)));
+//        assertThat(sentences[0], is(equalTo("Jsem doma. ")));
+//        assertThat(sentences[1], is(equalTo("Já va(ř)<r>ím! ")));
+//        assertThat(sentences[2], is(equalTo("Co?")));
+//
+//    }
+//
+//    @Test
+//    public void sentenceNumberOfMistake() {
+//        String[] tokens = new String[7];
+//
+//        String[] markedSentences = {
+//                "Okamžitě m(n)ě to dej na židli!",
+//                "N(e)<e>."
+//        };
+//
+//        tokens[0] = "Okamžitě";
+//        tokens[1] = "mně";
+//        tokens[2] = "to";
+//        tokens[3] = "dej";
+//        tokens[4] = "na";
+//        tokens[5] = "židl(i)<y>!";
+//        tokens[6] = "N(e)<e>.";
+//
+//        CorrectorRules cs = new CorrectorRulesNoContext();
+//
+//        List<Mistake> mistakes =
+//                correctorService.createMistakeObjectsAndApplyCorrectorRules(tokens, markedSentences, cs);
+//
+//        assertThat(mistakes.size(), is(equalTo(2)));
+//        assertThat(mistakes.get(0).getSentence(), is(equalTo("Okamžitě mně to dej na židl(i)<y>!")));
+//        assertThat(mistakes.get(1).getSentence(), is(equalTo("N(e)<e>.")));
+//    }
+//
+//    @Test
+//    public void lemmaAndTagForMistakeMorePossibilities() {
+//        String correctWord = "dobrou"; //ADJ
+//        String[] lemmaTagTuple = correctorService.getLemmaAndTagForMistake(correctWord);
+//
+//        assertThat(lemmaTagTuple.length, is(equalTo(2)));
+//        assertThat(lemmaTagTuple[0], is(equalTo("dobrý")));
+//        assertThat(lemmaTagTuple[1], is(equalTo("k2eAgFnPc1d1"))); //it should return the postag which is most probable
+//    }
+//
+//    @Test
+//    public void lemmaAndTagForMistakeWordNotFound() {
+//        String correctWord = "jibberJabber"; //nonsensical word
+//        String[] lemmaTagTuple = correctorService.getLemmaAndTagForMistake(correctWord);
+//
+//        assertThat(lemmaTagTuple.length, is(equalTo(2)));
+//        assertThat(lemmaTagTuple[0], is(equalTo("NOT FOUND")));
+//        assertThat(lemmaTagTuple[1], is(equalTo("NOT FOUND")));
+//    }
+//
+//    @Test
+//    public void lemmaAndTagForMistakeConnectionError() {
+//        String correctWord = "jibberJabber"; //nonsensical word
+//        String[] lemmaTagTuple = correctorService.getLemmaAndTagForMistake(correctWord);
+//
+//        assertThat(lemmaTagTuple.length, is(equalTo(2)));
+//        assertThat(lemmaTagTuple[0], is(equalTo("NOT FOUND CONN")));
+//        assertThat(lemmaTagTuple[1], is(equalTo("NOT FOUND CONN")));
+//
+//    }
+//
+//    @Test
+//    public void lemmaAndTagForMistakeOnePossibility() {
+//        String correctWord = "květinou";
+//        String[] lemmaTagTuple = correctorService.getLemmaAndTagForMistake(correctWord);
+//
+//        assertThat(lemmaTagTuple.length, is(equalTo(2)));
+//        assertThat(lemmaTagTuple[0], is(equalTo("květina")));
+//        assertThat(lemmaTagTuple[1], is(equalTo("k1gFnSc7")));
+//    }
 }

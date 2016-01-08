@@ -32,15 +32,14 @@ public class DictateUploadResource {
     ServletContext servletContext;
 
     public static final String UPLOADED_FILE_PARAMETER_NAME = "file";
-    //private final String UPLOAD_DIR = servletContext.getRealPath("/dictate");
     private static final Logger LOGGER = LoggerFactory.getLogger(DictateUploadResource.class);
 
     @POST
     @Consumes("multipart/form-data")
     public Response uploadFile(MultipartFormDataInput input) {
 
-        //TODO does not work fix!
-        String path = servletContext.getRealPath("/dictate");
+        //String path = "/dictate";
+        String path = "/var/lib/openshift/560645fd7628e1f45700000c/app-root/data";
         LOGGER.warn(">>>> sit back - starting file upload..." + path);
 
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();

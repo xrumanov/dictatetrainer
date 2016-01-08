@@ -16,9 +16,11 @@ import cz.muni.fi.dictatetrainer.common.model.HttpCode;
 import cz.muni.fi.dictatetrainer.common.model.OperationResult;
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
 import cz.muni.fi.dictatetrainer.common.model.ResourceMessage;
+import cz.muni.fi.dictatetrainer.schoolclass.model.SchoolClass;
 import cz.muni.fi.dictatetrainer.user.exception.UserExistentException;
 import cz.muni.fi.dictatetrainer.user.exception.UserNotFoundException;
 import cz.muni.fi.dictatetrainer.user.model.Student;
+import cz.muni.fi.dictatetrainer.user.model.Teacher;
 import cz.muni.fi.dictatetrainer.user.model.User;
 import cz.muni.fi.dictatetrainer.user.model.filter.UserFilter;
 import cz.muni.fi.dictatetrainer.user.services.UserServices;
@@ -34,6 +36,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import java.io.IOException;
@@ -76,16 +79,16 @@ public class UserResource {
     public Response add(final String body) {
         logger.debug("Adding a new user with body {}", body);
         User user = userJsonConverter.convertFrom(body);
-        if (user.getUserType().equals(User.UserType.TEACHER)) {
-            return Response.status(HttpCode.FORBIDDEN.getCode()).build();
-        }
+//        if (user.getUserType().equals(User.UserType.TEACHER)) {
+//            return Response.status(HttpCode.FORBIDDEN.getCode()).build();
+//        }
 
         HttpCode httpCode = HttpCode.CREATED;
         OperationResult result;
         try {
             user = userServices.add(user);
             //changed from returning id to returning jwt
-            result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, user));
+            result = OperationResult.success(JsonUtils.getJsonElementWithId(user.getId()));
         } catch (final FieldNotValidException e) {
             httpCode = HttpCode.VALIDATION_ERROR;
             logger.error("One of the fields of the user is not valid", e);
@@ -167,7 +170,7 @@ public class UserResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"ADMINISTRATOR"}) // role name have to match the one in web.xml
+    @RolesAllowed({"ADMINISTRATOR", "TEACHER"}) // role name have to match the one in web.xml
     public Response findById(@PathParam("id") final Long id) {
         logger.debug("Find user by id: {}", id);
         ResponseBuilder responseBuilder;
@@ -199,30 +202,8 @@ public class UserResource {
             logger.debug("User found by email/password: {}", user);
         } catch (final UserNotFoundException e) {
             logger.error("No user found for email/password");
-            responseBuilder = Response.status(HttpCode.NOT_FOUND.getCode());
-        }
-
-        return responseBuilder.build();
-    }
-
-    @POST
-    @Path("/authenticate/jwt")
-    @PermitAll
-    public Response findByEmailAndPasswordAndSendJWT(final String body) {
-        logger.debug("Find user by email and password");
-
-        ResponseBuilder responseBuilder;
-        try {
-            final User userWithEmailAndPassword = getUserWithEmailAndPasswordFromJson(body);
-            final User user = userServices.findByEmailAndPassword(userWithEmailAndPassword.getEmail(),
-                    userWithEmailAndPassword.getPassword());
-            final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, user));
-
-            responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
-            logger.debug("User found by email/password: {}", user);
-        } catch (final UserNotFoundException e) {
-            logger.error("No user found for email/password");
-            responseBuilder = Response.status(HttpCode.NOT_FOUND.getCode());
+            final OperationResult result = OperationResult.error("User/Password error","User/Password pair not found");
+            responseBuilder = Response.status(HttpCode.NOT_FOUND.getCode()).entity(OperationResultJsonWriter.toJson(result));
         }
 
         return responseBuilder.build();
@@ -235,8 +216,8 @@ public class UserResource {
                                          @Context final HttpServletRequest request) throws IOException {
 
         Client client = ClientBuilder.newClient();
-        final String accessTokenUrl = "https://graph.facebook.com/v2.3/oauth/access_token";
-        final String graphApiUrl = "https://graph.facebook.com/v2.3/me";
+        final String accessTokenUrl = "https://graph.facebook.com/v2.5/oauth/access_token";
+        final String graphApiUrl = "https://graph.facebook.com/v2.5/me?fields=id,name,email";
 
         Response response;
 
@@ -265,13 +246,61 @@ public class UserResource {
 //         save the response in the responseEntity
         final Map<String, Object> userInfo = getResponseEntity(response);
 
-        // Step 3. Process the authenticated the user.
-        return processUser(request, "facebook", userInfo.get("id").toString(), userInfo.get("name").toString());
+        logger.warn(userInfo.get("id").toString() + " " +
+                userInfo.get("name").toString());
+
+        User user = new Student();
+        user.setName(userInfo.get("name").toString());
+        if(userInfo.get("email") == null) {
+            user.setEmail("");
+        } else {
+            // if user with email already exists
+//            if(user)
+            user.setEmail(userInfo.get("email").toString());
+        }
+
+        // Step 3. return the partial response for future use
+        final OperationResult result = OperationResult.success(userJsonConverter.convertToJsonElementSocial(user));
+        return Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result)).build();
 
     }
 
+//    @POST
+//    @Path("/authenticate/google")
+//    @PermitAll
+//    public Response loginGoogle(@Valid final Payload payload,
+//                                @Context final HttpServletRequest request) throws IOException {
+//
+//        Client client = ClientBuilder.newClient();
+//        final String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
+//        final String peopleApiUrl = "https://www.googleapis.com/plus/v1/people/me/openIdConnect";
+//
+//        Response response;
+//
+//        // Step 1. Exchange authorization code for access token.
+//        final MultivaluedMap<String, String> accessData = new MultivaluedHashMap<String, String>();
+//        accessData.add(CLIENT_ID_KEY, payload.getClientId());
+//        accessData.add(REDIRECT_URI_KEY, payload.getRedirectUri());
+//        accessData.add(CLIENT_SECRET, "KCnEF73zy9Q3Ye4ACxsvUWM0");
+//        accessData.add(CODE_KEY, payload.getCode());
+//        accessData.add(GRANT_TYPE_KEY, AUTH_CODE);
+//        response = client.target(accessTokenUrl).request().post(Entity.form(accessData));
+//        accessData.clear();
+//
+//        // Step 2. Retrieve profile information about the current user.
+//        final String accessToken = (String) getResponseEntity(response).get("access_token");
+//        response =
+//                client.target(peopleApiUrl).request("text/plain")
+//                        .header("Authorization", String.format("Bearer %s", accessToken)).get();
+//        final Map<String, Object> userInfo = getResponseEntity(response);
+//
+//        // Step 3. Process the authenticated the user.
+//        return processUser(request, "google", userInfo.get("sub").toString(),
+//                userInfo.get("name").toString(), userInfo.get("email").toString());
+//    }
+
     @GET
-    @RolesAllowed({"ADMINISTRATOR"}) // list all the users in the system
+    @RolesAllowed({"ADMINISTRATOR", "TEACHER"}) // list all the users in the system
     public Response findByFilter() {
         final UserFilter userFilter = new UserFilterExtractorFromUrl(uriInfo).getFilter();
         logger.debug("Finding users using filter: {}", userFilter);
@@ -319,57 +348,43 @@ public class UserResource {
                 });
     }
 
-    private Response processUser(final HttpServletRequest request, final String provider,
-                                 final String id, final String displayName) {
-//        final Optional<User> user = dao.findByProvider(provider, id);
+//    private Response processUser(final HttpServletRequest request, final String provider,
+//                                 final String id, final String displayName, final String email) {
 //
-//        // Step 3a. If user is already signed in then link accounts.
-//        User userToSave;
-//        final String authHeader = request.getHeader(AuthUtils.AUTH_HEADER_KEY);
-//        if (StringUtils.isNotBlank(authHeader)) {
-//            if (user.isPresent()) {
-//                return Response.status(Status.CONFLICT)
-//                        .entity(new ErrorMessage(String.format(CONFLICT_MSG, provider.capitalize()))).build();
-//            }
+//        ResponseBuilder responseBuilder;
+////        // Step 3a. If user is already signed in then link accounts.
+//        try {
+//            User user = userServices.findByEmail(email);
+//            final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, user));
 //
-//            final String subject = AuthUtils.getSubject(authHeader);
-//            final Optional<User> foundUser = dao.findById(Long.parseLong(subject));
-//            if (!foundUser.isPresent()) {
-//                return Response.status(Status.NOT_FOUND).entity(new ErrorMessage(NOT_FOUND_MSG)).build();
-//            }
+//            responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
+//            logger.debug("User found by email/password: {}", user);
 //
-//            userToSave = foundUser.get();
-//            userToSave.setProviderId(provider, id);
-//            if (userToSave.getDisplayName() == null) {
-//                userToSave.setDisplayName(displayName);
-//            }
-//            userToSave = dao.save(userToSave);
-//        } else {
 //            // Step 3b. Create a new user account or return an existing one.
-//            if (user.isPresent()) {
-//                userToSave = user.get();
-//            } else {
-//                userToSave = new User();
-//                userToSave.setProviderId(provider, id);
-//                userToSave.setDisplayName(displayName);
-//                userToSave = dao.save(userToSave);
-//            }
+//        } catch (UserNotFoundException unfe) {
+//            User userToStore = new Student();
+//            userToStore.setName(displayName);
+//            userToStore.setEmail(email);
+//
+//            SchoolClass sc = new SchoolClass();
+//            sc.setId(1L);
+//
+//            // create password from id and some salting TODO
+//            userToStore.setPassword("PaSsWoRd");
+//            HttpCode httpCode = HttpCode.CREATED;
+//            OperationResult result;
+//
+//            userToStore = userServices.add(userToStore);
+//
+//            result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, userToStore));
+//
+//            logger.debug("Returning the operation result after adding user: {}", result);
+//            responseBuilder =  Response.status(httpCode.getCode()).entity(OperationResultJsonWriter.toJson(result));
+//
 //        }
-
-        User userToAuthenticate = new Student();
-        userToAuthenticate.setId(Long.parseLong(id));
-        userToAuthenticate.setEmail("fdsd@dfsdf.sk");
-        userToAuthenticate.setName(displayName);
-        userToAuthenticate.setPassword("face");
-        userToAuthenticate.setUserType(User.UserType.STUDENT);
-
-        ResponseBuilder responseBuilder;
-
-        final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithJWT(userJsonConverter, userToAuthenticate));
-        responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
-
-        return responseBuilder.build();
-    }
+//
+//        return responseBuilder.build();
+//    }
 
     public static class Payload {
         @NotNull

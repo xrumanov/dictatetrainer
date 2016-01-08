@@ -1,0 +1,45 @@
+<div ng-include src="'student/navbar_student.html'"></div>
+<!--sidebar begin-->
+<div ng-include src="'student/sidebar_results.html'"></div>
+<!--sidebar end-->
+<div class="container">
+    <h2>Naposledy přidané diktáty</h2>
+    <table class="table">
+        <tr>
+            <th>Atribut</th>
+            <th>Hodnota</th>
+        </tr>
+        <tr>
+            <th>Chyba</th>
+            <th>{{error.writtenWord}}</th>
+        </tr>
+        <tr>
+            <th>Správně</th>
+            <th>{{error.correctWord}}</th>
+        </tr>
+        <tr>
+            <th>Podrobně</th>
+            <th>{{error.correctChars}}/{{error.writtenChars}}</th>
+        </tr>
+        <tr>
+            <th>Lemma</th>
+            <th>{{error.lemma}}</th>
+        </tr>
+        <tr>
+            <th>Značka</th>
+            <th>{{error.posTag}}</th>
+        </tr>
+        <tr>
+            <th>Priorita</th>
+            <th>{{error.errorPriority}}</th>
+        </tr>
+        <tr>
+            <th>Typ chyby</th>
+            <th>{{error.errorType}}</th>
+        </tr>
+    </table>
+<div>
+    <h3>Popis chyby</h3>
+    <p>{{error.errorDescription}}</p>
+</div>
+</div>

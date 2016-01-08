@@ -1,0 +1,26 @@
+<div ng-include src="'student/navbar_student.html'"></div>
+<!--sidebar begin-->
+<style>
+    tbody > tr > th {
+        font-weight: normal;
+    }
+</style>
+    <h2>Moje statistiky podle datumu</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Název diktátu</th>
+            <th>Podrobnosti</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="trial in trials">
+            <th>{{trial.performed}}</th>
+            <th>{{trial.dictate.name}}</th>
+            <th></th>
+            <!--button details-->
+        </tr>
+        </tbody>
+    </table>
+</div>

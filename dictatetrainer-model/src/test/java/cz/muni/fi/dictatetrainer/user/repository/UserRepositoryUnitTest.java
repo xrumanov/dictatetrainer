@@ -1,9 +1,12 @@
 package cz.muni.fi.dictatetrainer.user.repository;
 
+import static cz.muni.fi.dictatetrainer.commontests.school.SchoolsForTestRepository.*;
+import static cz.muni.fi.dictatetrainer.commontests.schoolclass.SchoolClassesForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import cz.muni.fi.dictatetrainer.schoolclass.model.SchoolClass;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +19,6 @@ import cz.muni.fi.dictatetrainer.user.model.User;
 import cz.muni.fi.dictatetrainer.user.model.User.UserType;
 import cz.muni.fi.dictatetrainer.user.model.filter.UserFilter;
 
-import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.*;
-
 public class UserRepositoryUnitTest extends TestBaseRepository {
     private UserRepository userRepository;
 
@@ -27,6 +28,8 @@ public class UserRepositoryUnitTest extends TestBaseRepository {
 
         userRepository = new UserRepository();
         userRepository.em = em;
+
+        loadSchoolClasses();
     }
 
     @After
@@ -37,12 +40,12 @@ public class UserRepositoryUnitTest extends TestBaseRepository {
     @Test
     public void addStudentAndFindHim() {
         final Long userAddedId = dbCommandExecutor.executeCommand(() -> {
-            return userRepository.add((mrkvicka())).getId();
+            return userRepository.add(normalizeDependencies(mrkvicka(), em)).getId();
         });
         assertThat(userAddedId, is(notNullValue()));
 
         final User user = userRepository.findById(userAddedId);
-        assertUser(user, mrkvicka(), UserType.STUDENT);
+        assertUser(user, normalizeDependencies(mrkvicka(), em), UserType.STUDENT);
     }
 
     @Test
@@ -54,7 +57,7 @@ public class UserRepositoryUnitTest extends TestBaseRepository {
     @Test
     public void updateStudent() {
         final Long userAddedId = dbCommandExecutor.executeCommand(() -> {
-            return userRepository.add(mrkvicka()).getId();
+            return userRepository.add(normalizeDependencies(mrkvicka(), em)).getId();
         });
         assertThat(userAddedId, is(notNullValue()));
 
@@ -72,38 +75,15 @@ public class UserRepositoryUnitTest extends TestBaseRepository {
     }
 
     @Test
-    public void alreadyExistsUserWithoutId() {
-        dbCommandExecutor.executeCommand(() -> {
-            return userRepository.add(mrkvicka()).getId();
-        });
-
-        assertThat(userRepository.alreadyExists(mrkvicka()), is(equalTo(true)));
-        assertThat(userRepository.alreadyExists(admin()), is(equalTo(false)));
-    }
-
-    @Test
-    public void alreadyExistsUserWithId() {
-        final User student = dbCommandExecutor.executeCommand(() -> {
-            userRepository.add(admin());
-            return userRepository.add(mrkvicka());
-        });
-
-        assertFalse(userRepository.alreadyExists(student));
-
-        student.setEmail(admin().getEmail());
-        assertThat(userRepository.alreadyExists(student), is(equalTo(true)));
-
-        student.setEmail("newemail@domain.com");
-        assertThat(userRepository.alreadyExists(student), is(equalTo(false)));
-    }
-
-    @Test
     public void findUserByEmail() {
         dbCommandExecutor.executeCommand(() -> {
-            return userRepository.add(mrkvicka());
+            return userRepository.add(normalizeDependencies(mrkvicka(), em));
         });
 
         final User user = userRepository.findByEmail(mrkvicka().getEmail());
+        SchoolClass sc = user.getSchoolClass();
+        sc.setId(null);
+        user.setSchoolClass(sc);
         assertUser(user, mrkvicka(), UserType.STUDENT);
     }
 
@@ -169,7 +149,17 @@ public class UserRepositoryUnitTest extends TestBaseRepository {
 
     private void loadDataForFindByFilter() {
         dbCommandExecutor.executeCommand(() -> {
-            allUsers().forEach(userRepository::add);
+            allStudents().forEach(user -> userRepository.add(normalizeDependencies(user, em)));
+            //allTeachers().forEach(userRepository::add);
+            return null;
+        });
+    }
+
+    private void loadSchoolClasses() {
+        dbCommandExecutor.executeCommand(() -> {
+            allSchools().forEach(em::persist);
+            allTeachers().forEach(em::persist);
+            allSchoolClasses().forEach(schoolClass -> em.persist(normalizeDependencies(schoolClass, em)));
             return null;
         });
     }
@@ -181,6 +171,7 @@ public class UserRepositoryUnitTest extends TestBaseRepository {
         assertThat(actualUser.getCreatedAt(), is(notNullValue()));
         assertThat(actualUser.getPassword(), is(expectedUser.getPassword()));
         assertThat(actualUser.getUserType(), is(equalTo(expectedUserType)));
+        assertThat(actualUser.getSchoolClass(), is(equalTo(expectedUser.getSchoolClass())));
     }
 }
 

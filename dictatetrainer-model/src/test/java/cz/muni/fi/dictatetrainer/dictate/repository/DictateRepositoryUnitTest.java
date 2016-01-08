@@ -14,6 +14,7 @@ import static cz.muni.fi.dictatetrainer.commontests.category.CategoriesForTestRe
 import static cz.muni.fi.dictatetrainer.commontests.category.CategoriesForTestRepository.vyjmenovanaSlovaCat;
 import static cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.admin;
+import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.allTeachers;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.allUsers;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -158,7 +159,7 @@ public class DictateRepositoryUnitTest extends TestBaseRepository {
     private void loadCategoriesAndUploaders() {
         dbCommandExecutor.executeCommand(() -> {
             allCategories().forEach(em::persist);
-            allUsers().forEach(em::persist);
+            allTeachers().forEach(em::persist);
             return null;
         });
     }

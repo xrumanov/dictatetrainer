@@ -12,8 +12,10 @@ import cz.muni.fi.dictatetrainer.schoolclass.services.SchoolClassServices;
 import cz.muni.fi.dictatetrainer.user.model.User;
 import cz.muni.fi.dictatetrainer.user.services.UserServices;
 
+import javax.ejb.SessionContext;
 import javax.inject.Inject;
 import javax.validation.Validator;
+import javax.ws.rs.core.Context;
 
 /**
  * Implementation of service methods for SchoolClass entity
@@ -32,12 +34,15 @@ public class SchoolClassServicesImpl implements SchoolClassServices {
     @Inject
     SchoolServices schoolServices;
 
+    @Context
+    SessionContext sessionContext;
+
     @Override
     public SchoolClass add(final SchoolClass schoolClass) {
         ValidationUtils.validateEntityFields(validator, schoolClass);
 
         checkTeacherAndSetHimOnSchoolClass(schoolClass);
-        checkSchoolAndSetItOnDictate(schoolClass);
+        checkSchoolAndSetItOnSchoolClass(schoolClass);
 
         return schoolClassRepository.add(schoolClass);
     }
@@ -51,7 +56,7 @@ public class SchoolClassServicesImpl implements SchoolClassServices {
         }
 
         checkTeacherAndSetHimOnSchoolClass(schoolClass);
-        checkSchoolAndSetItOnDictate(schoolClass);
+        checkSchoolAndSetItOnSchoolClass(schoolClass);
 
         schoolClassRepository.update(schoolClass);
     }
@@ -76,7 +81,7 @@ public class SchoolClassServicesImpl implements SchoolClassServices {
 
     }
 
-    private void checkSchoolAndSetItOnDictate(final SchoolClass schoolClass) {
+    private void checkSchoolAndSetItOnSchoolClass(final SchoolClass schoolClass) {
         final School school = schoolServices.findById(schoolClass.getSchool().getId());
         schoolClass.setSchool(school);
     }

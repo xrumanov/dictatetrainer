@@ -1,0 +1,27 @@
+<div ng-include src="'admin/navbar_admin.html'"></div>
+<style>
+    tbody > tr > th {
+        font-weight: normal;
+    }
+</style>
+<div class="container">
+    <h2>Nedávné trénování</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Student</th>
+            <th>Název diktátu</th>
+            <th>Datum</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="trial in trials">
+            <th>{{trial.id}}</th>
+            <th>{{trial.student.schoolClass.name}}</th>
+            <th>{{trial.dictate.name}}</th>
+            <th>{{trial.performed}}</th>
+        </tr>
+        </tbody>
+    </table>
+</div>

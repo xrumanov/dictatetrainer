@@ -7,6 +7,8 @@ import cz.muni.fi.dictatetrainer.common.exception.FieldNotValidException;
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
 import cz.muni.fi.dictatetrainer.common.utils.PasswordUtils;
 import cz.muni.fi.dictatetrainer.common.utils.ValidationUtils;
+import cz.muni.fi.dictatetrainer.schoolclass.model.SchoolClass;
+import cz.muni.fi.dictatetrainer.schoolclass.services.SchoolClassServices;
 import cz.muni.fi.dictatetrainer.user.exception.UserExistentException;
 import cz.muni.fi.dictatetrainer.user.exception.UserNotFoundException;
 import cz.muni.fi.dictatetrainer.user.model.User;
@@ -27,6 +29,10 @@ public class UserServicesImpl implements UserServices {
     @Inject
     UserRepository userRepository;
 
+
+    @Inject
+    SchoolClassServices schoolClassServices;
+
     @Inject
     Validator validator;
 
@@ -34,6 +40,9 @@ public class UserServicesImpl implements UserServices {
     public User add(final User user) {
         validateUser(user);
         user.setPassword(PasswordUtils.encryptPassword(user.getPassword()));
+        if (user.getUserType().toString().equals("STUDENT")) {
+            checkSchoolClassAndSetItOnStudent(user);
+        }
 
         return userRepository.add(user);
     }
@@ -53,6 +62,10 @@ public class UserServicesImpl implements UserServices {
         user.setPassword(existentUser.getPassword());
 
         validateUser(user);
+
+        if (user.getUserType().toString().equals("STUDENT")) {
+            checkSchoolClassAndSetItOnStudent(user);
+        }
 
         userRepository.update(user);
     }
@@ -96,6 +109,11 @@ public class UserServicesImpl implements UserServices {
         }
 
         ValidationUtils.validateEntityFields(validator, user);
+    }
+
+    private void checkSchoolClassAndSetItOnStudent(final User user) {
+        final SchoolClass schoolClass = schoolClassServices.findById(user.getSchoolClass().getId());
+        user.setSchoolClass(schoolClass);
     }
 
 }

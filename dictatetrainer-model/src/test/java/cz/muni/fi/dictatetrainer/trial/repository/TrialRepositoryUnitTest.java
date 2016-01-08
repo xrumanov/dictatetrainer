@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import static cz.muni.fi.dictatetrainer.commontests.category.CategoriesForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository.*;
+import static cz.muni.fi.dictatetrainer.commontests.school.SchoolsForTestRepository.allSchools;
+import static cz.muni.fi.dictatetrainer.commontests.schoolclass.SchoolClassesForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.trial.TrialsForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -29,7 +31,7 @@ public class TrialRepositoryUnitTest extends TestBaseRepository {
             trialRepository = new TrialRepository();
             trialRepository.em = em;
 
-            loadDictates();
+            loadDictatesAndStudents();
         }
 
         @After
@@ -163,11 +165,14 @@ public class TrialRepositoryUnitTest extends TestBaseRepository {
 
         }
 
-        private void loadDictates() {
+        private void loadDictatesAndStudents() {
             dbCommandExecutor.executeCommand(() -> {
+                allSchools().forEach(em::persist);
+                allTeachers().forEach(em::persist);
+                allSchoolClasses().forEach(schoolClass -> em.persist(normalizeDependencies(schoolClass, em)));
                 allCategories().forEach(em::persist);
-                allUsers().forEach(em::persist);
                 allDictates().forEach(dictate -> em.persist(normalizeDependencies(dictate, em)));
+                allStudents().forEach(user -> em.persist(normalizeDependencies(user, em)));
                 return null;
             });
         }

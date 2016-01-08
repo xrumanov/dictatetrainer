@@ -4,7 +4,9 @@ import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
 import cz.muni.fi.dictatetrainer.common.model.filter.PaginationData;
 import cz.muni.fi.dictatetrainer.common.model.filter.PaginationData.OrderMode;
 import cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository;
+import cz.muni.fi.dictatetrainer.commontests.schoolclass.SchoolClassesForTestRepository;
 import cz.muni.fi.dictatetrainer.commontests.trial.TrialsForTestRepository;
+import cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository;
 import cz.muni.fi.dictatetrainer.commontests.utils.TestBaseRepository;
 import cz.muni.fi.dictatetrainer.error.model.Error;
 import cz.muni.fi.dictatetrainer.error.model.filter.ErrorFilter;
@@ -16,6 +18,8 @@ import static cz.muni.fi.dictatetrainer.commontests.category.CategoriesForTestRe
 import static cz.muni.fi.dictatetrainer.commontests.dictate.DictatesForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.error.ErrorsForTestRepository.*;
 import static cz.muni.fi.dictatetrainer.commontests.error.ErrorsForTestRepository.normalizeDependencies;
+import static cz.muni.fi.dictatetrainer.commontests.school.SchoolsForTestRepository.allSchools;
+import static cz.muni.fi.dictatetrainer.commontests.schoolclass.SchoolClassesForTestRepository.allSchoolClasses;
 import static cz.muni.fi.dictatetrainer.commontests.trial.TrialsForTestRepository.allTrials;
 import static cz.muni.fi.dictatetrainer.commontests.trial.TrialsForTestRepository.trialPerformed1;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.*;
@@ -171,9 +175,12 @@ public class ErrorRepositoryUnitTest extends TestBaseRepository {
 
     private void loadStudentsDictatesAndTrials() {
         dbCommandExecutor.executeCommand(() -> {
+            allSchools().forEach(em::persist);
+            allTeachers().forEach(em::persist);
+            allSchoolClasses().forEach(schoolClass -> em.persist(SchoolClassesForTestRepository.normalizeDependencies(schoolClass, em)));
             allCategories().forEach(em::persist);
-            allUsers().forEach(em::persist);
             allDictates().forEach(dictate -> em.persist(DictatesForTestRepository.normalizeDependencies(dictate, em)));
+            allStudents().forEach(user -> em.persist(UsersForTestRepository.normalizeDependencies(user, em)));
             allTrials().forEach(trial -> em.persist(TrialsForTestRepository.normalizeDependencies(trial, em)));
             return null;
         });

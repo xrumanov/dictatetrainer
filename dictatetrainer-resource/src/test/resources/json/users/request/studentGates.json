@@ -2,5 +2,6 @@
     "name": "Billi Gates",
     "email": "gates@domain.com",
     "password": "987789",
-    "type": "STUDENT"
+    "type": "STUDENT",
+    "schoolClassId": 1
 }

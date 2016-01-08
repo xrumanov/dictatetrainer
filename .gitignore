@@ -5,5 +5,13 @@ dictatetrainer-resource-war/src/main/webapp/vendor/
 pravidla_dictate
 dictatetrainer-resource-war/src/main/webapp/zaloha/
 Pseudokod_27._6..txt
-pravidla-dictate.txt
 BAKALARSKA_PRACE_27._6..pdf
+dictatetrainer-thesis-text/*
+!dictatetrainer-thesis-text/dictateTrainer_Rumanovsky.pdf
+!dictatetrainer-thesis-text/dictateTrainer_Rumanovsky.tex
+dictatetrainer-resource-war/src/main/webapp/zaloha
+dictatetrainer-resource-war/src/main/webapp/zaloha2
+README (copy).md
+pravidla-dictate-complete.txt
+diplomova-praca_predloha.pdf
+*.zargo*

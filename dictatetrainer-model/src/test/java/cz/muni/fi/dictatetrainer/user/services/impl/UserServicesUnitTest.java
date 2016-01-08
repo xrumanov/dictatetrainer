@@ -3,6 +3,9 @@ package cz.muni.fi.dictatetrainer.user.services.impl;
 import cz.muni.fi.dictatetrainer.common.exception.FieldNotValidException;
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
 import cz.muni.fi.dictatetrainer.common.utils.PasswordUtils;
+import cz.muni.fi.dictatetrainer.schoolclass.model.SchoolClass;
+import cz.muni.fi.dictatetrainer.schoolclass.services.SchoolClassServices;
+import cz.muni.fi.dictatetrainer.schoolclass.services.impl.SchoolClassServicesImpl;
 import cz.muni.fi.dictatetrainer.user.exception.UserExistentException;
 import cz.muni.fi.dictatetrainer.user.exception.UserNotFoundException;
 import cz.muni.fi.dictatetrainer.user.model.User;
@@ -23,6 +26,7 @@ import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,6 +39,9 @@ public class UserServicesUnitTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private SchoolClassServices schoolClassServices;
+
     @Before
     public void initTestCase() {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -43,6 +50,7 @@ public class UserServicesUnitTest {
 
         userServices = new UserServicesImpl();
         ((UserServicesImpl) userServices).userRepository = userRepository;
+        ((UserServicesImpl) userServices).schoolClassServices = schoolClassServices;
         ((UserServicesImpl) userServices).validator = validator;
     }
 
@@ -91,6 +99,7 @@ public class UserServicesUnitTest {
     @Test
     public void addValidUser() {
         when(userRepository.alreadyExists(mrkvicka())).thenReturn(false);
+        when(schoolClassServices.findById(anyLong())).thenReturn(mrkvicka().getSchoolClass());
         when(userRepository.add(userEq(userWithEncryptedPassword(mrkvicka()))))
                 .thenReturn(userWithIdAndCreatedAt(mrkvicka(), 1L));
 

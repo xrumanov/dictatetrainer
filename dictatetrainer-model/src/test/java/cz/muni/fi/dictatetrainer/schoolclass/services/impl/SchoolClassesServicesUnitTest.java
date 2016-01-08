@@ -73,14 +73,14 @@ public class SchoolClassesServicesUnitTest {
 
     @Test(expected = UserNotFoundException.class)
     public void addSchoolClassWithNonexistentStudent() throws Exception {
-        when(userServices.findByEmail(LOGGED_EMAIL)).thenThrow(new UserNotFoundException());
+        when(userServices.findById(anyLong())).thenThrow(new UserNotFoundException());
 
         schoolClassServices.add(schoolClass1());
     }
 
     @Test(expected = SchoolNotFoundException.class)
-    public void addSchoolClassWithNonexistentSchoole() {
-        when(userServices.findByEmail(LOGGED_EMAIL)).thenReturn(admin());
+    public void addSchoolClassWithNonexistentSchool() {
+        when(userServices.findById(anyLong())).thenReturn(admin());
         when(schoolServices.findById(anyLong())).thenThrow(new SchoolNotFoundException());
 
         schoolClassServices.add(schoolClass1());
@@ -88,7 +88,7 @@ public class SchoolClassesServicesUnitTest {
 
     @Test
     public void addSchoolClassWithNullSchool() {
-        when(userServices.findByEmail(LOGGED_EMAIL)).thenReturn(admin());
+        when(userServices.findById(anyLong())).thenReturn(admin());
 
         final SchoolClass schoolClass = schoolClass1();
         schoolClass.setSchool(null);
@@ -99,7 +99,7 @@ public class SchoolClassesServicesUnitTest {
 
     @Test
     public void addSchoolClassWithNullTeacher() {
-        when(userServices.findByEmail(LOGGED_EMAIL)).thenReturn(admin());
+        when(userServices.findById(anyLong())).thenReturn(admin());
 
         final SchoolClass schoolClass = schoolClass1();
         schoolClass.setTeacher(null);
@@ -109,7 +109,7 @@ public class SchoolClassesServicesUnitTest {
 
     @Test
     public void addValidSchoolClass() {
-        when(userServices.findByEmail(LOGGED_EMAIL)).thenReturn(admin());
+        when(userServices.findById(anyLong())).thenReturn(admin());
         when(schoolServices.findById(anyLong())).thenReturn(schoolClass1().getSchool());
         when(schoolClassRepository.add(schoolClassEq(schoolClass1()))).thenReturn(schoolClassWithId(schoolClass1(), 1L));
 
@@ -120,14 +120,14 @@ public class SchoolClassesServicesUnitTest {
 
     @Test(expected = SchoolClassNotFoundException.class)
     public void findSchoolClassByIdNotFound() {
-        when(schoolClassRepository.findById(1L)).thenReturn(null);
+        when(schoolClassRepository.findById(anyLong())).thenReturn(null);
 
         schoolClassServices.findById(1L);
     }
 
     @Test
     public void findSchoolClassById() {
-        when(schoolClassRepository.findById(1L)).thenReturn(schoolClassWithId(schoolClass1(), 1L));
+        when(schoolClassRepository.findById(anyLong())).thenReturn(schoolClassWithId(schoolClass1(), 1L));
 
         final SchoolClass schoolClass = schoolClassServices.findById(1L);
         assertThat(schoolClass, is(notNullValue()));

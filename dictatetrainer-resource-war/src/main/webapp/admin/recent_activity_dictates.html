@@ -1,0 +1,33 @@
+<div ng-include src="'admin/navbar_admin.html'"></div>
+<style>
+    tbody > tr > th {
+        font-weight: normal;
+    }
+</style>
+<div class="container">
+    <h2>Naposledy přidané diktáty</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Název</th>
+            <th>Název souboru</th>
+            <th>Kategorie</th>
+            <th>Detaily</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="dictate in dictates">
+            <th>{{dictate.id}}</th>
+            <th>{{dictate.name}}</th>
+            <th>{{dictate.filename}}</th>
+            <th>{{dictate.category.name}}</th>
+            <th></th>
+            <!--button details-->
+            <th>
+                <input type="submit" value="Upravit" class="btn btn-info" ng-click="manageUser(user.id)">
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

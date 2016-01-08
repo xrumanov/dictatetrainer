@@ -1,10 +1,28 @@
 {
+  "id": 1,
+  "name": "Jozko Mrkvicka",
+  "email": "mrkvicka@domain.com",
+  "schoolClass": {
     "id": 1,
-    "name": "Jozko Mrkvicka",
-    "email": "mrkvicka@domain.com",
-    "type": "STUDENT",
-    "roles": [
-        "STUDENT"
-    ],
-    "createdAt": "2015-11-03T22:35:42Z"
+    "name": "4A",
+    "school": {
+      "id": 1,
+      "name": "7. ZS, Trencin"
+    },
+    "teacher": {
+      "id": 2,
+      "name": "Admin",
+      "email": "admin@domain.com",
+      "type": "TEACHER",
+      "roles": [
+        "TEACHER"
+      ],
+      "createdAt": "2015-11-03T22:35:42Z"
+    }
+  },
+  "type": "STUDENT",
+  "roles": [
+    "STUDENT"
+  ],
+  "createdAt": "2015-11-03T22:35:42Z"
 }

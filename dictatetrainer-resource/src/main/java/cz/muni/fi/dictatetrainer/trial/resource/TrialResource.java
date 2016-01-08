@@ -99,7 +99,7 @@ public class TrialResource {
     }
 
     @GET
-    @RolesAllowed({"TEACHER"})
+    @PermitAll
     public Response findByFilter() {
         final TrialFilter trialFilter = new TrialFilterExtractorFromUrl(uriInfo).getFilter();
         logger.debug("Finding trials using filter: {}", trialFilter);

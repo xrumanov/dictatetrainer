@@ -51,16 +51,23 @@ insert into dt_category (id, name) values(1, 'Vybrané slová');
 insert into dt_school (id, name) values(1, '7. ZS, Trencin, SVK');
 
 insert into dt_user (id, created_at, name, email, password, type, schoolclass_id)
-values(1, current_timestamp, 'Admin', 'adm@domain.com', 'jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=', 'TEACHER', null);
-
-insert into dt_school_class (id, name, school_id, teacher_id) values(1, '4A', 1,1);
+values(1, current_timestamp, 'Jiří Schauer', 'schauer@domain.com', 'jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=', 'TEACHER', null);
 
 insert into dt_user (id, created_at, name, email, password, type, schoolclass_id)
-values(2, current_timestamp, 'Josef Prasek', 'pepaprasek@gmail.com', 'jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=', 'STUDENT', 1);
+values(2, current_timestamp, 'Marek Grác', 'teacher@domain.com', 'jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=', 'TEACHER', null);
 
-insert into dt_user_role (user_id, role) values((select id from dt_user where email = 'pepaprasek@gmail.com'), 'STUDENT');
-insert into dt_user_role (user_id, role) values((select id from dt_user where email = 'adm@domain.com'), 'TEACHER');
-insert into dt_user_role (user_id, role) values((select id from dt_user where email = 'adm@domain.com'), 'ADMINISTRATOR');
+insert into dt_user (id, created_at, name, email, password, type, schoolclass_id)
+values(4, current_timestamp, 'Jaroslava Zajacová', 'zajacova@domain.com', 'jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=', 'TEACHER', null);
+
+insert into dt_school_class (id, name, school_id, teacher_id) values(1, '4A', 1,2);
+
+insert into dt_user (id, created_at, name, email, password, type, schoolclass_id)
+values(3, current_timestamp, 'Jožko Mrkvička', 'student@domain.com', 'jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=', 'STUDENT', 1);
+
+insert into dt_user_role (user_id, role) values((select id from dt_user where email = 'student@domain.com'), 'STUDENT');
+insert into dt_user_role (user_id, role) values((select id from dt_user where email = 'teacher@domain.com'), 'TEACHER');
+insert into dt_user_role (user_id, role) values((select id from dt_user where email = 'schauer@domain.com'), 'TEACHER');
+insert into dt_user_role (user_id, role) values((select id from dt_user where email = 'schauer@domain.com'), 'ADMINISTRATOR');
 
 insert into dt_dictate (id, name, description, category_id, uploader_id, filename, transcript, rep_dictate, rep_sentences, pause_sentences, sentence_endings)
 values(1, 'sample', 'This is sample dictate', 1, 1, 'sample.ogg', 'Som dobrý.', 2, 2, 2, '4');

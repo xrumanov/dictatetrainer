@@ -20,17 +20,6 @@ public final class JsonUtils {
         return idJson;
     }
 
-    public static JsonElement getJsonElementWithJWT(UserJsonConverter userJsonConverter, User user) {
-        final JsonObject jsonWithJWT = new JsonObject();
-
-        final JsonObject jsonUser = (JsonObject) userJsonConverter.convertToJsonElement(user);
-        final String jwt = userJsonConverter.generateJWT(user);
-        //jsonWithJWT.addProperty("token", jwt);
-        jsonWithJWT.add("user", jsonUser);
-
-        return jsonWithJWT;
-    }
-
     public static <T> JsonElement getJsonElementWithPagingAndEntries(final PaginatedData<T> paginatedData,
                                                                      final EntityJsonConverter<T> entityJsonConverter) {
         final JsonObject jsonWithEntriesAndPaging = new JsonObject();

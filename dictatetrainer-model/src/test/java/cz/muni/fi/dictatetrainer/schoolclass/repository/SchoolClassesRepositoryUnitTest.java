@@ -11,6 +11,7 @@ import org.junit.Test;
 import static cz.muni.fi.dictatetrainer.commontests.school.SchoolsForTestRepository.allSchools;
 import static cz.muni.fi.dictatetrainer.commontests.schoolclass.SchoolClassesForTestRepository.normalizeDependencies;
 import static cz.muni.fi.dictatetrainer.commontests.schoolclass.SchoolClassesForTestRepository.schoolClass1;
+import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.allTeachers;
 import static cz.muni.fi.dictatetrainer.commontests.user.UsersForTestRepository.allUsers;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -102,7 +103,7 @@ public class SchoolClassesRepositoryUnitTest extends TestBaseRepository {
 
     private void loadSchools() {
         dbCommandExecutor.executeCommand(() -> {
-            allUsers().forEach(em::persist);
+            allTeachers().forEach(em::persist);
             allSchools().forEach(em::persist);
             return null;
         });

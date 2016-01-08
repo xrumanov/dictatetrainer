@@ -1,0 +1,31 @@
+{
+  "name": "dictatetrainer",
+  "version": "1.0",
+  "homepage": "https://github.com/xrumanov/dictatetrainer",
+  "authors": [
+    "xrumanov <jakub.rumanovsky@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-cookies": "~1.4.8",
+    "angular-permission": "~1.1.0",
+    "angular-resource": "~1.4.8",
+    "angular-route": "~1.4.8",
+    "bootstrap": "~3.3.6",
+    "jquery": "~2.1.4",
+    "ng-file-upload": "~11.0.0",
+    "angular-audio": "~1.7.1"
+  }
+}

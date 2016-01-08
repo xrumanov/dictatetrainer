@@ -1,0 +1,23 @@
+<div ng-include src="'student/navbar_student.html'"></div>
+<!--sidebar begin-->
+<div ng-include src="'student/sidebar_results.html'"></div>
+<!--sidebar end-->
+
+<div ng-switch on="arrayUndefined">
+    <div ng-switch-when="true">
+        <!-- there are no mistakes-->
+        Nedefinované
+    </div>
+    <div ng-switch-when="false">
+        <div ng-switch on="arrayEmpty">
+            <div ng-switch-when="true">
+                <!-- there are no mistakes-->
+                Bez chyby, gratulujeme
+            </div>
+            <div ng-switch-when="false">
+                <!-- there are no mistakes-->
+                <p>{{userText}}</p>
+            </div>
+        </div>
+    </div>
+</div>

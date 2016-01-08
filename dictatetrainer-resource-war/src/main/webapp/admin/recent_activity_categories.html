@@ -1,0 +1,29 @@
+<div ng-include src="'admin/navbar_admin.html'"></div>
+<style>
+    tbody > tr > th {
+        font-weight: normal;
+    }
+</style>
+<div class="container">
+    <h2>Naposledy přidané kategorie</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Název</th>
+            <th>Detaily</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="category in categories">
+            <th>{{category.id}}</th>
+            <th>{{category.name}}</th>
+            <th></th>
+            <!--button details-->
+            <th>
+                <input type="submit" value="Upravit" class="btn btn-info" ng-click="manageUser(user.id)">
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

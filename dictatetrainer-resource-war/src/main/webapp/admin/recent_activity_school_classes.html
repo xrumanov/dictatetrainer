@@ -1,0 +1,31 @@
+<div ng-include src="'admin/navbar_admin.html'"></div>
+
+<style>
+    tbody > tr > th {
+        font-weight: normal;
+    }
+</style>
+<div class="container">
+    <h2>Naposledy přidané třídy ve škole</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Název</th>
+            <th>Škola</th>
+            <th>Detaily</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="schoolClass in schoolClasses">
+            <th>{{schoolClass.id}}</th>
+            <th>{{schoolClass.name}}</th>
+            <th>{{schoolClass.school.name}}</th>
+            <th></th>
+            <th>
+                <input type="submit" value="Upravit" class="btn btn-info" ng-click="manageUser(user.id)">
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

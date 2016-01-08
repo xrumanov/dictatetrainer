@@ -1,0 +1,28 @@
+<div  ng-app ng-controller="TrainerCtrl" ng-include src="'student/navbar_student.html'"></div>
+<style>
+    .trainer {
+        width: 75%;
+    }
+
+    #trainbutton {
+        color: white;
+        background-color: lightslategrey;
+        font-weight: bold;
+    }
+
+    #trainbutton:hover {
+        background-color: green;
+    }
+</style>
+
+<div>
+    </br>
+    <button id="trainbutton" class="btn btn-block trainer" ng-disabled="isDisabled" ng-click="playAudio()">Trénuj!</button>
+    <textarea class="trainer" ng-model="userText.val" ng-model-options="{ updateOn: 'blur' }" rows="10" cols="80" autofocus
+              placeholder="Sem píšte diktát!" style="resize:none"></textarea>
+</div>
+<br/>
+<div>
+    <a class="btn btn-lg" ng-click="correctDictate()">Oprav!</a>
+    <a class="btn btn-lg" ng-click="test()">test!</a>
+</div>

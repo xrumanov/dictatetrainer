@@ -10,6 +10,7 @@ import com.google.gson.JsonPrimitive;
 import cz.muni.fi.dictatetrainer.common.json.EntityJsonConverter;
 import cz.muni.fi.dictatetrainer.common.json.JsonReader;
 import cz.muni.fi.dictatetrainer.common.utils.DateUtils;
+import cz.muni.fi.dictatetrainer.schoolclass.model.SchoolClass;
 import cz.muni.fi.dictatetrainer.schoolclass.resource.SchoolClassJsonConverter;
 import cz.muni.fi.dictatetrainer.user.model.Student;
 import cz.muni.fi.dictatetrainer.user.model.Teacher;
@@ -35,7 +36,11 @@ public class UserJsonConverter implements EntityJsonConverter<User> {
         user.setName(JsonReader.getStringOrNull(jsonObject, "name"));
         user.setEmail(JsonReader.getStringOrNull(jsonObject, "email"));
         user.setPassword(JsonReader.getStringOrNull(jsonObject, "password"));
-
+        if(user.getUserType().toString().equals("STUDENT")) {
+            final SchoolClass schoolClass = new SchoolClass();
+            schoolClass.setId(JsonReader.getLongOrNull(jsonObject, "schoolClassId"));
+            user.setSchoolClass(schoolClass);
+        }
         return user;
     }
 
@@ -61,43 +66,22 @@ public class UserJsonConverter implements EntityJsonConverter<User> {
         return jsonObject;
     }
 
-//    public static String generateJWT(User user) {
-//
-//        Map<String, Object> claims = new HashMap<String, Object>();
-//        claims.put("sub", user.getId());
-//        //claims.put("email", user.getEmail());
-//        //claims.put("roles", user.getRoles().toString());
-//        Key apiKey = MacProvider.generateKey();
-//
-//
-//        //The JWT signature algorithm we will be using to sign the token
-//        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-//
-//        long nowMillis = System.currentTimeMillis();
-//        Date now = new Date(nowMillis);
-//
-//        //We will sign our JWT with our ApiKey secret
-//        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(apiKey.getEncoded().toString());
-//        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-//
-//        //Let's set the JWT Claims
-//        JwtBuilder builder = Jwts.builder().setId(user.getId().toString())
-//                .setIssuedAt(now)
-//                .setClaims(claims)
-//                .signWith(signatureAlgorithm, signingKey)
-//                .setHeaderParam("typ", "JWT");
-//
-//        Long ttlMillis = 5 * 60 * 60000L;
-//        //if it has been specified, let's add the expiration
-//        if (ttlMillis >= 0) {
-//            long expMillis = nowMillis + ttlMillis;
-//            Date exp = new Date(expMillis);
-//            builder.setExpiration(exp);
-//        }
-//
-//        //Builds the JWT and serializes it to a compact, URL-safe string
-//        return builder.compact();
-//    }
+    public JsonElement convertToJsonElementSocial(final User user) {
+        final JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("name", user.getName());
+        jsonObject.addProperty("email", user.getEmail());
+        jsonObject.addProperty("type", user.getUserType().toString());
+
+        final JsonArray roles = new JsonArray();
+        for (final User.Roles role : user.getRoles()) {
+            roles.add(new JsonPrimitive(role.toString()));
+        }
+        jsonObject.add("roles", roles);
+        jsonObject.addProperty("createdAt", DateUtils.formatDateTime(user.getCreatedAt()));
+
+        return jsonObject;
+    }
 
     private User getUserInstance(final JsonObject userJson) {
         final User.UserType userType = User.UserType.valueOf(JsonReader.getStringOrNull(userJson, "type"));
