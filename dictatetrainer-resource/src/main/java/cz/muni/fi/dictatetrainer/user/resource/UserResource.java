@@ -16,11 +16,9 @@ import cz.muni.fi.dictatetrainer.common.model.HttpCode;
 import cz.muni.fi.dictatetrainer.common.model.OperationResult;
 import cz.muni.fi.dictatetrainer.common.model.PaginatedData;
 import cz.muni.fi.dictatetrainer.common.model.ResourceMessage;
-import cz.muni.fi.dictatetrainer.schoolclass.model.SchoolClass;
 import cz.muni.fi.dictatetrainer.user.exception.UserExistentException;
 import cz.muni.fi.dictatetrainer.user.exception.UserNotFoundException;
 import cz.muni.fi.dictatetrainer.user.model.Student;
-import cz.muni.fi.dictatetrainer.user.model.Teacher;
 import cz.muni.fi.dictatetrainer.user.model.User;
 import cz.muni.fi.dictatetrainer.user.model.filter.UserFilter;
 import cz.muni.fi.dictatetrainer.user.services.UserServices;
@@ -36,7 +34,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import java.io.IOException;
@@ -55,7 +52,7 @@ public class UserResource {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("user");
+    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("Uživatel");
 
     public static final String CLIENT_ID_KEY = "client_id", REDIRECT_URI_KEY = "redirect_uri",
             CLIENT_SECRET = "client_secret", CODE_KEY = "code", GRANT_TYPE_KEY = "grant_type",
@@ -168,13 +165,38 @@ public class UserResource {
         return Response.status(httpCode.getCode()).entity(OperationResultJsonWriter.toJson(result)).build();
     }
 
+    @DELETE
+    @Path("/{id}")
+    @RolesAllowed("ADMINISTRATOR")
+    public Response delete(@PathParam("id") final Long id) {
+        logger.debug("Find dictate: {}", id);
+        ResponseBuilder responseBuilder;
+        try {
+            userServices.delete(id);
+            final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithId(id));
+            responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
+            logger.debug("Dictate deleted: {}", id);
+        } catch (final UserNotFoundException e) {
+            logger.error("No dictate found for id", id);
+            responseBuilder = Response.status(HttpCode.NOT_FOUND.getCode());
+        }
+
+        return responseBuilder.build();
+    }
+
     @GET
     @Path("/{id}")
-    @RolesAllowed({"ADMINISTRATOR", "TEACHER"}) // role name have to match the one in web.xml
+    @PermitAll// role name have to match the one in web.xml
     public Response findById(@PathParam("id") final Long id) {
         logger.debug("Find user by id: {}", id);
         ResponseBuilder responseBuilder;
         try {
+//            if ((!securityContext.isUserInRole(User.Roles.ADMINISTRATOR.name())) ||
+//                    (!securityContext.isUserInRole(User.Roles.TEACHER.name()))) {
+//                if (!isLoggedUser(id)) {
+//                    return Response.status(HttpCode.FORBIDDEN.getCode()).build();
+//                }
+//            }
             final User user = userServices.findById(id);
             final OperationResult result = OperationResult.success(userJsonConverter.convertToJsonElement(user));
             responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
@@ -202,7 +224,7 @@ public class UserResource {
             logger.debug("User found by email/password: {}", user);
         } catch (final UserNotFoundException e) {
             logger.error("No user found for email/password");
-            final OperationResult result = OperationResult.error("User/Password error","User/Password pair not found");
+            final OperationResult result = OperationResult.error("User/Password error", "User/Password pair not found");
             responseBuilder = Response.status(HttpCode.NOT_FOUND.getCode()).entity(OperationResultJsonWriter.toJson(result));
         }
 
@@ -251,7 +273,7 @@ public class UserResource {
 
         User user = new Student();
         user.setName(userInfo.get("name").toString());
-        if(userInfo.get("email") == null) {
+        if (userInfo.get("email") == null) {
             user.setEmail("");
         } else {
             // if user with email already exists

@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "error.invalidField.errorDescription",
+    "errorIdentification": "Pravopisní chyba.neplatéPole.errorDescription",
     "errorDescription": "may not be null"
 }

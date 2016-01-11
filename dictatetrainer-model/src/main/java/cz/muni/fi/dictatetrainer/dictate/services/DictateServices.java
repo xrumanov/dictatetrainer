@@ -19,6 +19,8 @@ public interface DictateServices {
 
     void update(Dictate dictate) throws FieldNotValidException, CategoryNotFoundException, DictateNotFoundException;
 
+    void delete(Long id) throws DictateNotFoundException;
+
     Dictate findById(Long id) throws DictateNotFoundException;
 
     PaginatedData<Dictate> findByFilter(DictateFilter dictateFilter);

@@ -5,7 +5,6 @@
     }
 </style>
 <!--sidebar begin-->
-<div ng-include src="'student/sidebar_results.html'"></div>
 <!--sidebar end-->
 
 <div ng-init="initialize()">
@@ -24,17 +23,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="mistake in mistakeArray">
+        <tr ng-repeat="mistake in errorArray">
             <th>{{mistake.writtenWord}}</th>
             <th>{{mistake.correctWord}}</th>
             <th>{{mistake.correctChars}}/{{mistake.writtenChars}}</th>
             <th>{{mistake.previousWord}} <font color="red">{{mistake.writtenWord}}</font> {{mistake.nextWord}}</th>
             <th>{{mistake.mistakeType}}</th>
             <th>{{mistake.priority}}</th>
-            <th></th>
-            <!--button details-->
             <th>
-                <input type="submit" value="Víc" class="btn btn-info btn-block" ng-click="errorDetails(mistake.id)">
+                <input type="submit" value="Víc" class="btn btn-info" ng-click="errorDetails(mistake.id)">
             </th>
         </tr>
         </tbody>

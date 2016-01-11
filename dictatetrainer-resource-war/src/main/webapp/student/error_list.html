@@ -1,17 +1,40 @@
 <div ng-include src="'student/navbar_student.html'"></div>
-<!--sidebar begin-->
-<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-    <ul class="nav">
-        <li><b>Kategorie</b></li><br/>
-        <li class="active"><a href="#">Home</a></li>
-        <!--list generated from database based on categories-->
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-    </ul>
+<style>
+    tbody > tr > th {
+        font-weight: normal;
+    }
+</style>
+<div ng-init="onInit()">
+
+    <br/>
+    <h2>Měli jste dohromady <font color="red"> {{numOfMistakes}}</font> chyb, z toho bylo unikátních <font color="red"> {{uniqueMistakes}}</font>.</h2>
+    <h4>Nejčastější chyba byla typu <font color="red">{{mostOccurrencesType}}</font>  </h4>
+    <br/>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Chyba</th>
+            <th>Správné</th>
+            <th>Správně/chybně</th>
+            <th>Kontext</th>
+            <th>Typ</th>
+            <th>Priorita</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="err in errorsToShow">
+            <th>{{err.writtenWord}}</th>
+            <th>{{err.correctWord}}</th>
+            <th>{{err.correctChars}}/{{err.writtenChars}}</th>
+            <th>{{err.previousWord}} <font color="red">{{err.writtenWord}}</font> {{err.nextWord}}</th>
+            <th>{{err.errorType}}</th>
+            <th>{{err.errorPriority}}</th>
+            <th></th>
+            <!--button details-->
+            <th>
+                <input type="submit" value="Víc" class="btn btn-info" ng-click="errorDetails(err.id)">
+            </th>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<!--sidebar end-->
-
-CATEGORY NAME<br/>
-
-CLICKABLE LIST OF DICTATES IN THAT CATEGORY<br/>

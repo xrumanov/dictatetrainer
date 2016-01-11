@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "school.invalidField.name",
+    "errorIdentification": "Škola.neplatéPole.name",
     "errorDescription": "may not be null"
 }

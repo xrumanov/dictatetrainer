@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "category.NotFound",
-    "errorDescription": "category not found"
+    "errorIdentification": "kategorie.nenalezen",
+    "errorDescription": "kategorie nebyl nalezen"
 }

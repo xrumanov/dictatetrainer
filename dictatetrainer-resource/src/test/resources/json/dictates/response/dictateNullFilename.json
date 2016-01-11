@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "dictate.invalidField.filename",
+    "errorIdentification": "Diktát.neplatéPole.filename",
     "errorDescription": "may not be null"
 }

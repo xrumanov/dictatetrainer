@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "error.invalidField.dictate",
-    "errorDescription": "Not found"
+    "errorIdentification": "Pravopisní chyba.neplatéPole.dictate",
+    "errorDescription": "Nebyl nalezen"
 }

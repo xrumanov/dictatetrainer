@@ -6,12 +6,12 @@ package cz.muni.fi.dictatetrainer.common.model;
 public class ResourceMessage {
     private final String resource;
 
-    private static final String KEY_EXISTENT = "%s.existent";
-    private static final String MESSAGE_EXISTENT = "There is already a %s for the given %s";
-    private static final String MESSAGE_INVALID_FIELD = "%s.invalidField.%s";
-    private static final String KEY_NOT_FOUND = "%s.NotFound";
-    private static final String MESSAGE_NOT_FOUND = "%s not found";
-    private static final String NOT_FOUND = "Not found";
+    private static final String KEY_EXISTENT = "%s.existuje";
+    private static final String MESSAGE_EXISTENT = "%s se zadanou hodnotou pole %s již existuje";
+    private static final String MESSAGE_INVALID_FIELD = "%s.neplatéPole.%s";
+    private static final String KEY_NOT_FOUND = "%s.nenalezen";
+    private static final String MESSAGE_NOT_FOUND = "%s nebyl nalezen";
+    private static final String NOT_FOUND = "Nebyl nalezen";
 
     public ResourceMessage(final String resource) {
         this.resource = resource;

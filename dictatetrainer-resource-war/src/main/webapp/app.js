@@ -131,7 +131,7 @@ angular.module('DictateTrainer', [
                 controller: 'ProfileCtrl'
             })
 
-            .when('/results-sum', {
+            .when('/results-sum/:trialId', {
                 templateUrl: 'student/result_trial_summary.html',
                 controller: 'ResultCtrl'
             })
@@ -144,6 +144,11 @@ angular.module('DictateTrainer', [
             .when('/results-txt', {
                 templateUrl: 'student/result_trial_text.html',
                 controller: 'ResultCtrl'
+            })
+
+            .when('/error-list/:groupfield/:id', {
+                templateUrl: 'student/error_list.html',
+                controller: 'ErrorsCtrl'
             })
 
             .when('/error-details/:id', {
@@ -164,6 +169,11 @@ angular.module('DictateTrainer', [
             .when('/teacher-results-txt', {
                 templateUrl: 'student/result_trial_text.html',
                 controller: 'ResultCtrl'
+            })
+
+            .when('/signup-social', {
+                templateUrl: 'student/socialSignup.html',
+                controller: 'LoginCtrl'
             })
 
 
@@ -194,11 +204,14 @@ angular.module('DictateTrainer', [
             })
 
             .when('/stats-dictate', {
-                templateUrl: 'teacher/statistics_dictate.html'
+                templateUrl: 'teacher/statistics_dictate.html',
+                controller: 'TeacherStatsCtrl'
+
             })
 
             .when('/stats-students', {
-                templateUrl: 'teacher/statistics_student.html'
+                templateUrl: 'teacher/statistics_student.html',
+                controller: 'TeacherStatsCtrl'
             })
 
             .when('/t-edit-u/:id', {
@@ -268,7 +281,9 @@ angular.module('DictateTrainer', [
 
             $rootScope.$on('$locationChangeStart', function (event, next, current) {
                 // redirect to login page if not logged in
-                if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+                if($location.path() === '/signup' && !$rootScope.globals.currentUser) {
+                    $location.path('/signup');
+                } else if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
                     $location.path('/login');
                 }
 

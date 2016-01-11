@@ -5,6 +5,6 @@ angular.module('DictateTrainer')
 
         $http.get("/api/errors/"+idParam)
             .success(function (response) {
-                $scope.error = response;
+                $scope.err = response;
             });
     });

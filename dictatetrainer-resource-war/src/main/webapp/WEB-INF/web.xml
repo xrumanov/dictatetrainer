@@ -26,6 +26,34 @@
         </user-data-constraint>
     </security-constraint>
 
+
+
+    <!--no constraint regarding security on /api/schools/*-->
+    <security-constraint>
+        <display-name>API New User</display-name>
+        <web-resource-collection>
+            <web-resource-name>API New User</web-resource-name>
+            <url-pattern>/api/schools/*</url-pattern>
+            <http-method>GET</http-method>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <!--no constraint regarding security on /api/schoolclasses/*-->
+    <security-constraint>
+        <display-name>API New User</display-name>
+        <web-resource-collection>
+            <web-resource-name>API New User</web-resource-name>
+            <url-pattern>/api/schoolclasses/*</url-pattern>
+            <http-method>GET</http-method>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
     <!--no constraint regarding security on /api/users/*-->
     <security-constraint>
         <display-name>API New User</display-name>

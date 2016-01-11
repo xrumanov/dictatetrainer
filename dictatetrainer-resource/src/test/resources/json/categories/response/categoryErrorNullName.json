@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "category.invalidField.name",
+    "errorIdentification": "kategorie.neplatéPole.name",
     "errorDescription": "may not be null"
 }

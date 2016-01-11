@@ -15,22 +15,28 @@ angular.module('DictateTrainer')
                 }, function (response) {
 
                     $scope.dataLoading = false;
-                    $scope.error = "Vložili jste špatné jméno anebo heslo, zkuste to znovu!";
+                    $scope.error = "Vložili jste špatný email nebo heslo, zkuste to znovu!";
 
                 })
         };
 
         $scope.authenticate = function (provider) {
-            $auth.authenticate(provider);//.then(function(response) {
-            //    $scope.name = response.name;
-            //    if()
-            //    if(typeof (response.email) != 'undefined'){
-            //        $location.path("/student-email");
-            //    } else {
-            //        $location.path("/student-noemail");
-            //    }
-            //}, function() {
-            //
-            //});
+
+            $auth.authenticate(provider).then(function(response){
+                $scope.name = response.name; // name from facebook
+                    if(typeof (response.email) != ""){
+                        $scope.email = response.email;
+                        $location.path("#/student-social");
+                    } else {
+                        $location.path("#/student-social");
+                    }
+            },function() {
+                $scope.error = "Přihlášení skrz sociální síť se nezdařilo, zkuste email.";
+            });
         };
+
+        $scope.signup = function() {
+            $location.path("#/signup");
+        }
     });
+

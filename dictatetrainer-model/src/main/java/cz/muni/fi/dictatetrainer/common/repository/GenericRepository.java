@@ -6,6 +6,7 @@ import cz.muni.fi.dictatetrainer.dictate.model.Dictate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -73,6 +74,13 @@ public abstract class GenericRepository<T> {
 
         return query.setMaxResults(1).getResultList().size() > 0;
     }
+
+    @Transactional
+    public void delete(final Long id) {
+        T attached = findById(id);
+        getEntityManager().remove(attached);
+    }
+
 
     /**
      * Tests if the entity already exists by the given id

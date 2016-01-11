@@ -1,25 +1,31 @@
 <div ng-include src="'student/navbar_student.html'"></div>
 <style>
-    tbody > tr > th {
-        font-weight: normal;
+    .dummy {
+        margin-top: 100%;
+    }
+
+    .thumbnail {
+        position: absolute;
+        top: 15px;
+        bottom: 0;
+        left: 15px;
+        right: 0;
+        text-align: center;
     }
 </style>
-<div class="container">
-    <h2>Moje statistiky podle diktátu</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Název diktátu</th>
-            <th>Podrobnosti</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="trial in trials">
-            <th>{{trial.dictate.name}}</th>
-            <th>{{trial.performed}}</th>
-            <th></th>
-            <!--button details-->
-        </tr>
-        </tbody>
-    </table>
+
+<div>
+    <div class="container">
+        <div ng-init="onInit()">
+            <h3>Statistiky studenta {{studentName}} podle diktátu</h3>
+
+            <div ng-repeat="dictate in studentTrainedDictates" class="col-md-3 col-sm-4 col-xs-6 ">
+                <div class="dummy"></div>
+                <a href="{{'#/error-list/dictates/' + dictate.id}}" class="thumbnail lightgrey">
+                    <b>{{dictate.name}}</b> <br/>
+                    {{dictate.category.name}}
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

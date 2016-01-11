@@ -1,4 +1,4 @@
 {
-  "errorIdentification": "category.existent",
-  "errorDescription": "There is already a category for the given name"
+  "errorIdentification": "kategorie.existuje",
+  "errorDescription": "kategorie se zadanou hodnotou pole name již existuje"
 }

@@ -26,6 +26,8 @@ public interface UserServices {
 
 	void updatePassword(Long id, String password) throws UserNotFoundException;
 
+	void delete(Long id) throws UserNotFoundException;
+
 	User findByEmail(String email) throws UserNotFoundException;
 
 	User findByEmailAndPassword(String email, String password) throws UserNotFoundException;

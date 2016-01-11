@@ -10,6 +10,7 @@ import cz.muni.fi.dictatetrainer.common.model.filter.GenericFilter;
  */
 public class SchoolClassFilter extends GenericFilter {
     private Long teacherId;
+    private Long schoolId;
 
     public Long getTeacherId() {
         return teacherId;
@@ -19,10 +20,19 @@ public class SchoolClassFilter extends GenericFilter {
         this.teacherId = teacherId;
     }
 
-    @Override
-    public String toString() {
-        return "DictateFilter [teacherId=" + teacherId +
-                super.toString() + "]";
+    public Long getSchoolId() {
+        return schoolId;
     }
 
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    @Override
+    public String toString() {
+        return "SchoolClassFilter{" +
+                "teacherId=" + teacherId +
+                ", schoolId=" + schoolId +
+                '}';
+    }
 }

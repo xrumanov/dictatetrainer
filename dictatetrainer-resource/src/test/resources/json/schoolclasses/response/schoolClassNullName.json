@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "schoolclass.invalidField.name",
+    "errorIdentification": "Školská třída.neplatéPole.name",
     "errorDescription": "may not be null"
 }

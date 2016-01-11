@@ -42,7 +42,7 @@ public class ErrorResource {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("error");
+    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("Pravopisní chyba");
 
     @Inject
     ErrorServices errorServices;

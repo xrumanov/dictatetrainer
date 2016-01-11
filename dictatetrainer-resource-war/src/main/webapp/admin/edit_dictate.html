@@ -1,8 +1,53 @@
 <div ng-include src="'admin/navbar_admin.html'"></div>
+<style>
+
+    .centered-form {
+        margin-top: 60px;
+    }
+
+    .panel-title {
+        text-align: center;
+    }
+
+    .centered-form .panel {
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+    }
+
+    .btn-new-class-code {
+        margin-bottom: 10px !important;
+        background-color: whitesmoke;
+    }
+
+    .dropdown-select-class-code {
+        color: black;
+        background-color: whitesmoke;
+    }
+
+    .dropdown-select-school {
+        margin-bottom: 10px !important;
+        width: 100%;
+        color: black;
+        background-color: whitesmoke;
+    }
+
+    .add-class {
+        background-color: transparent;
+        color: yellowgreen;
+    }
+
+    .new-class-row div {
+        width: 100%;
+    }
+
+    .selectpicker {
+        style: 'btn-info';
+    }
+</style>
 <!--Edit dictate-->
 <div class="container">
-    <div class="row centered-form">
-        <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+    <div ng-init="onInit()" class="row centered-form">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Upravit diktát {{dictateToEdit.name}}</h3>
@@ -13,16 +58,12 @@
                             Název: <input type="text" name="name" class="form-control input-sm"
                                           ng-model="dictateToEdit.name">
                         </div>
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Kategorie
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li ng-repeat="category in categories"><a href="">{{category.name}} {{category.id}}</a></li>
-                            </ul>
-                        </div>
+                        <label>Kategorie</label>
+                            <div class="form-group">
+                                <select class="selectpicker" ng-model="chosenCategory"
+                                        ng-options="category as category.name for category in categories">
+                                </select>
+                            </div>
                         <div class="textarea-group">
                             Popis: <textarea type="text" name="description" class="form-control input-sm"
                                              ng-model="dictateToEdit.description"></textarea>
@@ -32,22 +73,26 @@
                                                   ng-model="dictateToEdit.transcript"></textarea>
                         </div>
                         <div class="form-group">
-                            Počet opakování diktátu: <input type="text" name="defaultRepetitionForDictate" class="form-control input-sm"
+                            Počet opakování diktátu: <input type="text" name="defaultRepetitionForDictate"
+                                                            class="form-control input-sm"
                                                             ng-model="dictateToEdit.defaultRepetitionForDictate">
                         </div>
                         <div class="form-group">
-                            Počet opakování věty: <input type="text" name="defaultRepetitionForSentences" class="form-control input-sm"
+                            Počet opakování věty: <input type="text" name="defaultRepetitionForSentences"
+                                                         class="form-control input-sm"
                                                          ng-model="dictateToEdit.defaultRepetitionForSentences">
                         </div>
                         <div class="form-group">
-                            Pauzy mezi větami: <input type="text" name="defaultPauseBetweenSentences" class="form-control input-sm"
+                            Pauzy mezi větami: <input type="text" name="defaultPauseBetweenSentences"
+                                                      class="form-control input-sm"
                                                       ng-model="dictateToEdit.defaultPauseBetweenSentences">
                         </div>
                         <div class="form-group">
                             Konce vět: <input type="text" name="sentenceEndings" class="form-control input-sm"
                                               ng-model="dictateToEdit.sentenceEndings">
                         </div>
-                        <input type="submit" value="Upravit" class="btn btn-info btn-block" ng-click="submitDictate(dictateToEdit.id)">
+                        <input type="submit" value="Upravit" class="btn btn-info btn-block"
+                               ng-click="updateDictate(dictateToEdit.id)">
                     </form>
                 </div>
             </div>

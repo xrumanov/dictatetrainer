@@ -37,7 +37,7 @@ public class CategoryResource {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("category");
+    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("kategorie");
 
     @Inject
     CategoryServices categoryServices;

@@ -41,7 +41,7 @@ public class DictateResource {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("dictate");
+    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("Diktát");
 
     @Inject
     DictateServices dictateServices;
@@ -113,6 +113,25 @@ public class DictateResource {
 
         logger.debug("Returning the operation result after updating dictate: {}", result);
         return Response.status(httpCode.getCode()).entity(OperationResultJsonWriter.toJson(result)).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @RolesAllowed("ADMINISTRATOR")
+    public Response delete(@PathParam("id") final Long id) {
+        logger.debug("Find dictate: {}", id);
+        ResponseBuilder responseBuilder;
+        try {
+            dictateServices.delete(id);
+            final OperationResult result = OperationResult.success(JsonUtils.getJsonElementWithId(id));
+            responseBuilder = Response.status(HttpCode.OK.getCode()).entity(OperationResultJsonWriter.toJson(result));
+            logger.debug("Dictate deleted: {}", id);
+        } catch (final DictateNotFoundException e) {
+            logger.error("No dictate found for id", id);
+            responseBuilder = Response.status(HttpCode.NOT_FOUND.getCode());
+        }
+
+        return responseBuilder.build();
     }
 
     @GET

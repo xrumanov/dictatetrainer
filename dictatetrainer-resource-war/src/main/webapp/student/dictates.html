@@ -13,9 +13,8 @@
     }
 </style>
 
-<h3>Vyberte diktát k procvičování</h3>
-<div ng-app ng-controller="DictatesCtrl">
-    <!--<ul>-->
+<div>
+    <h3>Vyberte diktát k procvičování</h3>
     <div ng-repeat="dictate in dictates" class="col-md-3 col-sm-4 col-xs-6 ">
         <div class="dummy"></div>
         <a href="{{'/#/trainer/' + dictate.filename}}" class="thumbnail lightgrey">
@@ -23,7 +22,4 @@
             {{dictate.category.name}}
         </a>
     </div>
-    <!--<li ng-repeat="dictate in dictates"><a href="{{'/#/trainer/' + dictate.filename}}" >{{dictate.name}}</a></li>-->
-    <!--</ul>-->
 </div>
-<!--dat diktaty do tabulky s viac informaciami, zoradit podla kategorie-->

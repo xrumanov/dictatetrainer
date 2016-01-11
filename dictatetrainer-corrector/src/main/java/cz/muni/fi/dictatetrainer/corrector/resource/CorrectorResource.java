@@ -73,7 +73,7 @@ public class CorrectorResource {
      * @return JSON with only type, priority and description of Mistake
      */
     @POST
-    @Path("/noMeta")
+    @Path("/nometa")
     public Response correctAndResponseWithoutMetadata(final String body) {
         return getResponse(body, false);
     }

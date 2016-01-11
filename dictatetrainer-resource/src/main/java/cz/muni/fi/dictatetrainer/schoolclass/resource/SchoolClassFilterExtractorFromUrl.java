@@ -23,7 +23,10 @@ public class SchoolClassFilterExtractorFromUrl extends AbstractFilterExtractorFr
         if (teacherIdStr != null) {
             schoolClassFilter.setTeacherId(Long.valueOf(teacherIdStr));
         }
-
+        final String schoolIdStr = getUriInfo().getQueryParameters().getFirst("schoolId");
+        if (schoolIdStr != null) {
+            schoolClassFilter.setSchoolId(Long.valueOf(schoolIdStr));
+        }
         return schoolClassFilter;
     }
 

@@ -37,7 +37,7 @@ public class SchoolResource {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("school");
+    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("Škola");
 
     @Inject
     SchoolServices schoolServices;

@@ -37,6 +37,11 @@ public class SchoolClassRepository extends GenericRepository<SchoolClass> {
             queryParameters.put("teacherId", schoolClassFilter.getTeacherId());
         }
 
+        if (schoolClassFilter.getSchoolId() != null) {
+            clause.append(" AND e.school.id = :schoolId");
+            queryParameters.put("schoolId", schoolClassFilter.getSchoolId());
+        }
+
         return findByParameters(clause.toString(), schoolClassFilter.getPaginationData(), queryParameters, "id ASC");
     }
 

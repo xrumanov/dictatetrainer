@@ -26,6 +26,10 @@
     "bootstrap": "~3.3.6",
     "jquery": "~2.1.4",
     "ng-file-upload": "~11.0.0",
-    "angular-audio": "~1.7.1"
+    "angular-audio": "~1.7.1",
+    "satellizer": "~0.13.3",
+    "angular-ui-router": "~0.2.15",
+    "bootstrap-select": "~1.9.3",
+    "angular": "~1.4.8"
   }
 }

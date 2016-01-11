@@ -1,5 +1,5 @@
 angular.module('DictateTrainer')
-    .controller('ManagementCtrl', function ($scope, $location, $http) {
+    .controller('ManagementCtrl', function ($scope, $location, $http, userService, dictateService) {
 
         $http.get("/api/users?sort=id")
             .success(function (response) {
@@ -17,5 +17,33 @@ angular.module('DictateTrainer')
 
         $scope.manageUser = function (id) {
             $location.path("/edit-u/" + id);
-        }
+        };
+
+        $scope.deleteDictate = function (id) {
+            $http.delete("/api/dictates/"+id)
+                .success(function () {
+                    // on delete dictate success
+                    $scope.error = "";
+                    $scope.success = "Smazání proběhlo úspěšně!";
+                    $location.path("#/mng-d");
+                }).error(function(response){
+                    // on delete dictate error
+                    $scope.error = response.errrorIdentification + " " + response.errorDescription;
+                    $scope.success = "";
+                });
+        };
+
+        $scope.deleteUser = function (id) {
+            $http.delete("/api/users/"+id)
+                .success(function () {
+                    // on delete user success
+                    $scope.error = "";
+                    $scope.success = "Smazání proběhlo úspěšně!";
+                    $location.path("#/mng-u");
+                }).error(function(response){
+                    // on delete user error
+                    $scope.error = response.errrorIdentification + " " + response.errorDescription;
+                    $scope.success = "";
+                });
+        };
     });

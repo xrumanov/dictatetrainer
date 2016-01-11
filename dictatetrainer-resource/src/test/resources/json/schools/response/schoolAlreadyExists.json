@@ -1,4 +1,4 @@
 {
-  "errorIdentification": "school.existent",
-  "errorDescription": "There is already a school for the given name"
+  "errorIdentification": "Škola.existuje",
+  "errorDescription": "Škola se zadanou hodnotou pole name již existuje"
 }

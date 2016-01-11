@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "school.NotFound",
-    "errorDescription": "school not found"
+    "errorIdentification": "Škola.nenalezen",
+    "errorDescription": "Škola nebyl nalezen"
 }

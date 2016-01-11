@@ -57,6 +57,14 @@ public class DictateServicesImpl implements DictateServices {
     }
 
     @Override
+    public void delete(final Long id) {
+        if (!dictateRepository.existsById(id)) {
+            throw new DictateNotFoundException();
+        }
+        dictateRepository.delete(id);
+    }
+
+    @Override
     public Dictate findById(final Long id) {
         final Dictate dictate = dictateRepository.findById(id);
         if (dictate == null) {

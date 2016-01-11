@@ -28,8 +28,8 @@ angular.module('DictateTrainer')
 
             var mistakeArray = {};
             var numberOfMistakes = 0;
-            var trialId = -1;
             var studentId = $rootScope.globals.currentUser.id;
+            var trialId = -1;
 
             $scope.corrector = correctingService.save({dictateTranscript: transcript, userText: $scope.userText.val});
             //return response consisting of mistakes
@@ -38,7 +38,6 @@ angular.module('DictateTrainer')
                 mistakeArray = mistakesResponseData.mistakes;
 
                 //for future use with displaying the results
-                $rootScope.mistakeArray = mistakeArray;
                 $rootScope.userText = transcript;
 
                 //add test if there was success in all error storing
@@ -72,24 +71,21 @@ angular.module('DictateTrainer')
                             dictateId: dictateId,
                             studentId: studentId,
                             trialId: trialId
-                        });
+                        })
                     }
+                    $location.path("/results-sum/" + trialId);
                 });
             });
-            $location.path("/results-sum");
         };
 
-        $scope.test = function() {
-            $location.path("/results-sum");
-        };
-
-        $scope.playAudio = function() {
+        $scope.playAudio = function () {
             $scope.audio = ngAudio.load("/dictate/" + filenameParam).play();
-            $scope.audio.loop = defaultRepetitionForDictate-1;
-            if($scope.audio.loop == 0) {
+            $scope.audio.loop = defaultRepetitionForDictate - 1;
+            if ($scope.audio.loop == 0) {
                 $scope.showCorr = true;
             }
             $scope.isDisabled = true;
         };
 
-    });
+    })
+;

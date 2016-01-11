@@ -42,7 +42,7 @@ public class SchoolClassResource {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("schoolclass");
+    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("Školská třída");
 
     @Inject
     SchoolClassServices schoolClassServices;

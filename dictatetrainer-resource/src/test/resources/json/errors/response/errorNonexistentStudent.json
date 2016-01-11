@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "error.invalidField.student",
-    "errorDescription": "Not found"
+    "errorIdentification": "Pravopisní chyba.neplatéPole.student",
+    "errorDescription": "Nebyl nalezen"
 }

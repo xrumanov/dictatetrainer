@@ -3,13 +3,21 @@ angular.module('DictateTrainer')
 
         var idParam = $routeParams.id;
 
-        $http.get("/api/users/"+idParam)
-            .success(function (response) {
-                $scope.userToEdit = response;
-            });
+        $scope.onInit = function () {
+            $http.get("/api/users/" + idParam)
+                .success(function (response) {
+                    $scope.userToEdit = response;
+                });
+        };
 
-        $scope.submitUser = function (id) {
-            $http.update("/api/users/"+idParam)
+
+        $scope.updateUser = function (id) {
+            $http.put("/api/users/" + id, {
+                name: $scope.userToEdit.name,
+                email: $scope.userToEdit.email,
+                type: $scope.userToEdit.type,
+                schoolClassId: $scope.userToEdit.schoolClass.id
+            })
                 .success(function (response) {
                     $scope.updatedUser = response;
                 });

@@ -71,6 +71,11 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
+    public void delete(final Long id) throws UserNotFoundException {
+        userRepository.delete(id);
+    }
+
+    @Override
     public void updatePassword(final Long id, final String password) {
         final User user = findById(id);
         user.setPassword(PasswordUtils.encryptPassword(password));

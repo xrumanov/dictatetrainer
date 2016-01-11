@@ -1,40 +1,49 @@
 angular.module('DictateTrainer')
-    .controller('ResultCtrl', function ($scope, $rootScope) {
+    .controller('ResultCtrl', function ($scope, $rootScope, errorService, $routeParams, trialService) {
 
-        $scope.arrayUndefined = false;
-        $scope.arrayEmpty = false;
-        $scope.mistakeArray = {};
+        var trialId = $routeParams.trialId;
+
+
+        $scope.errorArray = {};
         $scope.userText = {};
-        $scope.tokens = {};
+        //$scope.tokens = {};
         $scope.numOfMistakes = 0;
 
-        $scope.initialize = function() {
-            //if (typeof($rootScope.mistakeArray) == 'undefined' || $rootScope.userText == 'undefined') {
-            //    $scope.arrayUndefined = true;
-            //} else if ($rootScope.mistakeArray.length == null || $rootScope.userText == null) {
-            //    $scope.arrayUndefined = false;
-            //    $scope.arrayEmpty = true;
-            //} else {
-            $rootScope.$watch('mistakeArray', 'userText', function(){
-                $scope.mistakeArray = $rootScope.mistakeArray;
-                $scope.numOfMistakes = $rootScope.mistakeArray.length;
-                $scope.tokens = $rootScope.userText.split(' ');
+        $scope.initialize = function () {
 
-                // annotating the mistakes in text (only when there is not whole word missing)
-                for (var i = 0; i < $scope.mistakeArray.length; i++) {
-                    if ($scope.mistakeArray[i].mistakeCharPosInWord > 0) {
-                        var help = $scope.tokens[$scope.mistakeArray[i].mistakeCharPosInWord - 1];
-                        $scope.tokens[$scope.mistakeArray[i].mistakeCharPosInWord] = "\<font color=\"red\"\>" + help + "\<\/font\>";
-                    }
-                }
+            errorService.get({trialId: trialId}).$promise.then(function (response) {
+                // when get is successful
+                $scope.errorArray = response.entries;
+                $scope.numOfMistakes = response.entries.length;
 
-                for (var j = 0; j < $scope.tokens.length; j++) {
-                    $scope.userText += $scope.tokens[j];
-                    $scope.userText += " ";
-                }
+
+                trialService.get({id: response.entries[0].trial.id}).$promise.then(function (response) {
+                    // when get is successful
+                    $scope.userText = response.trialText;
+                }, function(response){
+                    // when error
+                    $scope.error = response.errorIdentification + " " + errorDescription;
+                });
+
+                //// building the whole text and annotating mistakes
+                //var text = $scope.userText;
+                //var tokens = text.split(" ");
+                //
+                //// annotating the mistakes in text (only when there is not whole word missing)
+                //for (var i = 0; i < $scope.mistakeArray.length; i++) {
+                //    if ($scope.mistakeArray[i].mistakeCharPosInWord > 0) {
+                //        var help = tokens[$scope.mistakeArray[i].mistakeCharPosInWord - 1];
+                //        tokens[$scope.mistakeArray[i].mistakeCharPosInWord] = "\<font color=\"red\"\>" + help + "\<\/font\>";
+                //    }
+                //}
+                //
+                //for (var j = 0; j < tokens.length; j++) {
+                //    $scope.userText += tokens[j];
+                //    $scope.userText += " ";
+                //}
+
+            }, function (response) {
+                $scope.error = response.errorIdentification + " " + errorDescription;
             });
-
-
-            };
-        //}
+        }
     });

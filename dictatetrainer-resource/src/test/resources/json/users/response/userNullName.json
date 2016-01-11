@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "user.invalidField.name",
+    "errorIdentification": "Uživatel.neplatéPole.name",
     "errorDescription": "may not be null"
 }

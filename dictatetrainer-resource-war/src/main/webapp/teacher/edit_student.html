@@ -1,83 +1,86 @@
+<div ng-include src="'teacher/navbar_teacher.html'"></div>
 <style>
-    .dropdown-select-class {
-        color: black;
+
+    .centered-form {
+        margin-top: 60px;
+    }
+
+    .panel-title {
+        text-align: center;
+    }
+
+    .centered-form .panel {
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+    }
+
+    .btn-new-class-code {
         margin-bottom: 10px !important;
         background-color: whitesmoke;
+    }
+
+    .dropdown-select-class-code {
+        color: black;
+        background-color: whitesmoke;
+    }
+
+    .dropdown-select-school {
+        margin-bottom: 10px !important;
+        width: 100%;
+        color: black;
+        background-color: whitesmoke;
+    }
+
+    .add-class {
+        background-color: transparent;
+        color: yellowgreen;
     }
 
     .new-class-row div {
         width: 100%;
     }
+
+    .selectpicker {
+        style: 'btn-info';
+    }
 </style>
-
-<!--template BEGIN-->
-
-<div ng-include src="'teacher/navbar_teacher.html'"></div>
-<!--Edit user-->
 <div class="container">
-    <div class="row centered-form">
-        <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+    <div ng-init="onInit()" class="row centered-form">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Upravit uživatele {{userToEdit.name}}</h3>
+                    <h3 class="panel-title">Upravit studenta <br/>{{userToEdit.name}}</h3>
                 </div>
                 <div class="panel-body">
                     <form role="form">
                         <div class="form-group">
-                            Jméno: <input type="text" name="name" id="name" class="form-control input-sm"
-                                          ng-model="userToEdit.name">
+                            <label>Jméno:</label>
+                            <input type="text" class="form-control input-sm" ng-model="userToEdit.name"
+                                   ng-model-options="{ updateOn: 'blur' }">
                         </div>
                         <div class="form-group">
-                            Email: <input type="email" name="email" id="email" class="form-control input-sm"
-                                          ng-model="userToEdit.email">
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    Nové Heslo: <input type="password" name="password" id="password"
-                                                       class="form-control input-sm"
-                                                       ng-model="userToEdit.password">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    Potvrdit heslo: <input type="password" name="password_confirmation"
-                                                           id="password_confirmation"
-                                                           class="form-control input-sm" ng-model="Potvrdit Heslo">
-                                </div>
-                            </div>
+                            <label>Email:</label>
+                            <input type="email" ng-model="userToEdit.email" ng-model-options="{ updateOn: 'blur' }"
+                                   class="form-control input-sm">
                         </div>
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Škola
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li ng-repeat="school in schools"><a href="">{{school.name}} {{school.id}}</a>
-                                        </li>
-                                    </ul>
+                            <div class="col-xs-7 col-sm-7 col-md-7 new-class-row">
+                                <div class="form-group">
+                                    {{userToEdit.schoolClass.school.name}}
                                 </div>
                             </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Třída
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li ng-repeat="schoolClass in schoolClasses"><a href="">{{schoolClass.name}}
-                                            {{schoolClass.id}}</a></li>
-                                    </ul>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="form-group">
+                                    {{userToEdit.schoolClass.name}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <input type="submit" value="Upravit" class="btn btn-info btn-block"
+                                           ng-click="updateUser(userToEdit.id)">
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" value="Upravit" class="btn btn-info btn-block"
-                               ng-click="submitUser(userToEdit.id)">
                     </form>
                 </div>
             </div>

@@ -1,4 +1,4 @@
 {
-    "errorIdentification": "trial.invalidField.trialText",
+    "errorIdentification": "Pokus.neplatéPole.trialText",
     "errorDescription": "may not be null"
 }

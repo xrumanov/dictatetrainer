@@ -1,45 +1,47 @@
 <div ng-include src="'student/navbar_student.html'"></div>
-<!--sidebar begin-->
-<div ng-include src="'student/sidebar_results.html'"></div>
-<!--sidebar end-->
+
 <div class="container">
-    <h2>Naposledy přidané diktáty</h2>
+    <h2>Detail chyby</h2>
     <table class="table">
+        <thead>
         <tr>
             <th>Atribut</th>
             <th>Hodnota</th>
         </tr>
+        </thead>
+        <tbody>
         <tr>
             <th>Chyba</th>
-            <th>{{error.writtenWord}}</th>
+            <th>{{err.writtenWord}}</th>
         </tr>
         <tr>
             <th>Správně</th>
-            <th>{{error.correctWord}}</th>
+            <th>{{err.correctWord}}</th>
         </tr>
         <tr>
             <th>Podrobně</th>
-            <th>{{error.correctChars}}/{{error.writtenChars}}</th>
+            <th>{{err.correctChars}}/{{err.writtenChars}}</th>
         </tr>
         <tr>
             <th>Lemma</th>
-            <th>{{error.lemma}}</th>
+            <th>{{err.lemma}}</th>
         </tr>
         <tr>
             <th>Značka</th>
-            <th>{{error.posTag}}</th>
+            <th>{{err.posTag}}</th>
         </tr>
         <tr>
             <th>Priorita</th>
-            <th>{{error.errorPriority}}</th>
+            <th>{{err.errorPriority}}</th>
         </tr>
         <tr>
             <th>Typ chyby</th>
-            <th>{{error.errorType}}</th>
+            <th>{{err.errorType}}</th>
         </tr>
+        </tbody>
     </table>
-<div>
-    <h3>Popis chyby</h3>
-    <p>{{error.errorDescription}}</p>
-</div>
+    <div>
+        <h4>Popis chyby</h4>
+        <div class="text">{{err.errorDescription}}<div>
+    </div>
 </div>

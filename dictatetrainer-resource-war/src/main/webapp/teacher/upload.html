@@ -1,5 +1,5 @@
+<div ng-include src="'teacher/navbar_teacher.html'"></div>
 <style>
-
     .drop-box {
         background: #F8F8F8;
         border: 5px dashed #DDD;
@@ -9,114 +9,120 @@
         padding-top: 25px;
         margin: 10px;
     }
-
     #container {
         width: 980px;
         margin: 0 auto;
     }
-
     #content, #credits {
         overflow: hidden;
     }
-
     #description, #transcript, #statusbar {
         width: 75%;
     }
-
     .onlyNumbers {
         width: 25%;
     }
-
     .dragover {
         border: 5px dashed blue;
     }
+
+    .centered-form {
+        margin-top: 60px;
+    }
+
+    .panel-title {
+        text-align: center;
+    }
+
+    .centered-form .panel {
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+    }
+
+    .btn-new-class-code {
+        margin-bottom: 10px !important;
+        background-color: whitesmoke;
+    }
+
+    .dropdown-select-class-code {
+        color: black;
+        background-color: whitesmoke;
+    }
+
+    .dropdown-select-school {
+        margin-bottom: 10px !important;
+        width: 100%;
+        color: black;
+        background-color: whitesmoke;
+    }
+
+    .add-class {
+        background-color: transparent;
+        color: yellowgreen;
+    }
+
+    .new-class-row div {
+        width: 100%;
+    }
 </style>
-<div id="container">
-    <div ng-include src="'teacher/navbar_teacher.html'" ng-controller="UploadCtrl"></div>
+<!--Edit dictate-->
+<div class="container">
+    <div ng-init="onInit()" class="row centered-form">
+        <div class="col-xs-12 col-sm-8 col-md-7 col-sm-offset-2 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Nahrát nový diktát</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <div class="form-group">
+                            Název: <input type="text" name="name" class="form-control input-sm"
+                                          ng-model="dictate.name">
+                        </div>
+                        <label>Kategorie</label>
+                        <div class="form-group">
+                            <select class="selectpicker" ng-model="chosenCategory"
+                                    ng-options="category as category.name for category in categories">
+                            </select>
+                        </div>
+                        <div class="textarea-group">
+                            Popis: <textarea type="text" name="description" class="form-control input-sm"
+                                             ng-model="dictate.description"></textarea>
+                        </div>
+                        <div class="textarea-group">
+                            Transkript: <textarea type="text" name="transcript" class="form-control input-sm"
+                                                  ng-model="dictate.transcript"></textarea>
+                        </div>
+                        <div class="form-group">
+                            Počet opakování diktátu: <input type="text" name="defaultRepetitionForDictate"
+                                                            class="form-control input-sm"
+                                                            ng-model="dictate.defaultRepetitionForDictate">
 
-    <div id="content">
-        <br/>
-        <!--description textfield-->
-        <div id="description" class="form-group">
-            <label for="usr">Krátky popis diktátu:</label>
-            <input type="text" class="form-control" id="usr" required>
-        </div>
+                        </div>
+                        <div>
+                            <div ngf-drop ngf-select ng-model="files" class="drop-box"
+                                 ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="false"
+                                 accept="audio/*"
+                                 ngf-pattern="'.wav,.mp3,.ogg'">
+                                Nahrej diktát přetáhnutím, nebo klikni pro výběr souboru
+                            </div>
+                            <div ngf-no-file-drop>Nahrávání přetáhnutím souboru není podporováno</div>
 
-        <!--transcript textarea-->
-        <label>Textový prepis diktátu:</label>
-
-        <div>
-        <textarea id="transcript" ng-model="transcript" ng-model-options="{ updateOn: 'blur' }" rows="10" cols="80"
-                  placeholder="Vložte prepis diktátu" style="resize:none" required></textarea>
-        </div>
-        <!--button next step-->
-        <br/>
-
-        <div>
-            <label>Počet opakování každé věty:</label>
-            <input type="text" class="form-control onlyNumbers" required>
-        </div>
-        <br/>
-
-        <div>
-            <label>Počet opakování celého diktátu:</label>
-            <input type="text" class="form-control onlyNumbers" required>
-        </div>
-        <br/>
-
-        <div>
-            <label>Délka pauzy mezi větami:</label>
-            <input type="text" class="form-control onlyNumbers" required>
-        </div>
-        <br/>
-
-
-        <!--category dropdown-->
-        <label for="usr">Vybrat kategorii:</label>
-
-        <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Kategorie
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li ng-repeat="category in categories"><a href="">{{category.name}} {{category.id}}</a></li>
-            </ul>
-        </div>
-
-        <br/>
-
-        <div>
-            <div ngf-drop ngf-select ng-model="files" class="drop-box"
-                 ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="false"
-                 accept="audio/*"
-                 ngf-pattern="'.wav,.mp3,.ogg'">
-                Nahrej diktát přetáhnutím, nebo klikni pro výběr souboru
+                            Postup nahrávání:
+                            <pre id="statusbar">{{log}}</pre>
+                        </div>
+                        <div>
+                            <label>Jméno:</label>
+                            <ul>
+                                <li ng-repeat="f in files">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+                            </ul>
+                        </div>
+                        <br/>
+                        <input type="submit" value="Nahrát diktát" class="btn btn-info btn-block"
+                               ng-click="uploadDictate()">
+                    </form>
+                </div>
             </div>
-            <div ngf-no-file-drop>Nahrávání přetáhnutím souboru není podporováno</div>
-
-            Postup nahrávání:
-            <pre id="statusbar">{{log}}</pre>
         </div>
-        <div>
-            <label>Jméno:</label>
-            <ul>
-                <li ng-repeat="f in files">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
-            </ul>
-        </div>
-        <br/>
-
-        <div>
-            <label>Konce vět oddělené středníkem (ve vteřinách): {{pauses}}</label>
-        </div>
-
-        <br/>
-
-        <button id="step2btn" class="btn btn-success" ng-click="upload()" ng-disabled="signInForm.$invalid">
-            Nahrát!
-        </button>
-
-        <!--TODO overenie ci su vsetky polia vyplnene, predtym ako povolim druhy krok-->
     </div>
 </div>

@@ -1,15 +1,53 @@
 angular.module('DictateTrainer')
-    .controller('UploadCtrl', function ($scope, $http, Upload, $timeout) {
+    .controller('UploadCtrl', function ($scope, $http, Upload, $timeout, dictateService) {
+
+        $scope.files = {};
+
         $scope.$watch('files', function () {
             $scope.upload($scope.files);
         });
         $scope.$watch('file', function () {
             if ($scope.file != null) {
                 $scope.files = [$scope.file];
+
             }
         });
+
         $scope.log = '';
         $scope.pauses = '';
+
+        $scope.onInit = function () {
+            $http.get("/api/categories")
+                .success(function (response) {
+                    $scope.categories = response.entries;
+                });
+        };
+
+        $scope.uploadDictate = function() {
+
+            dictateService.save({
+                name: $scope.dictate.name,
+                description: $scope.dictate.description,
+                filename: $scope.files[0].name,
+                transcript: $scope.dictate.transcript,
+                defaultRepetitionForDictate: $scope.dictate.defaultRepetitionForDictate,
+                defaultRepetitionForSentences: 1,
+                defaultPauseBetweenSentences: 0,
+                sentenceEndings: 0,
+                categoryId: $scope.chosenCategory.id,
+                uploaderId: $scope.uploaderId
+            })
+                .$promise.then(function (response) {
+                    $scope.updatedDictate = response;
+                    $scope.success = "Diktát úspěšně aktualizován.";
+                    $scope.error = "";
+                },function (response) {
+                    $scope.success = "";
+                    $scope.error = "Chyba: " + response.errorDescription;
+                });
+        };
+
+
 
         $scope.upload = function (files) {
             if (files && files.length) {
@@ -37,8 +75,4 @@ angular.module('DictateTrainer')
             }
         };
 
-        $http.get("/api/categories")
-            .success(function (response) {
-                $scope.categories = response.entries;
-            });
     });

@@ -37,7 +37,7 @@ public class TrialResource {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("trial");
+    private static final ResourceMessage RESOURCE_MESSAGE = new ResourceMessage("Pokus");
 
     @Inject
     TrialServices trialServices;

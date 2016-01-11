@@ -6,21 +6,20 @@
     }
 </style>
     <h2>Moje statistiky podle datumu</h2>
-    <table class="table">
+    <table class="table" ng-init="onInit()">
         <thead>
         <tr>
             <th>Datum</th>
             <th>Název diktátu</th>
-            <th>Podrobnosti</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="trial in trials">
             <th>{{trial.performed}}</th>
             <th>{{trial.dictate.name}}</th>
-            <th></th>
-            <!--button details-->
-        </tr>
+            <th>
+                <input type="submit" value="Víc" class="btn btn-info" ng-click="trialDetails(trial.id)">
+            </th>
         </tbody>
     </table>
 </div>

@@ -15,7 +15,6 @@
             <th>Email</th>
             <th>Škola</th>
             <th>Třída</th>
-            <th>Upravit</th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +27,12 @@
             <!--button details-->
             <th>
                 <input type="submit" value="Upravit" class="btn btn-info" ng-click="manageUser(user.id)">
+            </th>
+            <th>
+                <input type="submit" value="Smazat" class="btn btn-danger"
+                       ng-click="deleteUser(user.id)">
+            </th>
+            <th>
             </th>
         </tr>
         </tbody>

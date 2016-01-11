@@ -21,7 +21,7 @@ angular.module('DictateTrainer')
 
 
         // get dictates from teacher
-        $scope.dictatesReq = dictateService.get({uploader: teacherId})
+        $scope.dictatesReq = dictateService.get({uploaderId: teacherId})
             .$promise.then(function (dictateResponse) {
                 $scope.teacherDictates = dictateResponse.entries;
             }
